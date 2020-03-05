@@ -1,0 +1,21 @@
+
+extends ../template/adminLoginRegister.template.pug
+
+block content
+
+        .wrapper.fadeInDown
+          #formContent
+            // Tabs Titles
+            // Icon
+            .fadeIn.first
+            // Login Form
+            form(action="/user/register" method="POST")
+                input#login.fadeIn.second(type='text', name='email', placeholder='Email',value="")
+                input#login.fadeIn.second(type='text', name='fullname', placeholder='Full Name',value="")
+                input#login.fadeIn.second(type='text', name='phone', placeholder='Phone Number',value="")
+                input#password.fadeIn.second(type='password', name='password', placeholder='Password',value ="")
+                input#password.fadeIn.second(type='password', name='password2', placeholder='Password Confirm',value ="")
+                input.fadeIn.third(type='submit', value='Log In')
+            // Remind Passowrd
+            #formFooter
+                a.underlineHover(href='#') Forgot Password?

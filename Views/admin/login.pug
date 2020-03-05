@@ -1,0 +1,18 @@
+extends ../template/adminLoginRegister.template.pug
+
+block content
+
+        .wrapper.fadeInDown
+          #formContent
+            // Tabs Titles
+            // Icon
+            .fadeIn.first
+            // Login Form
+            form(action="/user/login" method="POST")
+                input#login.fadeIn.second(type='text', name='email', placeholder='Email',value="")
+                input#password.fadeIn.third(type='password', name='password', placeholder='Password',value ="")
+                input.fadeIn.fourth(type='submit', value='Log In')
+            // Remind Passowrd
+            #formFooter
+                a.underlineHover(href='#') Forgot Password?
+
