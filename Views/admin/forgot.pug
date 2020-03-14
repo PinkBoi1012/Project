@@ -1,0 +1,20 @@
+extends ../template/adminLoginRegister.template.pug
+
+block content
+       
+        .wrapper.fadeInDown
+          #formContent
+            // Tabs Titles
+            // Icon
+            .fadeIn.first
+            // Login Form
+            form(action="/user/login" method="POST")
+                input#email.fadeIn.second(type='text', name='email', placeholder='Email',value=values? values.email :'')
+                p#emailErrorInput  
+                input.fadeIn.fourth(type='submit', value='Send')
+                
+            // Remind Passowrd
+            #formFooter
+                a.underlineHover(href='/user/login') Login
+
+       

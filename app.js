@@ -3,7 +3,6 @@ const app = express();
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const key = require("./config/keys");
-
 const cookieParser = require("cookie-parser");
 const userRoute = require("./Route/userRoute");
 // connect db
@@ -18,16 +17,15 @@ mongoose
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 // config cookie parser
-app.use(cookieParser());
 
+app.use(cookieParser(key.secret));
+mongoose.set("useFindAndModify", false);
 //set view engine pug
 app.set("view engine", "pug");
 app.set("views", "./Views");
 
 app.use("/user", userRoute);
-app.get("/", (req, res) => {
-  return res.send("Login Success");
-});
+
 app.listen(key.port, () => {
   console.log(`Server started on port ${key.port}`);
 });

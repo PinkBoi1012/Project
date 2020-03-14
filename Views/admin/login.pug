@@ -1,7 +1,22 @@
 extends ../template/adminLoginRegister.template.pug
 
 block content
-
+       
+        if errors
+          -let styleValidate = "";
+          -let showErrors = "";
+          each error,errName in errors
+            -errors.error = errName
+            -styleValidate  = styleValidate+ "#"+errName+" {border-bottom: 2px solid red;}  " 
+            -showErrors = showErrors + "$('#"+errName+"ErrorInput"+"').append('"+error+"').css('color','red'); "
+          
+          
+          style.   
+            #{styleValidate}
+          script.
+            $(document).ready(function(){
+              #{showErrors} 
+            })
         .wrapper.fadeInDown
           #formContent
             // Tabs Titles
@@ -9,10 +24,17 @@ block content
             .fadeIn.first
             // Login Form
             form(action="/user/login" method="POST")
-                input#login.fadeIn.second(type='text', name='email', placeholder='Email',value="")
-                input#password.fadeIn.third(type='password', name='password', placeholder='Password',value ="")
+                input#email.fadeIn.second(type='text', name='email', placeholder='Email',value=values? values.email :'')
+                p#emailErrorInput  
+                input#password.fadeIn.third(type='password', name='password', placeholder='Password',value ='')
+                p#passwordErrorInput
                 input.fadeIn.fourth(type='submit', value='Log In')
+                
             // Remind Passowrd
             #formFooter
-                a.underlineHover(href='#') Forgot Password?
+                a.underlineHover(href='/user/register') No Account? Register Here
+                br
+                a.underlineHover(href='/user/forgot') Forgot Password?
+                
 
+       
