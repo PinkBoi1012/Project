@@ -1,21 +1,31 @@
 const bcrypt = require("bcryptjs");
 const resigterValidate = require("../Validate/user/validate.userRegister");
 const loginValidate = require("../Validate/user/validate.userLogin");
+const forgetPasswordValidate = require("../Validate/user/validate.userForgot");
 const userController = {};
 const User = require("../models/User");
 const sendMail = require("../middlewares/nodemailer.userActive");
 const jwt = require("jsonwebtoken");
 const key = require("../config/keys");
+
 // Render login Page
 userController.renderLogin = function(req, res) {
-  res.render("admin/login");
+  return res.render("admin/login");
 };
 // Render forgot password page
-userController.forgetPassword = function(req, res) {};
+userController.renderForgetPasswordPage = function(req, res) {
+  res.render("admin/forgot");
+  return;
+};
 
 // Render Admin register Page
 userController.renderAdminRegisterPage = function(req, res) {
   return res.render("admin/register");
+};
+// Render Admin page
+userController.renderAdminMainPage = function(req, res) {
+  let userCookies = req.cookies;
+  return res.render("admin/admin", { userCookies });
 };
 // login Admin Function
 userController.login = function(req, res) {
@@ -23,7 +33,6 @@ userController.login = function(req, res) {
   if (errors) {
     if (!isValid) {
       res.render("admin/login", { errors, values: req.body });
-
       return;
     }
     User.findOne({ email: req.body.email }).then(function(data) {
@@ -41,12 +50,10 @@ userController.login = function(req, res) {
 
         res.cookie("user", data.id, { signed: true });
         res.redirect("/user");
-
         return;
       }
       errors.email = "Email is not exist";
       res.render("admin/login", { errors, values: req.body });
-
       return;
     });
   }
@@ -86,11 +93,6 @@ userController.register = async function(req, res) {
     return;
   });
 };
-// Render Admin page
-userController.renderAdminMainPage = function(req, res) {
-  let userCookies = req.cookies;
-  return res.render("admin/admin", { userCookies });
-};
 
 // Active user Account
 userController.getActiveUserToken = function(req, res) {
@@ -107,6 +109,16 @@ userController.getActiveUserToken = function(req, res) {
       );
     });
   });
+};
+// Sent Forgot password, send Mail
+userController.sentForgotUserPassword = function(req, res) {
+  const { errors, isValid } = forgetPasswordValidate(req.body);
+  if (!isValid) {
+    res.render("admin/forget", { errors, values: req.body });
+    return;
+  }
+  console.log(req.body.email);
+  return;
 };
 
 module.exports = userController;

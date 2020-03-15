@@ -32,12 +32,16 @@ route.get(
 
 route.post("/register", UserController.register);
 
-route.get("/forgot", function(req, res) {
-  res.render("admin/forgot");
-});
+route.get("/forgot", UserController.renderForgetPasswordPage);
+
 //@route    Post /active
 //@desc     Active User Account
 //@access   Private
 route.get("/active/:_id", UserController.getActiveUserToken);
+
+//@route    POST
+//@desc     Send link to mail to reset password
+//@access   Public
+route.post("/forgot", UserController.sentForgotUserPassword);
 
 module.exports = route;
