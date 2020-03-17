@@ -20,12 +20,15 @@ app.use(bodyParser.json());
 
 app.use(cookieParser(key.secret));
 mongoose.set("useFindAndModify", false);
+
 //set view engine pug
 app.set("view engine", "pug");
 app.set("views", "./Views");
-
 app.use("/user", userRoute);
 
+app.get("/demo", (req, res) => {
+  res.render("template/adminMain.template.pug");
+});
 app.listen(key.port, () => {
   console.log(`Server started on port ${key.port}`);
 });

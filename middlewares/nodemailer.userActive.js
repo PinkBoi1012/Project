@@ -13,11 +13,8 @@ module.exports = function(email, subject, content) {
   const mailOptions = {
     from: "pinkfoxstoredemo@gmail.com",
     to: email,
-    subject: "subject",
-    html:
-      "<p>Please Click This Link To Active Admin Account:</p><a href=http://localhost:8080/user/active/" +
-      content +
-      ">Link"
+    subject: subject,
+    html: content
   };
 
   transporter.sendMail(mailOptions, function(err, info) {

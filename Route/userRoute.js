@@ -32,7 +32,11 @@ route.get(
 
 route.post("/register", UserController.register);
 
-route.get("/forgot", UserController.renderForgetPasswordPage);
+route.get(
+  "/forgot",
+  userAuth.checkHasLogin,
+  UserController.renderForgetPasswordPage
+);
 
 //@route    Post /active
 //@desc     Active User Account
@@ -43,5 +47,15 @@ route.get("/active/:_id", UserController.getActiveUserToken);
 //@desc     Send link to mail to reset password
 //@access   Public
 route.post("/forgot", UserController.sentForgotUserPassword);
+
+//@route    GET
+//@desc     Change password
+//@access   private
+route.get("/resetpassword/:_id", UserController.renderResetPasswordPage);
+
+//@route    POST
+//@desc     Change password
+//@access   private
+route.get("/resetpassword/:_id", UserController.renderResetPasswordPage);
 
 module.exports = route;
