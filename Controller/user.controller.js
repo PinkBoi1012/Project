@@ -5,8 +5,10 @@ const forgetPasswordValidate = require("../Validate/user/validate.userForgot");
 const userController = {};
 const User = require("../models/User");
 const sendMail = require("../middlewares/nodemailer.userActive");
+const productType = require("../models/TypeProduct");
 const jwt = require("jsonwebtoken");
 const key = require("../config/keys");
+const addProductTypeValidate = require("../Validate/user/validate.addProductType");
 
 // Render login Page
 userController.renderLogin = function(req, res) {
@@ -28,10 +30,47 @@ userController.renderResetPasswordPage = function(req, res) {
 };
 // Render Admin page
 userController.renderAdminMainPage = function(req, res) {
-  let userCookies = req.cookies;
-  return res.render("admin/admin", { userCookies });
+  return res.render("admin/dashboard");
 };
 
+//Render Admin product type page
+userController.renderAdminProductTypePage = async function(req, res) {
+  let dataProductType = await productType.find();
+  res.render("admin/productTypeManage", { dataProductType });
+  return;
+};
+// Render mangager product page
+userController.renderAdminProductPage = function(req, res) {
+  res.render("admin/productManager");
+  return;
+};
+
+//render order manager page
+userController.renderOrderManagerPage = function(req, res) {
+  res.render("admin/orderManager");
+  return;
+};
+//render customer manager page
+userController.renderCustomerManagerPage = function(req, res) {
+  res.render("admin/customerManager");
+  return;
+};
+
+//render Add product page
+userController.renderAddProductPage = function(req, res) {
+  res.render("admin/addProductType");
+  return;
+};
+
+//render Product Type Information
+userController.renderProductTypeInfo = async function(req, res) {
+  let data = await productType.findById(req.params._id);
+  if (!data) {
+    return res.redirect("/user/producttype");
+  }
+  res.render("admin/updateProductType", { data });
+  return;
+};
 // login Admin Function
 userController.login = function(req, res) {
   const { errors, isValid } = loginValidate(req.body);
@@ -54,8 +93,12 @@ userController.login = function(req, res) {
           return;
         }
 
-        res.cookie("user", data.id, { signed: true });
-        res.redirect("/user");
+        res.cookie("user", data.id, {
+          signed: true,
+          expires: new Date(Date.now() + 8 * 3600000)
+        });
+        res.redirect("/user/dashboard");
+
         return;
       }
       errors.email = "Email is not exist";
@@ -137,7 +180,6 @@ userController.getActiveUserToken = function(req, res) {
 };
 // Sent Forgot password, send Mail
 userController.sentForgotUserPassword = async function(req, res) {
-  console.log(req.body);
   const { errors, isValid } = forgetPasswordValidate(req.body);
   if (!isValid) {
     res.render("admin/forgot", { errors, values: req.body });
@@ -161,4 +203,59 @@ userController.sentForgotUserPassword = async function(req, res) {
   return;
 };
 
+// Submit new Product Type
+userController.addProductType = async function(req, res) {
+  const { errors, isValid } = addProductTypeValidate(req.body);
+  let isNameExist = await productType.findOne({ TP_name: req.body.TP_name });
+  if (isNameExist) {
+    // send
+    errors.TP_name = "This Product Type is exist";
+    res.render("admin/addProductType", { errors, values: req.body });
+    return;
+  }
+  if (!isValid) {
+    res.render("admin/addProductType", { errors, values: req.body });
+    return;
+  }
+  let newProductType = new productType({
+    TP_name: req.body.TP_name,
+    TP_description: req.body.TP_description
+  });
+  // Add product type and save turn back to product type page
+  newProductType.save(function(err, data) {
+    return res.redirect("producttype");
+  });
+};
+
+userController.editProductType = async function(req, res) {
+  const { errors, isValid } = addProductTypeValidate(req.body);
+  console.log;
+  let data = await productType.findOne({ TP_name: req.body.TP_name });
+
+  if (data) {
+    errors.TP_name = "This Product Type is exist";
+    res.render("admin/updateProductType", { data, errors });
+    return;
+  }
+
+  let change = {
+    TP_name: req.body.TP_name,
+    TP_description: req.body.TP_description
+  };
+
+  productType.findByIdAndUpdate(req.body._id, change, function(err, data) {
+    if (err) {
+      return console.log(err);
+    }
+    res.redirect("producttype");
+    return;
+  });
+};
+
+userController.deleteProductType = async function(req, res) {
+  productType.findByIdAndRemove(req.params._id, function(err, data) {
+    res.redirect("/user/producttype");
+    return;
+  });
+};
 module.exports = userController;

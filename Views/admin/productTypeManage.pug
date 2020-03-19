@@ -1,0 +1,34 @@
+extends ../template/adminMain.template.pug
+block content
+    link(rel='stylesheet', type='text/css', href='https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css')
+    script(type='text/javascript', charset='utf8', src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js')
+
+    script.
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+    h1 Product Type
+    a.btn.btn-primary(href='/user/addProductType', role='button') Add Product Type
+ 
+    br
+    br
+    
+    table#myTable.display
+        thead
+            tr
+                th Product Type
+                th Description
+                th Action
+        tbody
+            each TP in dataProductType
+                tr
+                    -let linkInfo = "/user/productTypeInfo/"+TP._id
+                    -let linkDelete = "/user/productTypeDelete/"+TP._id
+                    td= TP.TP_name  
+                    //- td= TP.TP_description
+                    td= TP.TP_description
+                    td <a class="btn btn btn-outline-info" href=#{linkInfo} role="button">Edit</a>&ensp;<a class="btn btn-outline-danger" href=#{linkDelete} role="button">Delete</a>
+
+                    
+        
+

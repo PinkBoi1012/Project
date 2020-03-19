@@ -36,6 +36,9 @@ body {
   font-weight: 500;
   color: #333;
 }
+.min-height {
+  min-height: calc(100vh - 50px);
+}
 
 .sidebar .nav-link .feather {
   margin-right: 4px;

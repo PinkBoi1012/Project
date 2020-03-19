@@ -5,6 +5,9 @@ const bodyParser = require("body-parser");
 const key = require("./config/keys");
 const cookieParser = require("cookie-parser");
 const userRoute = require("./Route/userRoute");
+const adminAuthMiddlerware = require("./middlewares/Authentication.user");
+const path = require("path");
+
 // connect db
 mongoose
   .connect(key.mongoURL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -24,11 +27,9 @@ mongoose.set("useFindAndModify", false);
 //set view engine pug
 app.set("view engine", "pug");
 app.set("views", "./Views");
-app.use("/user", userRoute);
 
-app.get("/demo", (req, res) => {
-  res.render("template/adminMain.template.pug");
-});
+app.use("/public", express.static(path.join(__dirname, "/public")));
+app.use("/user", userRoute);
 app.listen(key.port, () => {
   console.log(`Server started on port ${key.port}`);
 });

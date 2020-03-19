@@ -8,23 +8,23 @@ head
   link#bootstrap-css(href='//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', rel='stylesheet')
   script(src='//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js')
   script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
-  link(href='dashboard.css' rel='stylesheet')
+  
   style.
     .min-height {
       min-height: calc(100vh - 50px);
     }
 nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0
-  a.navbar-brand.col-sm-3.col-md-2.mr-0(href='#') Store
+  a.navbar-brand.col-sm-3.col-md-2.mr-0(href='/user/dashboard') Store
   ul.navbar-nav.px-3
     li.nav-item.text-nowrap
-      a.nav-link(href='#') Sign out
+      a#signout.nav-link(href='#') Sign out
 .container-fluid
   .row.min-height
     nav.col-md-2.d-none.d-md-block.bg-light.sidebar
       .sidebar-sticky
         ul.nav.flex-column
           li.nav-item
-            a.nav-link.active(href='#')
+            a.nav-link.active(href='/user/dashboard')
               span(data-feather='home')
               |                   Dashboard 
               span.sr-only (current)
@@ -34,27 +34,24 @@ nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0
             span(data-feather='plus-circle')
         ul.nav.flex-column.mb-2
           li.nav-item
-            a.nav-link(href='/user/product')
-              span(data-feather='file')
+            a.nav-link(href='/user/producttype')
+              span(data-feather='product-type')
               |                   Product Types
           li.nav-item
-            a.nav-link(href='#')
-              span(data-feather='shopping-cart')
+            a.nav-link(href='/user/product')
+              span(data-feather='product')
               |                   Products
           li.nav-item
-            a.nav-link(href='#')
-              span(data-feather='users')
+            a.nav-link(href='/user/order')
+              span(data-feather='order')
               |                   Orders
           li.nav-item
-            a.nav-link(href='#')
-              span(data-feather='bar-chart-2')
-              |                   Customer
-          li.nav-item
-            a.nav-link(href='#')
-              span(data-feather='bar-chart-2')
+            a.nav-link(href='/user/customer')
+              span(data-feather='Customer')
               |                   Customer
 
 
     main.col-md-9.ml-sm-auto.col-lg-10.pt-3.px-4(role='main')
       .d-flex.justify-content-between.flex-wrap.flex-md-nowrap.align-items-center.pb-2.mb-3
       block content
+      

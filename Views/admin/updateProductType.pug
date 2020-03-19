@@ -1,0 +1,31 @@
+extends ../template/adminMain.template.pug
+block content
+    h1 Information of Product Type 
+           
+    if errors
+        -let styleValidate = "";
+        -let showErrors = "";
+        each error,errName in errors
+            -errors.error = errName
+            -styleValidate  = styleValidate+ "#"+errName+" {border-bottom: 2px solid red;}  " 
+            -showErrors = showErrors + "$('#"+errName+"ErrorInput"+"').append('"+error+"').css('color','red'); "
+          
+          
+        style.   
+            #{styleValidate}
+            
+        script.
+            $(document).ready(function(){
+              #{showErrors} 
+            })
+    div
+     form(action="/user/editProductType" method="POST")
+        input#_id.form-control(type="hidden" name="_id" value=data._id readonly)
+        label(for='TP_name') Product Type 
+        input#TP_name.form-control(type='text', name='TP_name', placeholder='Enter prodcut type name',value=data.TP_name)
+        p#TP_nameErrorInput
+        label(for='TP_description') Description
+        input#TP_description.form-control(type='text',name='TP_description', placeholder='Enter description of product Type',value=data.TP_description)
+        p#TP_descriptionErrorInput
+        input.btn.btn-outline-primary(type='submit', value='Edit')
+        //- button.btn.btn-primary(type='submit') Submit

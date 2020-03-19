@@ -1,0 +1,31 @@
+extends ../template/adminMain.template.pug
+block content
+           
+    if errors
+        -let styleValidate = "";
+        -let showErrors = "";
+        each error,errName in errors
+            -errors.error = errName
+            -styleValidate  = styleValidate+ "#"+errName+" {border-bottom: 2px solid red;}  " 
+            -showErrors = showErrors + "$('#"+errName+"ErrorInput"+"').append('"+error+"').css('color','red'); "
+          
+          
+        style.   
+            #{styleValidate}
+            
+        script.
+            $(document).ready(function(){
+              #{showErrors} 
+            })
+
+    h1 Add product Type
+    div
+     form(action="/user/addProductType" method="POST")
+        label(for='TP_name') Product Type 
+        input#TP_name.form-control(type='text', name='TP_name', placeholder='Enter prodcut type name',value=values? values.TP_name :'' )
+        p#TP_nameErrorInput
+        label(for='TP_description') Description
+        input#TP_description.form-control(type='text',name='TP_description', placeholder='Enter description of product Type',value=values? values.TP_description :'' )
+        p#TP_descriptionErrorInput
+        input.btn.btn-outline-primary(type='submit', value='Register')
+        //- button.btn.btn-primary(type='submit') Submit

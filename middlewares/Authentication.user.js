@@ -17,12 +17,12 @@ userAuth.checkAuthLogin = function(req, res, next) {
     next();
   });
 };
+
 userAuth.checkHasLogin = function(req, res, next) {
   if (req.signedCookies.user) {
-    res.redirect("/user");
+    res.redirect("/user/dashboard");
     return;
   }
   next();
 };
-
 module.exports = userAuth;
