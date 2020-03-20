@@ -5,6 +5,7 @@ const forgetPasswordValidate = require("../Validate/user/validate.userForgot");
 const userController = {};
 const User = require("../models/User");
 const sendMail = require("../middlewares/nodemailer.userActive");
+const product = require("../models/Product");
 const productType = require("../models/TypeProduct");
 const jwt = require("jsonwebtoken");
 const key = require("../config/keys");
@@ -40,7 +41,9 @@ userController.renderAdminProductTypePage = async function(req, res) {
   return;
 };
 // Render mangager product page
-userController.renderAdminProductPage = function(req, res) {
+userController.renderAdminProductPage = async function(req, res) {
+  let data = product.find();
+
   res.render("admin/productManager");
   return;
 };
@@ -58,6 +61,11 @@ userController.renderCustomerManagerPage = function(req, res) {
 
 //render Add product page
 userController.renderAddProductPage = function(req, res) {
+  res.render("admin/addProduct");
+  return;
+};
+//render Add product Type page
+userController.renderAddProductTypePage = function(req, res) {
   res.render("admin/addProductType");
   return;
 };
@@ -202,7 +210,6 @@ userController.sentForgotUserPassword = async function(req, res) {
   sendMail(req.body.email, subject, content);
   return;
 };
-
 // Submit new Product Type
 userController.addProductType = async function(req, res) {
   const { errors, isValid } = addProductTypeValidate(req.body);
@@ -226,18 +233,24 @@ userController.addProductType = async function(req, res) {
     return res.redirect("producttype");
   });
 };
-
+// update product type
 userController.editProductType = async function(req, res) {
   const { errors, isValid } = addProductTypeValidate(req.body);
-  console.log;
+
   let data = await productType.findOne({ TP_name: req.body.TP_name });
 
-  if (data) {
+  if (data && data._id != req.body._id) {
     errors.TP_name = "This Product Type is exist";
+    let data = req.body;
     res.render("admin/updateProductType", { data, errors });
     return;
   }
 
+  if (!isValid) {
+    let data = req.body;
+    res.render("admin/updateProductType", { data, errors });
+    return;
+  }
   let change = {
     TP_name: req.body.TP_name,
     TP_description: req.body.TP_description
@@ -251,11 +264,24 @@ userController.editProductType = async function(req, res) {
     return;
   });
 };
-
+// Delete product type
 userController.deleteProductType = async function(req, res) {
   productType.findByIdAndRemove(req.params._id, function(err, data) {
     res.redirect("/user/producttype");
     return;
   });
 };
+
+// Add new product
+userController.addProduct = async function(req, res) {
+  // check file img
+  console.log(req.file == undefined);
+  if (req.file == undefined) {
+    //return addproduct
+    return res.send("Deo phai");
+  }
+  console.log(req.file.path);
+  // add new product
+};
+
 module.exports = userController;

@@ -3,7 +3,31 @@ const route = express.Router();
 const moment = require("moment");
 const UserController = require("../Controller/user.controller");
 const User = require("../models/User");
+const path = require("path");
 const userAuth = require("../middlewares/Authentication.user");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    console.log("smth file=>", file);
+    cb(null, "./public/picture");
+  },
+  filename: function(req, file, cb) {
+    const now = new Date().toISOString();
+    const date = now.replace(/:/g, "-");
+    cb(null, date + file.originalname);
+  }
+});
+const fileFilter = function(req, file, cb) {
+  // reject a file
+  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+const upload = multer({ storage: storage, fileFilter: fileFilter });
 // validate register user
 
 //@route    GET  /
@@ -112,7 +136,7 @@ route.get(
 route.get(
   "/addProductType",
   userAuth.checkAuthLogin,
-  UserController.renderAddProductPage
+  UserController.renderAddProductTypePage
 );
 
 //@route  POST
@@ -140,13 +164,30 @@ route.post(
   userAuth.checkAuthLogin,
   UserController.editProductType
 );
-//@route  Post /user/deleteProduct/:_id
-//@desc   DELETE
+//@route  GET /user/deleteProductType/:_id
+//@desc   delete product type
 //@access Private
 route.get(
   "/productTypeDelete/:_id",
   userAuth.checkAuthLogin,
   UserController.deleteProductType
+);
+//@route  GET /user/product/
+//@desc   Render add product page
+//@access Private
+route.get(
+  "/addProduct",
+  userAuth.checkAuthLogin,
+  UserController.renderAddProductPage
+);
+//@route  POST /user/product
+//@desc   Add new Product
+//@access Private
+route.post(
+  "/addProduct",
+  userAuth.checkAuthLogin,
+  upload.single("P_picture"),
+  UserController.addProduct
 );
 
 module.exports = route;

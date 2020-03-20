@@ -1,0 +1,43 @@
+extends ../template/adminMain.template.pug
+block content
+           
+    if errors
+        -let styleValidate = "";
+        -let showErrors = "";
+        each error,errName in errors
+            -errors.error = errName
+            -styleValidate  = styleValidate+ "#"+errName+" {border-bottom: 2px solid red;}  " 
+            -showErrors = showErrors + "$('#"+errName+"ErrorInput"+"').append('"+error+"').css('color','red'); "
+          
+          
+        style.   
+            #{styleValidate}
+            
+        script.
+            $(document).ready(function(){
+              #{showErrors} 
+            })
+
+    h1 Add product 
+    div
+     form(action="/user/addProduct" method="POST" enctype="multipart/form-data")
+        label(for='P_name') Product Name 
+        input#P_name.form-control(type='text', name='P_name', placeholder='Enter product name',value=values? values.P_name :'' )
+        p#P_nameErrorInput
+        label(for='P_description: ') Product Description
+        input#P_description.form-control(type='text',name='P_description', placeholder='Enter description of product ',value=values? values.P_description:'' )
+        p#P_descriptionErrorInput
+        label(for='P_content') Content
+        input#P_content.form-control(type='text',name='P_content', placeholder='Enter content of product ',value=values? values.P_content :'' )
+        p#P_contentErrorInput
+        label(for='P_unit_price') Unit Price
+        input#P_unit_price.form-control(type='number',name='TP_description', placeholder='Enter Unit Price of product',value=values? values.P_unit_price :'' )
+        p#P_unit_priceErrorInput
+        label(for='P_unit') Amount of storage
+        input#P_unit.form-control(type='text',name='P_unit', placeholder='Enter amount of storage of product',value=values? values.P_unit :'' )
+        p#P_unit
+        label(for='P_picture') Picture
+        input#P_picture.form-control(type='file',name='P_picture', placeholder='Choose Picture of Product',value=values? values.TP_description :'' )
+        p#P_picture
+        input.btn.btn-outline-primary(type='submit', value='Register')
+        //- button.btn.btn-primary(type='submit') Submit

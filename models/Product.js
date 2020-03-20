@@ -11,7 +11,7 @@ const productSchema = new Schema(
     P_unit: { type: Number, required: true },
     P_unit_sale: { type: Number, default: 0 },
     P_create_at: { type: Date, default: new Date() },
-    P_update_at: { type: Date, default: "" }
+    P_picture: { type: String }
   },
   {
     versionKey: false

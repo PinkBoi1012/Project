@@ -20,7 +20,7 @@ block content
             })
     div
      form(action="/user/editProductType" method="POST")
-        input#_id.form-control(type="hidden" name="_id" value=data._id readonly)
+        input#_id(type="hidden" name="_id" value=data._id readonly)
         label(for='TP_name') Product Type 
         input#TP_name.form-control(type='text', name='TP_name', placeholder='Enter prodcut type name',value=data.TP_name)
         p#TP_nameErrorInput

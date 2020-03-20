@@ -2,6 +2,8 @@ const Validator = require("validator");
 const isEmpty = require("../is-empty");
 module.exports = function validatorProductType(data) {
   let errors = {};
+  console.log(data);
+  data._id = !isEmpty(data._id) ? data._id : "";
   data.TP_name = !isEmpty(data.TP_name) ? data.TP_name : "";
   data.TP_description = !isEmpty(data.TP_description)
     ? data.TP_description
