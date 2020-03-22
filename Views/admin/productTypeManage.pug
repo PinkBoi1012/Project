@@ -2,7 +2,11 @@ extends ../template/adminMain.template.pug
 block content
     link(rel='stylesheet', type='text/css', href='https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css')
     script(type='text/javascript', charset='utf8', src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js')
+    
 
+    if error
+        script.
+            swal({title: `Warning`,text: `This product type contains product: #{error} `,icon: "warning",});
     script.
         $(document).ready( function () {
             $('#myTable').DataTable();
@@ -12,7 +16,7 @@ block content
  
     br
     br
-    
+   
     table#myTable.display
         thead
             tr

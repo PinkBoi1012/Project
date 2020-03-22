@@ -31,6 +31,12 @@ body {
   overflow-x: hidden;
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
+/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
 .sidebar .nav-link {
   font-weight: 500;
@@ -97,4 +103,13 @@ body {
 }
 .border-bottom {
   border-bottom: 1px solid #e5e5e5;
+}
+
+/* On screens that are less than 400px, display the bar vertically, instead of horizontally */
+@media screen and (max-width: 400px) {
+  .sidebar .nav-link {
+    text-align: center;
+    float: none;
+    position: fixed;
+  }
 }

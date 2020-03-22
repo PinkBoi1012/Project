@@ -6,11 +6,11 @@ const User = require("../models/User");
 const path = require("path");
 const userAuth = require("../middlewares/Authentication.user");
 const multer = require("multer");
+const addProductValidate = require("../Validate/user/validate.addProduct");
 
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
-    console.log("smth file=>", file);
-    cb(null, "./public/picture");
+    cb(null, "./public/uploads");
   },
   filename: function(req, file, cb) {
     const now = new Date().toISOString();
@@ -19,8 +19,12 @@ const storage = multer.diskStorage({
   }
 });
 const fileFilter = function(req, file, cb) {
+  let { errors, isValid } = addProductValidate(req.body);
+  if (!isValid) {
+    cb(null, false);
+  }
   // reject a file
-  if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+  else if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
     cb(null, true);
   } else {
     cb(null, false);
@@ -62,13 +66,10 @@ route.get(
   UserController.renderAdminRegisterPage
 );
 
-route.post("/register", UserController.register);
-
-route.get(
-  "/forgot",
-
-  UserController.renderForgetPasswordPage
-);
+//@route    GET
+//@desc     Render forgot page
+//@access   Public
+route.get("/forgot", UserController.renderForgetPasswordPage);
 
 //@route    Post /active
 //@desc     Active User Account
@@ -188,6 +189,22 @@ route.post(
   userAuth.checkAuthLogin,
   upload.single("P_picture"),
   UserController.addProduct
+);
+//@route  GET /user/productInfo/:_id
+//@desc   Get infor product
+//@access Private
+route.get(
+  "/productInfo/:_id",
+  userAuth.checkAuthLogin,
+  UserController.renderInforProduct
+);
+//@route  POST /user/productInfo/:_id
+//@desc   Get infor product
+//@access Private
+route.get(
+  "/productDelete/:_id",
+  userAuth.checkAuthLogin,
+  UserController.deleteProduct
 );
 
 module.exports = route;
