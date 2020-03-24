@@ -12,6 +12,7 @@ const key = require("../config/keys");
 const addProductTypeValidate = require("../Validate/user/validate.addProductType");
 const addProductValidate = require("../Validate/user/validate.addProduct");
 const fs = require("fs");
+
 // Render login Page
 userController.renderLogin = function(req, res) {
   return res.render("admin/login");
@@ -75,8 +76,12 @@ userController.renderCustomerManagerPage = function(req, res) {
 //render Add product page
 userController.renderAddProductPage = async function(req, res) {
   let productTypeInfo = await productType.find().select("_id TP_name");
+  let productDataDefaultSelectArray = [];
 
-  res.render("admin/addProduct", { productTypeInfo });
+  res.render("admin/addProduct", {
+    productTypeInfo,
+    productDataDefaultSelectArray
+  });
   return;
 };
 //render Add product Type page
@@ -273,7 +278,7 @@ userController.editProductType = async function(req, res) {
 
   productType.findByIdAndUpdate(req.body._id, change, function(err, data) {
     if (err) {
-      return console.log(err);
+      return;
     }
     res.redirect("producttype");
     return;
@@ -298,12 +303,17 @@ userController.addProduct = async function(req, res) {
   let existProduct = await product.find({ P_name: req.body.P_name });
   let productTypeInfo = await productType.find().select("_id TP_name");
   let { errors, isValid } = addProductValidate(req.body);
+  let productDataDefaultSelect = Object.values(req.body.TP_id);
+  let productDataDefaultSelectArray = productDataDefaultSelect.map(x =>
+    x.toString()
+  );
   if (existProduct.length > 0) {
     errors.P_name = "This product is exist.";
     res.render("admin/addProduct", {
       errors,
       values: req.body,
-      productTypeInfo
+      productTypeInfo,
+      productDataDefaultSelectArray
     });
     return;
   } else if (!isValid && req.file == undefined) {
@@ -311,7 +321,8 @@ userController.addProduct = async function(req, res) {
     res.render("admin/addProduct", {
       errors,
       values: req.body,
-      productTypeInfo
+      productTypeInfo,
+      productDataDefaultSelectArray
     });
     return;
   } else if (req.file == undefined) {
@@ -319,7 +330,8 @@ userController.addProduct = async function(req, res) {
     res.render("admin/addProduct", {
       errors,
       values: req.body,
-      productTypeInfo
+      productTypeInfo,
+      productDataDefaultSelectArray
     });
     return;
   }
@@ -357,7 +369,7 @@ userController.addProduct = async function(req, res) {
   // add new product
 };
 
-// GET Update product
+// GET Update product page
 userController.renderUpdateProduct = async function(req, res) {
   let productData = await product.findById(req.params._id);
   // slice public
@@ -392,7 +404,30 @@ userController.deleteProduct = async function(req, res) {
   });
 };
 // Update product
-userController.updateProduct = function(req, res) {
-  if (req.body.P_picture === undefined) return res.send("hey");
+userController.updateProduct = async function(req, res) {
+  let productData = await product.findById(req.body._id);
+  // slice public
+
+  // // productData.P_picture = productData.P_picture.slice(6);
+  // let productDataDefaultSelect = Object.values(productData.TP_id);
+  // let productDataDefaultSelectArray = productDataDefaultSelect.map(x =>
+  //   x.toString()
+  // );
+  // let existProduct = await product.find({ P_name: req.body.P_name });
+  // let productTypeInfo = await productType.find().select("_id TP_name");
+  // let { errors, isValid } = addProductValidate(req.body);
+  // if (existProduct && existProduct.P_name != req.body.P_name) {
+  //   errors.P_name = "This product is Exist";
+  //   return res.render("admin/productInfo/", {
+  //     productData,
+  //     productTypeInfo,
+  //     productDataDefaultSelectArray,
+  //     errors
+  //   });
+  // }
+
+  // if form not upload picture
+  res.send("Hey");
+  return;
 };
 module.exports = userController;

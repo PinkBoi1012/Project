@@ -5,9 +5,7 @@ const bodyParser = require("body-parser");
 const key = require("./config/keys");
 const cookieParser = require("cookie-parser");
 const userRoute = require("./Route/userRoute");
-const adminAuthMiddlerware = require("./middlewares/Authentication.user");
-const path = require("path");
-const multer = require("multer");
+
 // connect db
 mongoose
   .connect(key.mongoURL, { useNewUrlParser: true, useUnifiedTopology: true })

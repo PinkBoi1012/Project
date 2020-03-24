@@ -49,7 +49,6 @@ block content
     h1 Update product 
     div
      form(action="/user/updateProduct" method="POST" enctype="multipart/form-data")
-        input(type="text" name="hey")
         input#_id(type="hidden" name="_id" value=productData._id readonly)
         label(for='P_name') Product Name 
         input#P_name.form-control(type='text', name='P_name', placeholder='Enter product name',value=productData.P_name  )

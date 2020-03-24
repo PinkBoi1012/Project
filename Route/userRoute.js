@@ -8,6 +8,7 @@ const userAuth = require("../middlewares/Authentication.user");
 const multer = require("multer");
 const addProductValidate = require("../Validate/user/validate.addProduct");
 const product = require("../models/Product");
+const productType = require("../models/TypeProduct");
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
     cb(null, "./public/uploads");
@@ -21,13 +22,17 @@ const storage = multer.diskStorage({
 const fileFilter = function(req, file, cb) {
   let { errors, isValid } = addProductValidate(req.body);
   if (!isValid) {
-    cb("File", false);
+    cb(null, false);
   }
   // reject a file
-  else if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
+  else if (
+    file.mimetype === "image/jpeg" ||
+    file.mimetype === "image/png" ||
+    file.mimetype === undefined
+  ) {
     cb(null, true);
   } else {
-    cb(null, false);
+    cb(new Error("wrong file "), false);
   }
 };
 
@@ -94,7 +99,10 @@ route.get("/resetpassword/:_id", UserController.renderResetPasswordPage);
 //@desc     Change password
 //@access   private
 route.get("/resetpassword/:_id", UserController.renderResetPasswordPage);
-
+//@route    POST
+//@desc     Register Admin
+//@access   private
+route.post("/register", UserController.register);
 //@route  GET
 //@desc   Render Product Type Page
 //@access Private
@@ -204,7 +212,31 @@ route.get(
 route.post(
   "/updateProduct",
   userAuth.checkAuthLogin,
-  upload.single("P_picture"),
+  function(req, res, next) {
+    upload.single("P_picture")(req, res, async function(err) {
+      if (err) {
+        let productData = await product.findById(req.body._id);
+        let errors = {};
+        errors.P_picture = "Choose Product Picture right format (jpeg/png)";
+        let productDataDefaultSelect = Object.values(req.body.TP_id);
+        let productDataDefaultSelectArray = productDataDefaultSelect.map(x =>
+          x.toString()
+        );
+        productData.P_picture = productData.P_picture.slice(6);
+        let productTypeInfo = await productType.find().select("_id TP_name");
+
+        res.render("admin/productInfo", {
+          errors,
+          productData,
+          values: req.body,
+          productTypeInfo,
+          productDataDefaultSelectArray
+        });
+        return;
+      }
+      next();
+    });
+  },
   UserController.updateProduct
 );
 //@route  POST /user/productInfo/:_id

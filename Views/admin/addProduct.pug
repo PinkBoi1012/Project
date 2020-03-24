@@ -1,5 +1,7 @@
 extends ../template/adminMain.template.pug
 block content
+    script. 
+        $('.selectpicker').selectpicker();
     style. 
         input[type='number'] {
         -moz-appearance:textfield;
@@ -46,8 +48,12 @@ block content
         p#P_nameErrorInput
         label(for='TP_id') Choose Product Type
         select#TP_id.selectpicker.form-control(multiple name='TP_id' data-live-search="true" value=values? values.TP_id:'')
+            -let dataArray =productDataDefaultSelectArray
             each PT_data in productTypeInfo
-                option(value=PT_data._id) #{PT_data.TP_name}   
+                if  dataArray.includes(PT_data._id.toString())
+                    option(value=PT_data._id, selected) #{PT_data.TP_name}
+                else
+                    option(value=PT_data._id) #{PT_data.TP_name}   
             //- Load all data of product type
         p#TP_idErrorInput
         label(for='P_description') Product Description
