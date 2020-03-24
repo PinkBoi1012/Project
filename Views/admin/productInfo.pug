@@ -1,5 +1,8 @@
 extends ../template/adminMain.template.pug
 block content
+  
+    script. 
+        $('.selectpicker').selectpicker();
     style. 
         input[type='number'] {
         -moz-appearance:textfield;
@@ -18,6 +21,8 @@ block content
         input::-webkit-inner-spin-button {
         -webkit-appearance: none;
         }
+   
+    
     if errors
         -let styleValidate = "";
         -let showErrors = "";
@@ -30,41 +35,56 @@ block content
           
         style.   
             #{styleValidate}
-            
+        
         script.
+            
             $(document).ready(function(){
                 #{showErrors} 
+                
             })
-             $('.selectpicker').selectpicker();
+           
+
         
-            
-    h1 Add product 
+    -let pic =productData.P_picture        
+    h1 Update product 
     div
-     form(action="/user/addProduct" method="POST" enctype="multipart/form-data")
+     form(action="/user/updateProduct" method="POST" enctype="multipart/form-data")
+        input(type="text" name="hey")
+        input#_id(type="hidden" name="_id" value=productData._id readonly)
         label(for='P_name') Product Name 
-        input#P_name.form-control(type='text', name='P_name', placeholder='Enter product name',value=values? values.P_name :'' )
+        input#P_name.form-control(type='text', name='P_name', placeholder='Enter product name',value=productData.P_name  )
         p#P_nameErrorInput
         label(for='TP_id') Choose Product Type
-        select#TP_id.selectpicker.form-control(multiple name='TP_id' data-live-search="true" value=values? values.TP_id:'')
+        select#TP_id.selectpicker.form-control(multiple name='TP_id' data-live-search="true" )
+            -let dataArray =productDataDefaultSelectArray
             each PT_data in productTypeInfo
-                option(value=PT_data._id) #{PT_data.TP_name}   
+                if  dataArray.includes(PT_data._id.toString())
+                    option(value=PT_data._id, selected) #{PT_data.TP_name}
+                else
+                    option(value=PT_data._id) #{PT_data.TP_name}
             //- Load all data of product type
         p#TP_idErrorInput
+        
         label(for='P_description') Product Description
-        input#P_description.form-control(type='text',name='P_description', placeholder='Enter description of product ',value=values? values.P_description:'' )
+        input#P_description.form-control(type='text',name='P_description', placeholder='Enter description of product ',value=productData.P_description )
         p#P_descriptionErrorInput
         label(for='P_content') Content
-        textarea#P_content.form-control(rows='4', cols='50' name='P_content', placeholder='Enter content of product ') #{values= value ?values.P_content:'' }
+        textarea#P_content.form-control(rows='4', cols='50' name='P_content', placeholder='Enter content of product ') #{productData.P_content }
         p#P_contentErrorInput
         label(for='P_unit_price') Unit Price
-        input#P_unit_price.form-control(type='number',name='P_unit_price', placeholder='Enter price per unit (currency unit is Dollar)  ',value=values? values.P_unit_price :'' )
+        input#P_unit_price.form-control(type='number',name='P_unit_price', placeholder='Enter price per unit (currency unit is Dollar)  ',value= productData.P_unit_price  )
         p#P_unit_priceErrorInput
         label(for='P_unit') Amount of storage
-        input#P_unit.form-control(type='number',name='P_unit', placeholder='Enter amount of storage of product',value=values? values.P_unit :'' )
+        input#P_unit.form-control(type='number',name='P_unit', placeholder='Enter amount of storage of product',value= productData.P_unit )
         p#P_unitErrorInput
         label(for='P_picture') Picture
+        br
+        img(src=pic, height='420', width='420')
+        br
+        br
+        
         input#P_picture.form-control(type='file',name='P_picture', placeholder='Choose Picture of Product',value=values? values.TP_description :'' )
         p#P_pictureErrorInput
-        input.btn.btn-outline-primary(type='submit', value='Add Product')
-        //- button.btn.btn-primary(type='submit') Submit
+        
+        button.btn.btn-primary(type='submit') Submit
         

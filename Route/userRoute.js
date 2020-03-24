@@ -7,7 +7,7 @@ const path = require("path");
 const userAuth = require("../middlewares/Authentication.user");
 const multer = require("multer");
 const addProductValidate = require("../Validate/user/validate.addProduct");
-
+const product = require("../models/Product");
 const storage = multer.diskStorage({
   destination: function(req, file, cb) {
     cb(null, "./public/uploads");
@@ -21,7 +21,7 @@ const storage = multer.diskStorage({
 const fileFilter = function(req, file, cb) {
   let { errors, isValid } = addProductValidate(req.body);
   if (!isValid) {
-    cb(null, false);
+    cb("File", false);
   }
   // reject a file
   else if (file.mimetype === "image/jpeg" || file.mimetype === "image/png") {
@@ -153,11 +153,11 @@ route.post(
 //@desc   Render Product type info Page
 //@access Private
 route.get(
-  "/productTypeInfo/:_id",
+  "/productTypeUpdate/:_id",
   userAuth.checkAuthLogin,
-  UserController.renderProductTypeInfo
+  UserController.renderProductTypeUpdate
 );
-//@route  PUT /user/edit
+//@route  POST /user/editProductType
 //@desc   Update Product Type
 //@access Private
 route.post(
@@ -194,9 +194,18 @@ route.post(
 //@desc   Get infor product
 //@access Private
 route.get(
-  "/productInfo/:_id",
+  "/productUpdate/:_id",
   userAuth.checkAuthLogin,
-  UserController.renderInforProduct
+  UserController.renderUpdateProduct
+);
+//@route  POST /user/productInfo
+//@desc   Update Product
+//@access Private
+route.post(
+  "/updateProduct",
+  userAuth.checkAuthLogin,
+  upload.single("P_picture"),
+  UserController.updateProduct
 );
 //@route  POST /user/productInfo/:_id
 //@desc   Get infor product

@@ -1,9 +1,11 @@
 extends ../template/adminMain.template.pug
 block content
-   
+
     link(rel='stylesheet', type='text/css', href='https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css')
     script(type='text/javascript', charset='utf8', src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js')
-
+    if status
+        script.
+            swal({title: `#{status}`,icon: "success",});  
     script.
         $(document).ready( function () {
             $('#myTable').DataTable();
@@ -25,7 +27,7 @@ block content
         tbody
             each product in productData
                 tr
-                    -let linkInfo = "/user/productInfo/"+product._id
+                    -let linkInfo = "/user/productUpdate/"+product._id
                     -let linkDelete = "/user/productDelete/"+product._id
                     td= product.P_name 
                     td= product.P_unit_price+" $"

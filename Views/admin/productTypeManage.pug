@@ -26,7 +26,7 @@ block content
         tbody
             each TP in dataProductType
                 tr
-                    -let linkInfo = "/user/productTypeInfo/"+TP._id
+                    -let linkInfo = "/user/productTypeUpdate/"+TP._id
                     -let linkDelete = "/user/productTypeDelete/"+TP._id
                     td= TP.TP_name  
                     //- td= TP.TP_description

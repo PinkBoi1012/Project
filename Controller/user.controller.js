@@ -11,7 +11,7 @@ const jwt = require("jsonwebtoken");
 const key = require("../config/keys");
 const addProductTypeValidate = require("../Validate/user/validate.addProductType");
 const addProductValidate = require("../Validate/user/validate.addProduct");
-
+const fs = require("fs");
 // Render login Page
 userController.renderLogin = function(req, res) {
   return res.render("admin/login");
@@ -52,6 +52,11 @@ userController.renderAdminProductPage = async function(req, res) {
   let productData = await product
     .find()
     .select("_id P_name P_unit_price P_unit");
+  if (req.query.valid) {
+    var status = "Delete" + req.query.valid;
+    res.render("admin/productManager", { productData, status });
+    return;
+  }
   res.render("admin/productManager", { productData });
   return;
 };
@@ -81,7 +86,7 @@ userController.renderAddProductTypePage = function(req, res) {
 };
 
 //render Product Type Information
-userController.renderProductTypeInfo = async function(req, res) {
+userController.renderProductTypeUpdate = async function(req, res) {
   let data = await productType.findById(req.params._id);
   if (!data) {
     return res.redirect("/user/producttype");
@@ -290,9 +295,18 @@ userController.deleteProductType = async function(req, res) {
 
 // Add new product
 userController.addProduct = async function(req, res) {
+  let existProduct = await product.find({ P_name: req.body.P_name });
   let productTypeInfo = await productType.find().select("_id TP_name");
   let { errors, isValid } = addProductValidate(req.body);
-  if (!isValid && req.file == undefined) {
+  if (existProduct.length > 0) {
+    errors.P_name = "This product is exist.";
+    res.render("admin/addProduct", {
+      errors,
+      values: req.body,
+      productTypeInfo
+    });
+    return;
+  } else if (!isValid && req.file == undefined) {
     errors.P_picture = "Choose Product Picture right format (jpeg/png)";
     res.render("admin/addProduct", {
       errors,
@@ -309,6 +323,7 @@ userController.addProduct = async function(req, res) {
     });
     return;
   }
+
   let path_img = req.file.path;
 
   let newProduct = new product({
@@ -342,22 +357,42 @@ userController.addProduct = async function(req, res) {
   // add new product
 };
 
-// GET infor product
-userController.renderInforProduct = async function(req, res) {
+// GET Update product
+userController.renderUpdateProduct = async function(req, res) {
   let productData = await product.findById(req.params._id);
-  return res.send(productData);
+  // slice public
+  let productTypeInfo = await productType.find();
+  productData.P_picture = productData.P_picture.slice(6);
+  let productDataDefaultSelect = Object.values(productData.TP_id);
+  let productDataDefaultSelectArray = productDataDefaultSelect.map(x =>
+    x.toString()
+  );
+
+  return res.render("admin/productInfo", {
+    productData,
+    productTypeInfo,
+    productDataDefaultSelectArray
+  });
 };
-// Update product
 
 // Delete product
-userController.deleteProduct = function(req, res) {
-  product.findByIdAndRemove(req.params._id, function(err) {
+userController.deleteProduct = async function(req, res) {
+  let findProduct = await product.findById(req.params._id);
+  let path = findProduct.P_picture;
+  fs.unlink(path, err => {
     if (err) {
       res.redirect("/user/product");
       return;
     }
-    res.redirect("/user/product");
-    return;
+    product.findByIdAndRemove(req.params._id, function(err) {
+      let data = "Success";
+      res.redirect("/user/product?valid=" + data);
+      return;
+    });
   });
+};
+// Update product
+userController.updateProduct = function(req, res) {
+  if (req.body.P_picture === undefined) return res.send("hey");
 };
 module.exports = userController;
