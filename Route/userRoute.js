@@ -47,7 +47,7 @@ route.get("/login", userAuth.checkHasLogin, UserController.renderLogin);
 //@route    POST  /
 //@desc     render login from
 //@access   Public
-route.get("/", userAuth.checkAuthLogin, UserController.renderLogin);
+route.get("/", userAuth.checkHasLogin, UserController.renderLogin);
 //@route    POST  /
 //@desc     get data login form
 //@access   Public
@@ -222,12 +222,15 @@ route.post(
         let productDataDefaultSelectArray = productDataDefaultSelect.map(x =>
           x.toString()
         );
-        productData.P_picture = productData.P_picture.slice(6);
+
         let productTypeInfo = await productType.find().select("_id TP_name");
 
+        let pic = await productData.P_picture.slice(6);
+        console.log(pic);
         res.render("admin/productInfo", {
           errors,
           productData,
+          pic,
           values: req.body,
           productTypeInfo,
           productDataDefaultSelectArray
@@ -248,4 +251,9 @@ route.get(
   UserController.deleteProduct
 );
 
+// clear cookie
+route.get("/signout", function(req, res) {
+  res.clearCookie("user");
+  return res.redirect("login");
+});
 module.exports = route;

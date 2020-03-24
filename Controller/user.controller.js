@@ -303,8 +303,17 @@ userController.addProduct = async function(req, res) {
   let existProduct = await product.find({ P_name: req.body.P_name });
   let productTypeInfo = await productType.find().select("_id TP_name");
   let { errors, isValid } = addProductValidate(req.body);
-  let productDataDefaultSelect = Object.values(req.body.TP_id);
-  let productDataDefaultSelectArray = productDataDefaultSelect.map(x =>
+
+  let productDataDefaultSelect = function() {
+    if (typeof req.body.TP_id === "string") {
+      return [req.body.TP_id];
+    } else if (typeof req.body.TP_id === "Object") {
+      return Object.values(req.body.TP_id);
+    }
+    return [];
+  };
+
+  let productDataDefaultSelectArray = productDataDefaultSelect().map(x =>
     x.toString()
   );
   if (existProduct.length > 0) {
@@ -318,6 +327,7 @@ userController.addProduct = async function(req, res) {
     return;
   } else if (!isValid && req.file == undefined) {
     errors.P_picture = "Choose Product Picture right format (jpeg/png)";
+
     res.render("admin/addProduct", {
       errors,
       values: req.body,
@@ -371,19 +381,20 @@ userController.addProduct = async function(req, res) {
 
 // GET Update product page
 userController.renderUpdateProduct = async function(req, res) {
-  let productData = await product.findById(req.params._id);
   // slice public
   let productTypeInfo = await productType.find();
-  productData.P_picture = productData.P_picture.slice(6);
-  let productDataDefaultSelect = Object.values(productData.TP_id);
+  let values = await product.findById(req.params._id);
+  let pic = await values.P_picture.slice(6);
+  let productDataDefaultSelect = Object.values(values.TP_id);
   let productDataDefaultSelectArray = productDataDefaultSelect.map(x =>
     x.toString()
   );
 
   return res.render("admin/productInfo", {
-    productData,
+    values,
     productTypeInfo,
-    productDataDefaultSelectArray
+    productDataDefaultSelectArray,
+    pic
   });
 };
 
@@ -405,7 +416,87 @@ userController.deleteProduct = async function(req, res) {
 };
 // Update product
 userController.updateProduct = async function(req, res) {
-  let productData = await product.findById(req.body._id);
+  let productFind = await product.findById({ _id: req.body._id });
+
+  let pic = await productFind.P_picture.slice(6);
+  let existProduct = await product.find({ P_name: req.body.P_name });
+  let productTypeInfo = await productType.find().select("_id TP_name");
+  let productDataDefaultSelect = await function() {
+    if (typeof req.body.TP_id === "string") {
+      return [req.body.TP_id];
+    } else if (typeof req.body.TP_id === "Object") {
+      return Object.values(req.body.TP_id);
+    }
+    return [];
+  };
+
+  let productDataDefaultSelectArray = productDataDefaultSelect().map(x =>
+    x.toString()
+  );
+  let { errors, isValid } = addProductValidate(req.body);
+  if (!isValid) {
+    console.log(pic);
+    res.render("admin/productInfo", {
+      errors,
+      values: req.body,
+      productTypeInfo,
+      pic,
+      productDataDefaultSelectArray
+    });
+    return;
+  } else if (productFind.length > 0 && productFind.P_name != req.body.P_name) {
+    errors.P_name = "This product is exist.";
+    res.render("admin/productInfo", {
+      errors,
+      values: req.body,
+      productTypeInfo,
+      pic,
+      productDataDefaultSelectArray
+    });
+    return;
+  } else if (req.file == undefined) {
+    let data = {
+      P_name: req.body.P_name,
+      TP_id: req.body.TP_id,
+      P_description: req.body.P_description,
+      P_content: req.body.P_content,
+      P_unit_price: req.body.P_unit_price,
+      P_unit: req.body.P_unit
+    };
+
+    product.findByIdAndUpdate(req.body._id, data, function(err) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+      res.redirect("/user/product");
+      return;
+    });
+  } else {
+    let oldProduct = await product.findById(req.body._id);
+    let filePath = oldProduct.P_picture;
+
+    fs.unlink(filePath, function(err) {
+      console.log(err);
+      return;
+    });
+
+    let path_img = req.file.path;
+    let data = {
+      P_name: req.body.P_name,
+      TP_id: req.body.TP_id,
+      P_description: req.body.P_description,
+      P_content: req.body.P_content,
+      P_unit_price: req.body.P_unit_price,
+      P_unit: req.body.P_unit,
+      P_picture: path_img
+    };
+    product.findByIdAndUpdate(req.body._id, data, function(err) {
+      res.redirect("/user/product");
+      return;
+    });
+  }
+
   // slice public
 
   // // productData.P_picture = productData.P_picture.slice(6);
@@ -427,7 +518,7 @@ userController.updateProduct = async function(req, res) {
   // }
 
   // if form not upload picture
-  res.send("Hey");
+
   return;
 };
 module.exports = userController;

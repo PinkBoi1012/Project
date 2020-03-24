@@ -8,16 +8,12 @@ body {
   vertical-align: text-bottom;
 }
 
-/*
-   * Sidebar
-   */
-
 .sidebar {
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
-  z-index: 100; /* Behind the navbar */
+  z-index: 100;
   padding: 0;
   box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.1);
 }
@@ -25,13 +21,13 @@ body {
 .sidebar-sticky {
   position: -webkit-sticky;
   position: sticky;
-  top: 48px; /* Height of navbar */
+  top: 48px;
   height: calc(100vh - 48px);
   padding-top: 0.5rem;
   overflow-x: hidden;
-  overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
+  overflow-y: auto;
 }
-/* Chrome, Safari, Edge, Opera */
+
 input[type="number"]::-webkit-inner-spin-button,
 input[type="number"]::-webkit-outer-spin-button {
   -webkit-appearance: none;
@@ -65,10 +61,6 @@ input[type="number"]::-webkit-outer-spin-button {
   text-transform: uppercase;
 }
 
-/*
-   * Navbar
-   */
-
 .navbar-brand {
   padding-top: 0.75rem;
   padding-bottom: 0.75rem;
@@ -94,10 +86,6 @@ input[type="number"]::-webkit-outer-spin-button {
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
 }
 
-/*
-   * Utilities
-   */
-
 .border-top {
   border-top: 1px solid #e5e5e5;
 }
@@ -105,7 +93,6 @@ input[type="number"]::-webkit-outer-spin-button {
   border-bottom: 1px solid #e5e5e5;
 }
 
-/* On screens that are less than 400px, display the bar vertically, instead of horizontally */
 @media screen and (max-width: 400px) {
   .sidebar .nav-link {
     text-align: center;

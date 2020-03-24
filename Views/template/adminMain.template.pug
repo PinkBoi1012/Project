@@ -6,7 +6,7 @@ head
   meta(name='author' content='')
   title admin
   link#bootstrap-css(href='//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', rel='stylesheet')
-  link(rel="stylesheet", href="../css/dashboard.css")
+  link(rel="stylesheet", href="/css/dashboard.css")
   link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css')
   script(src='https://unpkg.com/sweetalert/dist/sweetalert.min.js')
   script(src='//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js')
@@ -24,7 +24,7 @@ nav.navbar.navbar-dark.sticky-top.bg-dark.flex-md-nowrap.p-0
   a.navbar-brand.col-sm-3.col-md-2.mr-0(href='/user/dashboard') Store
   ul.navbar-nav.px-3
     li.nav-item.text-nowrap
-      a#signout.nav-link(href='#') Sign out
+      a#signout.nav-link(href='/user/signout') Sign out
 .container-fluid
   .row.min-height
     nav.col-md-2.d-none.d-md-block.bg-light.sidebar

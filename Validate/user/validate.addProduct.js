@@ -10,7 +10,12 @@ module.exports = function validatorProductType(data) {
   data.P_unit_price = !isEmpty(data.P_unit_price) ? data.P_unit_price : "";
   data.P_unit = !isEmpty(data.P_unit) ? data.P_unit : "";
   // Check empty
-
+  if (!Validator.isNumeric(data.P_unit)) {
+    errors.P_unit_price = "Please input number";
+  }
+  if (!Validator.isNumeric(data.P_unit_price)) {
+    errors.P_unit = "Please input number";
+  }
   if (Validator.isEmpty(data.P_name)) {
     errors.P_name = "Product Name field is require";
   }
@@ -33,12 +38,7 @@ module.exports = function validatorProductType(data) {
   }
 
   // Check input number
-  if (!Validator.isNumeric(data.P_unit)) {
-    errors.P_unit_price = "Please input number";
-  }
-  if (!Validator.isNumeric(data.P_unit_price)) {
-    errors.P_unit_price = "Please input number";
-  }
+
   return {
     errors,
     isValid: isEmpty(errors)
