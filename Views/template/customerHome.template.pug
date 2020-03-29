@@ -1,0 +1,287 @@
+doctype html
+head
+  meta(charset='utf-8')
+  title Admin Parrots Store
+  meta(name='description', content='----')
+  meta(name='keywords', content='Premium HTML Template')
+  meta(name='author', content='HTMLmate')
+  // Mobile Specific Meta
+  meta(name='viewport', content='width=device-width, initial-scale=1')
+  // css-include
+  // boorstrap
+  link(rel='stylesheet', href='https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css')
+  link(rel='stylesheet', type='text/css', href='/assets/css/bootstrap.min.css')
+  // themify-icon.css
+  link(rel='stylesheet', type='text/css', href='/assets/css/themify-icons.css')
+  // owl-carousel
+  link(rel='stylesheet', type='text/css', href='/assets/css/owl.carousel.css')
+  // light-box
+  link(rel='stylesheet', type='text/css', href='/assets/css/lightbox.css')
+  // video css
+  link(rel='stylesheet', type='text/css', href='/assets/css/video.min.css')
+  // menu.css
+  link(rel='stylesheet', type='text/css', href='/assets/css/menu.css')
+  // style
+  link(rel='stylesheet', type='text/css', href='/assets/css/style.css')
+  // responsive.css
+
+  link(rel='stylesheet', type='text/css', href='/assets/css/responsive.css')
+
+
+
+body
+ nav#poppin-nav
+  #nav-off
+  #header-logo-1.text-center
+    a(href='#')
+      img(src='assets/img//logo/logo.png', alt='img')
+  ul#menu
+    li.has-submenu.text-capitalize
+      a(href='index.html') home
+    li.has-submenu
+      a(href='#')
+        | Blog 
+        span.ti-angle-down
+      ul.submenu
+        li
+          a(href='blog.html') Blog Grid
+        li
+          a(href='blog-single.html') Single Post
+    li
+      a(href='contact.html') Contact
+ #menu-overlay
+
+ header#site-header.not-stuck
+  .container
+    .row
+      #header-logo
+        a(href='#')
+          img(src='assets/img//logo/logo.png', alt='img')
+      #menu-burger.pull-right.not-stuck
+        #menu-bar
+          span.icon-bar.top
+          span.icon-bar.middle
+          span.icon-bar.bottom
+
+ section#page-head.page-head-section
+  .page-head-overlay
+  div(id="page-head-effect" class="page-head-effect")
+    canvas#demo-canvas
+
+  .container
+    .row
+      .banner-content
+        .page-head-content
+          .page-head-title.text-capitalize.pb40
+            h1 This is Puppin
+            span.descrip Creative Designer
+
+          .page-head-social
+            .social-title.text-uppercase
+              span socials
+
+            .page-head-social-item.ul-li
+              ul.page-head-social-list
+                li
+                  a(href='#')
+                    span.ti-facebook
+                li
+                  a(href='#')
+                    span.ti-twitter-alt
+                li
+                  a(href='#')
+                    span.ti-google
+                li
+                  a(href='#')
+                    span.ti-instagram
+
+ section#portfolio.portfolio-section
+  .container
+    .row
+      .portfolio-content
+        .portfolio-tab.pb55
+          #filters.button-group.pb45
+            //-  Filter product by product type 
+            block productTypeDataFilter
+            //- button.tab-button.active(data-filter='*') '.web'
+            //-   | All
+            //-   span 75 //number product
+
+
+          .portfolio-tab-text-pic.row
+            #posts
+              block showProduct
+              //- Block show all product 
+              //- #1.item.item-grid.web
+                .item-wrap
+                  .work-item
+                    .work-pic
+                      img(src='assets/img/portfolio/port-1.jpg', alt='image')
+ 
+                    .hover-content
+                      .hover-text.text-center
+                        a(href='assets/img/portfolio/port-1.jpg', data-lightbox='roadtrip')
+                          span.ti-fullscreen
+       
+                      .project-description.text-uppercase.ul-li
+                        h3
+                          a(href='#') project Item Title
+                        ul.project-catagorry.text-capitalize
+                          li
+                            a(href='#') Branding, 
+                          li
+                            a(href='#') Development
+        //- pagination Load more
+        .poppin-more.text-uppercase.text-center
+          .more-btn
+            a(href='#') MORE WORKS
+
+ section#newsletter.newsletter-section
+  .page-head-overlay
+  .container
+    .row
+      .newsletter-section-content
+        .newsletter-title.pb75
+          h2.deep-black Subscribe On My Newsletter
+        .newsletter-form
+          form.input-group(action='#')
+            input.form-control(type='email', placeholder='Enter Your Email')
+            span.input-group-addon
+              button(type='submit')
+                span.deep-black.ti-arrow-right
+
+
+ section#service.service-section.pt90.pb40
+  .container
+    .row
+      .section-title.text-capitalize.deep-black.pb75
+        h2 Our latest blog
+      .latest-blog-content
+        .row
+          .col-md-4
+            .latest-blog-text-pic
+              .latest-blog-img.mb10
+                img(src='assets/img/blog/blog-5.jpg', alt='img')
+                .blog-meta.mt20.ul-li
+                  ul.meta-list
+                    li
+                      a(href='#') April 16, 2017  /  
+                    li
+                      a(href='#')   Tonmoy /  
+                    li
+                      a(href='#') Design
+              .latest-blog-text
+                .blog-head
+                  h2
+                    a(href='#') Lorem ipsum dolor sit ametely, con-sectetu
+
+                .blog-details.mt15
+                  p
+                    | Excepteur sint occaecat cupidatat nonmaly proident, sunt.
+
+                .blog-read-more.text-capitalize.pull-left
+                  a(href='#')
+                    | read more
+                    span.ti-arrow-right
+
+                .latest-blog-comments.text-capitalize.pull-right
+                  a(href='#')
+                    span.ti-comments  5 Comments
+    
+          .col-md-4
+            .latest-blog-text-pic
+              .latest-blog-img.mb10
+                img(src='assets/img/blog/blog-5.jpg', alt='img')
+                .blog-meta.mt20.ul-li
+                  ul.meta-list
+                    li
+                      a(href='#') April 16, 2017  /  
+                    li
+                      a(href='#')   Tonmoy /  
+                    li
+                      a(href='#') Design
+
+              .latest-blog-text
+                .blog-head
+                  h2
+                    a(href='#') Lorem ipsum dolor sit ametely, con-sectetu
+         
+                .blog-details.mt15
+                  p
+                    | Excepteur sint occaecat cupidatat nonmaly proident, sunt.
+
+                .blog-read-more.text-capitalize.pull-left
+                  a(href='#')
+                    | read more
+                    span.ti-arrow-right
+
+                .latest-blog-comments.text-capitalize.pull-right
+                  a(href='#')
+                    span.ti-comments  5 Comments
+
+          .col-md-4
+            .latest-blog-text-pic
+              .latest-blog-img.mb10
+                img(src='assets/img/blog/blog-5.jpg', alt='img')
+                .blog-meta.mt20.ul-li
+                  ul.meta-list
+                    li
+                      a(href='#') April 16, 2017  /  
+                    li
+                      a(href='#')   Tonmoy /  
+                    li
+                      a(href='#') Design
+   
+              .latest-blog-text
+                .blog-head
+                  h2
+                    a(href='#') Lorem ipsum dolor sit ametely, con-sectetu
+       
+                .blog-details.mt15
+                  p
+                    | Excepteur sint occaecat cupidatat nonmaly proident, sunt.
+  
+                .blog-read-more.text-capitalize.pull-left
+                  a(href='#')
+                    | read more
+                    span.ti-arrow-right
+
+                .latest-blog-comments.text-capitalize.pull-right
+                  a(href='#')
+                    span.ti-comments  5 Comments
+           
+ footer
+   .footer-area.footer-2
+    .container
+      .row
+        .copy-right-area.text-center
+          .page-head-social-item.ul-li
+            ul.page-head-social-list
+              li
+                a(href='#')
+                  span.ti-facebook
+              li
+                a(href='#')
+                  span.ti-twitter-alt
+              li
+                a(href='#')
+                  span.ti-google
+              li
+                a(href='#')
+                  span.ti-instagram
+        
+          span &copy; puppin 2018 - All Rights Reserved 
+  
+
+ script(src='/assets/js/jquery-2.1.4.min.js')
+ script(src='/assets/js/bootstrap.min.js')
+ script(src='/assets/js/jquery.isotope.min.js')
+ script(src='/assets/js/lightbox.js')
+ script(src="/assets/js/circle-effect.js")
+ script(src='/assets/js/jquery.magnific-popup.min.js')
+ script(src='/assets/js/owl.carousel.min.js')
+ script(src='/assets/js/jquery.counterup.min.js')
+ script(src='/assets/js/waypoints.min.js')
+ script(src='/assets/js/script.js')
+ script(src='https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js')
+ script(src='https://unpkg.com/sweetalert/dist/sweetalert.min.js')

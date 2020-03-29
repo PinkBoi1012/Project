@@ -5,7 +5,7 @@ const bodyParser = require("body-parser");
 const key = require("./config/keys");
 const cookieParser = require("cookie-parser");
 const userRoute = require("./Route/userRoute");
-
+const clientRoute = require("./Route/clientRoute");
 // connect db
 mongoose
   .connect(key.mongoURL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -28,6 +28,7 @@ app.set("views", "./Views");
 
 app.use(express.static("public"));
 app.use("/user", userRoute);
+app.get("/", clientRoute);
 app.listen(key.port, () => {
   console.log(`Server started on port ${key.port}`);
 });

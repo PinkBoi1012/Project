@@ -41,14 +41,14 @@ block content
              $('.selectpicker').selectpicker();
         
             
-    h1 Add product 
+    h1.page-head-title.text-capitalize.pb40 Add product 
     div
      form(action="/user/addProduct" method="POST" enctype="multipart/form-data")
         label(for='P_name') Product Name 
         input#P_name.form-control(type='text', name='P_name', placeholder='Enter product name',value=values? values.P_name :'' )
         p#P_nameErrorInput
         label(for='TP_id') Choose Product Type
-        select#TP_id.selectpicker.form-control(multiple name='TP_id' data-live-search="true" value=values? values.TP_id:'')
+        select#TP_id.selectpicker.form-control(multiple name='TP_id' data-live-search="true" size=false   value=values? values.TP_id:'')
             -let dataArray =productDataDefaultSelectArray
             each PT_data in productTypeInfo
                 if  dataArray.includes(PT_data._id.toString())

@@ -12,10 +12,14 @@ block content
             $('#myTable').DataTable();
         } );
     h1 Product Type
-    a.btn.btn-primary(href='/user/addProductType', role='button') Add Product Type
+    br
+
+    a.buttonCus.tab-button(href='/user/addProductType', role='button') Add Product Type
  
     br
     br
+    br
+    
    
     table#myTable.display
         thead
@@ -31,7 +35,7 @@ block content
                     td= TP.TP_name  
                     //- td= TP.TP_description
                     td= TP.TP_description
-                    td <a class="btn btn btn-outline-info" href=#{linkInfo} role="button">Edit</a>&ensp;<a class="btn btn-outline-danger" href=#{linkDelete} role="button">Delete</a>
+                    td <a class="btn" href=#{linkInfo} role="button">Edit</a>&ensp;<a class="btn" href=#{linkDelete} role="button">Delete</a>
 
                     
         

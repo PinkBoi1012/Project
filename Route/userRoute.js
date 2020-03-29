@@ -1,6 +1,5 @@
 const express = require("express");
 const route = express.Router();
-const moment = require("moment");
 const UserController = require("../Controller/user.controller");
 const User = require("../models/User");
 const path = require("path");
@@ -195,7 +194,36 @@ route.get(
 route.post(
   "/addProduct",
   userAuth.checkAuthLogin,
-  upload.single("P_picture"),
+  function(req, res, next) {
+    upload.single("P_picture")(req, res, async function(err) {
+      if (err) {
+        let values = req.body;
+        let errors = {};
+        errors.P_picture = "Choose Product Picture right format (jpeg/png)";
+
+        let productDataDefaultSelect = function() {
+          if (typeof req.body.TP_id === "string") {
+            return [req.body.TP_id];
+          } else if (typeof req.body.TP_id === "Object") {
+            return Object.values(req.body.TP_id);
+          }
+          return [];
+        };
+        let productDataDefaultSelectArray = productDataDefaultSelect().map(x =>
+          x.toString()
+        );
+        let productTypeInfo = await productType.find().select("_id TP_name");
+        res.render("admin/addProduct", {
+          productTypeInfo,
+          productDataDefaultSelectArray,
+          errors,
+          values
+        });
+        return;
+      }
+      next();
+    });
+  },
   UserController.addProduct
 );
 //@route  GET /user/productInfo/:_id
@@ -218,15 +246,21 @@ route.post(
         let productData = await product.findById(req.body._id);
         let errors = {};
         errors.P_picture = "Choose Product Picture right format (jpeg/png)";
-        let productDataDefaultSelect = Object.values(req.body.TP_id);
-        let productDataDefaultSelectArray = productDataDefaultSelect.map(x =>
+
+        let productDataDefaultSelect = function() {
+          if (typeof req.body.TP_id === "string") {
+            return [req.body.TP_id];
+          } else if (typeof req.body.TP_id === "Object") {
+            return Object.values(req.body.TP_id);
+          }
+          return [];
+        };
+        let productDataDefaultSelectArray = productDataDefaultSelect().map(x =>
           x.toString()
         );
-
         let productTypeInfo = await productType.find().select("_id TP_name");
 
         let pic = await productData.P_picture.slice(6);
-        console.log(pic);
         res.render("admin/productInfo", {
           errors,
           productData,

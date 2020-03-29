@@ -19,11 +19,11 @@ module.exports = function validatorProductType(data) {
   if (Validator.isEmpty(data.P_name)) {
     errors.P_name = "Product Name field is require";
   }
-  console.log(data.TP_id.length < 1);
+
   if (data.TP_id.length < 1) {
     errors.TP_id = "Please choose Product Type for this product";
   }
-  console.log(data.P_description);
+
   if (Validator.isEmpty(data.P_description)) {
     errors.P_description = "Product description is require";
   }

@@ -303,7 +303,7 @@ userController.addProduct = async function(req, res) {
   let existProduct = await product.find({ P_name: req.body.P_name });
   let productTypeInfo = await productType.find().select("_id TP_name");
   let { errors, isValid } = addProductValidate(req.body);
-
+  console.log(typeof req.body.TP_id);
   let productDataDefaultSelect = function() {
     if (typeof req.body.TP_id === "string") {
       return [req.body.TP_id];
@@ -435,7 +435,6 @@ userController.updateProduct = async function(req, res) {
   );
   let { errors, isValid } = addProductValidate(req.body);
   if (!isValid) {
-    console.log(pic);
     res.render("admin/productInfo", {
       errors,
       values: req.body,
@@ -466,7 +465,6 @@ userController.updateProduct = async function(req, res) {
 
     product.findByIdAndUpdate(req.body._id, data, function(err) {
       if (err) {
-        console.log(err);
         return;
       }
       res.redirect("/user/product");
@@ -477,7 +475,6 @@ userController.updateProduct = async function(req, res) {
     let filePath = oldProduct.P_picture;
 
     fs.unlink(filePath, function(err) {
-      console.log(err);
       return;
     });
 
