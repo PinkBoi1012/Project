@@ -15,6 +15,7 @@ clientController.renderHome = async function(req, res) {
 
     let dataPT = await Promise.all(promisesDataPT);
     // Get all product data
+
     let dataAllProduct = await product
       .find({}, "TP_id P_name P_description P_unit_price P_unit P_picture")
       .sort({ P_name: 1 });

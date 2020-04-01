@@ -317,7 +317,7 @@ userController.addProduct = async function(req, res) {
   let productDataDefaultSelectArray = productDataDefaultSelect().map(x =>
     x.toString()
   );
-  console.log(productDataDefaultSelectArray);
+
   if (existProduct.length > 0) {
     errors.P_name = "This product is exist.";
     res.render("admin/addProduct", {

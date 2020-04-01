@@ -33,6 +33,15 @@ block showProduct
                           a(href='#') #{data.P_name}
                         p(style="color:black") #{data.P_unit_price.toString()} $
                         ul.project-catagorry.text-capitalize
-                        span.ti-shopping-cart
-                        a(href='#').text-capitalize.project-catagorry   Add to cart 
+                        
+                        if(data.P_unit <=0)
+                            p(style='color:red').text-capitalize.project-catagorry  out of stock                    
+                        if(data.P_unit <5 && data.P_unit >0)
+                            span.ti-shopping-cart
+                            a(href='#' style='color:black').text-capitalize.project-catagorry   Add to cart
+                            
+                            p(style={color: 'red','font-size': '12px'}) Only #{data.P_unit} left 
+                        if(data.P_unit>5)
+                            span.ti-shopping-cart
+                            a(href='#' style='color:black').text-capitalize.project-catagorry   Add to cart
                             

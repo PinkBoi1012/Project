@@ -199,18 +199,21 @@ route.post(
       if (err) {
         let values = req.body;
         let errors = {};
+
         errors.P_picture = "Choose Product Picture right format (jpeg/png)";
         let productDataDefaultSelect = function() {
           if (typeof req.body.TP_id === "string") {
             return [req.body.TP_id];
-          } else if (typeof req.body.TP_id === "Object") {
+          } else if (typeof req.body.TP_id === "object") {
             return Object.values(req.body.TP_id);
           }
           return [];
         };
-        let productDataDefaultSelectArray = productDataDefaultSelect().map(x =>
-          x.toString()
+
+        let productDataDefaultSelectArray = await productDataDefaultSelect().map(
+          x => x.toString()
         );
+
         let productTypeInfo = await productType.find().select("_id TP_name");
         res.render("admin/addProduct", {
           productTypeInfo,
