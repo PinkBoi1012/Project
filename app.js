@@ -6,6 +6,7 @@ const key = require("./config/keys");
 const cookieParser = require("cookie-parser");
 const userRoute = require("./Route/userRoute");
 const clientRoute = require("./Route/clientRoute");
+const sessionIDCart = require("./middlewares/session.middleware");
 // connect db
 mongoose
   .connect(key.mongoURL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -21,7 +22,7 @@ app.use(bodyParser.json());
 
 app.use(cookieParser(key.secret));
 mongoose.set("useFindAndModify", false);
-
+app.use("/", sessionIDCart);
 //set view engine pug
 app.set("view engine", "pug");
 app.set("views", "./Views");
@@ -29,6 +30,7 @@ app.set("views", "./Views");
 app.use(express.static("public"));
 app.use("/user", userRoute);
 app.get("/", clientRoute);
+
 app.listen(key.port, () => {
   console.log(`Server started on port ${key.port}`);
 });

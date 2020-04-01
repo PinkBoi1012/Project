@@ -31,7 +31,7 @@ block content
                     -let linkInfo = "/user/productUpdate/"+product._id
                     -let linkDelete = "/user/productDelete/"+product._id
                     td= product.P_name 
-                    td= product.P_unit_price+" $"
+                    td= product.P_unit_price.toString()+" $"
                     td= product.P_unit
                     td <a class="btn " href=#{linkInfo} role="button">Edit</a>&ensp;<a class="btn " href=#{linkDelete} role="button">Delete</a>
 

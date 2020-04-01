@@ -15,8 +15,6 @@ block productTypeDataFilter
 
 //- Block show product
 block showProduct
-    
-    
     each data in dataAllProduct
       -let filter = data.TP_id.join(' ') +" item item-grid"
       -let imgSrc = data.P_picture.slice(7)
@@ -25,7 +23,6 @@ block showProduct
             .work-item
                 .work-pic
                     img(src=imgSrc, alt='image'   )
- 
                 .hover-content
                     .hover-text.text-center
                         a(href=imgSrc, data-lightbox='roadtrip')
@@ -34,6 +31,8 @@ block showProduct
                     .project-description.text-uppercase.ul-li
                         h3
                           a(href='#') #{data.P_name}
-                        p(style="color:black") #{data.P_unit_price} $
+                        p(style="color:black") #{data.P_unit_price.toString()} $
                         ul.project-catagorry.text-capitalize
-                        a(href='#').text-capitalize.project-catagorry Add to cart
+                        span.ti-shopping-cart
+                        a(href='#').text-capitalize.project-catagorry   Add to cart 
+                            

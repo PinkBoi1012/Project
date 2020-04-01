@@ -200,7 +200,6 @@ route.post(
         let values = req.body;
         let errors = {};
         errors.P_picture = "Choose Product Picture right format (jpeg/png)";
-
         let productDataDefaultSelect = function() {
           if (typeof req.body.TP_id === "string") {
             return [req.body.TP_id];

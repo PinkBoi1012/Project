@@ -741,6 +741,7 @@ footer {
   position: absolute;
   margin-top: -50px;
   /* negative value of footer height */
+  width: 100vw;
   height: 180px;
   clear: both;
 }

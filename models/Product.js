@@ -7,7 +7,7 @@ const productSchema = new Schema(
     P_name: { type: String, required: true },
     P_description: { type: String, required: true },
     P_content: { type: String, required: true },
-    P_unit_price: { type: Number, required: true },
+    P_unit_price: { type: mongoose.Decimal128, required: true },
     P_unit: { type: Number, required: true },
     P_unit_sale: { type: Number, default: 0 },
     P_create_at: { type: Date, default: new Date() },

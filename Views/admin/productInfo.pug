@@ -72,7 +72,8 @@ block content
         textarea#P_content.form-control(rows='4', cols='50' name='P_content', placeholder='Enter content of product ') #{value=values? values.P_content:''}
         p#P_contentErrorInput
         label(for='P_unit_price') Unit Price
-        input#P_unit_price.form-control(type='number',name='P_unit_price', placeholder='Enter price per unit (currency unit is Dollar)', value=values? values.P_unit_price:'')
+        -console.log(values.P_unit_price)
+        input#P_unit_price.form-control(type='number',name='P_unit_price',step="0.01", placeholder='Enter price per unit (currency unit is Dollar)', value=values? values.P_unit_price.toString():'')
         p#P_unit_priceErrorInput
         label(for='P_unit') Amount of storage
         input#P_unit.form-control(type='number',name='P_unit', placeholder='Enter amount of storage of product' value=values? values.P_unit:'' )

@@ -303,19 +303,21 @@ userController.addProduct = async function(req, res) {
   let existProduct = await product.find({ P_name: req.body.P_name });
   let productTypeInfo = await productType.find().select("_id TP_name");
   let { errors, isValid } = addProductValidate(req.body);
-  console.log(typeof req.body.TP_id);
+
   let productDataDefaultSelect = function() {
     if (typeof req.body.TP_id === "string") {
       return [req.body.TP_id];
-    } else if (typeof req.body.TP_id === "Object") {
+    } else if (typeof req.body.TP_id === "object") {
       return Object.values(req.body.TP_id);
     }
+
     return [];
   };
 
   let productDataDefaultSelectArray = productDataDefaultSelect().map(x =>
     x.toString()
   );
+  console.log(productDataDefaultSelectArray);
   if (existProduct.length > 0) {
     errors.P_name = "This product is exist.";
     res.render("admin/addProduct", {
@@ -424,7 +426,7 @@ userController.updateProduct = async function(req, res) {
   let productDataDefaultSelect = await function() {
     if (typeof req.body.TP_id === "string") {
       return [req.body.TP_id];
-    } else if (typeof req.body.TP_id === "Object") {
+    } else if (typeof req.body.TP_id === "object") {
       return Object.values(req.body.TP_id);
     }
     return [];
