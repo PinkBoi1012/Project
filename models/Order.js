@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const OrderSchema = new Schema(
   {
-    OD_id: [{ type: Schema.Types.ObjectId, ref: "bill", require: true }],
+    OD_id: { type: Schema.Types.ObjectId, ref: "bill", require: true },
     C_id: { type: Schema.Types.ObjectId, ref: "customer", require: true },
     O_total: { type: Number, require: true },
     O_status: { type: String, default: "Draft" },

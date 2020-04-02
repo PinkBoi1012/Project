@@ -290,6 +290,6 @@ route.get(
 // clear cookie
 route.get("/signout", function(req, res) {
   res.clearCookie("user");
-  return res.redirect("login");
+  return res.redirect("/user/login");
 });
 module.exports = route;
