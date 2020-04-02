@@ -1,4 +1,5 @@
 module.exports = function Cart(oldCart) {
+  let qtyItem = oldCart.qtyItem || 1;
   this.items = oldCart.items || {};
   this.totalQty = oldCart.totalQty || 0;
   this.totalPrice = oldCart.totalPrice || 0;
@@ -19,14 +20,16 @@ module.exports = function Cart(oldCart) {
     if (storedItem.qty + 1 > storedItem.item.P_unit) {
       return "ERROR P_unit";
     }
-    storedItem.qty++;
-    this.totalQty++;
+    storedItem.qty += qtyItem;
+    this.totalQty += qtyItem;
     storedItem.price = (
-      parseFloat(storedItem.price) + parseFloat(storedItem.item.P_unit_price)
+      parseFloat(storedItem.price) +
+      parseFloat(storedItem.item.P_unit_price) * qtyItem
     ).toFixed(2);
 
     this.totalPrice = (
-      parseFloat(this.totalPrice) + parseFloat(storedItem.item.P_unit_price)
+      parseFloat(this.totalPrice) +
+      parseFloat(storedItem.item.P_unit_price) * qtyItem
     ).toFixed(2);
   };
 

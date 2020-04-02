@@ -37,7 +37,11 @@ body
       img(src='assets/img//logo/logo.png', alt='img')
   ul#menu
     li.has-submenu.text-capitalize  
-      a(href='#') Cart
+      a(href='/cartInfo') Cart 
+        if(session.cart)
+          span ( #{session.cart.totalQty} )
+        if(!session.cart)
+          span 
     if(customer)
       li
         a(href='/customerInfo') #{customer.name}
@@ -71,8 +75,8 @@ body
       .banner-content
         .page-head-content
           .page-head-title.text-capitalize.pb40
-            h1 This is Puppin
-            span.descrip Creative Designer
+            h1 This is Parrot
+            span.descrip Apple Accessory
 
           .page-head-social
             .social-title.text-uppercase

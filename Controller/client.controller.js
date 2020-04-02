@@ -65,7 +65,6 @@ clientController.addToCart = async function(req, res) {
   }
 
   req.session.cart = cart;
-  console.log(cart);
   res.redirect("/");
   return;
 };
