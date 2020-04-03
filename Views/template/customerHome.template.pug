@@ -34,7 +34,7 @@ body
   #nav-off
   #header-logo-1.text-center
     a(href='/')
-      img(src='assets/img//logo/logo.png', alt='img')
+      img(src='/assets/img//logo/logo.png', alt='img')
   ul#menu
     li.has-submenu.text-capitalize  
       a(href='/cartInfo') Cart 
@@ -58,13 +58,13 @@ body
     .row
       #header-logo
         a(href='/')
-          img(src='assets/img//logo/logo.png', alt='img')
+          img(src='/assets/img//logo/logo.png', alt='img')
       #menu-burger.pull-right.not-stuck
         #menu-bar
           span.icon-bar.top
           span.icon-bar.middle
           span.icon-bar.bottom
-
+ 
  section#page-head.page-head-section
   .page-head-overlay
   div(id="page-head-effect" class="page-head-effect")
@@ -96,194 +96,38 @@ body
                 li
                   a(href='#')
                     span.ti-instagram
+block productTypeDataFilter
+block newProduct
 
- section#portfolio.portfolio-section
-  .container
-    .row
-      .portfolio-content
-        .portfolio-tab.pb55
-          #filters.button-group.pb45
-            //-  Filter product by product type 
-            block productTypeDataFilter
-            //- button.tab-button.active(data-filter='*') '.web'
-            //-   | All
-            //-   span 75 //number product
-
-
-          .portfolio-tab-text-pic.row
-            #posts
-              block showProduct
-              //- Block show all product 
-              //- #1.item.item-grid.web
-                .item-wrap
-                  .work-item
-                    .work-pic
-                      img(src='assets/img/portfolio/port-1.jpg', alt='image')
- 
-                    .hover-content
-                      .hover-text.text-center
-                        a(href='assets/img/portfolio/port-1.jpg', data-lightbox='roadtrip')
-                          span.ti-fullscreen
-       
-                      .project-description.text-uppercase.ul-li
-                        h3
-                          a(href='#') project Item Title
-                        ul.project-catagorry.text-capitalize
-                          li
-                            a(href='#') Branding, 
-                          li
-                            a(href='#') Development
-        //- pagination Load more
-
- section#newsletter.newsletter-section
-  .page-head-overlay
-  .container
-    .row
-      .newsletter-section-content
-        .newsletter-title.pb75
-          h2.deep-black Subscribe On My Newsletter
-        .newsletter-form
-          form.input-group(action='#')
-            input.form-control(type='email', placeholder='Enter Your Email')
-            span.input-group-addon
-              button(type='submit')
-                span.deep-black.ti-arrow-right
-
-
- section#service.service-section.pt90.pb40
-  .container
-    .row
-      .section-title.text-capitalize.deep-black.pb75
-        h2 Our latest blog
-      .latest-blog-content
-        .row
-          .col-md-4
-            .latest-blog-text-pic
-              .latest-blog-img.mb10
-                img(src='assets/img/blog/blog-5.jpg', alt='img')
-                .blog-meta.mt20.ul-li
-                  ul.meta-list
-                    li
-                      a(href='#') April 16, 2017  /  
-                    li
-                      a(href='#')   Tonmoy /  
-                    li
-                      a(href='#') Design
-              .latest-blog-text
-                .blog-head
-                  h2
-                    a(href='#') Lorem ipsum dolor sit ametely, con-sectetu
-
-                .blog-details.mt15
-                  p
-                    | Excepteur sint occaecat cupidatat nonmaly proident, sunt.
-
-                .blog-read-more.text-capitalize.pull-left
-                  a(href='#')
-                    | read more
-                    span.ti-arrow-right
-
-                .latest-blog-comments.text-capitalize.pull-right
-                  a(href='#')
-                    span.ti-comments  5 Comments
-    
-          .col-md-4
-            .latest-blog-text-pic
-              .latest-blog-img.mb10
-                img(src='assets/img/blog/blog-5.jpg', alt='img')
-                .blog-meta.mt20.ul-li
-                  ul.meta-list
-                    li
-                      a(href='#') April 16, 2017  /  
-                    li
-                      a(href='#')   Tonmoy /  
-                    li
-                      a(href='#') Design
-
-              .latest-blog-text
-                .blog-head
-                  h2
-                    a(href='#') Lorem ipsum dolor sit ametely, con-sectetu
-         
-                .blog-details.mt15
-                  p
-                    | Excepteur sint occaecat cupidatat nonmaly proident, sunt.
-
-                .blog-read-more.text-capitalize.pull-left
-                  a(href='#')
-                    | read more
-                    span.ti-arrow-right
-
-                .latest-blog-comments.text-capitalize.pull-right
-                  a(href='#')
-                    span.ti-comments  5 Comments
-
-          .col-md-4
-            .latest-blog-text-pic
-              .latest-blog-img.mb10
-                img(src='assets/img/blog/blog-5.jpg', alt='img')
-                .blog-meta.mt20.ul-li
-                  ul.meta-list
-                    li
-                      a(href='#') April 16, 2017  /  
-                    li
-                      a(href='#')   Tonmoy /  
-                    li
-                      a(href='#') Design
-   
-              .latest-blog-text
-                .blog-head
-                  h2
-                    a(href='#') Lorem ipsum dolor sit ametely, con-sectetu
-       
-                .blog-details.mt15
-                  p
-                    | Excepteur sint occaecat cupidatat nonmaly proident, sunt.
-  
-                .blog-read-more.text-capitalize.pull-left
-                  a(href='#')
-                    | read more
-                    span.ti-arrow-right
-
-                .latest-blog-comments.text-capitalize.pull-right
-                  a(href='#')
-                    span.ti-comments  5 Comments
-           
- footer
-   .footer-area.footer-2
+br
+br
+br
+br
+footer
+  .footer-area
     .container
       .row
-        .copy-right-area.text-center
-          .page-head-social-item.ul-li
-            ul.page-head-social-list
-              li
-                a(href='https://www.facebook.com/thien.phamthanh.180072')
-                  span.ti-facebook
-              li
-                a(href='https://twitter.com/PhamThanhThie10')
-                  span.ti-twitter-alt
-              li
-                a(href='#')
-                  span.ti-google
-              li
-                a(href='https://www.instagram.com/1012.jpg/')
-                  span.ti-instagram
-        
-          span &copy; Pham Thanh Thien - thienptgc15225@fpt.edu.vn
-  
+        .copy-right-area.border-top.text-center
+          span.pt50.table-display &copy; Pham Thanh Thien - thienptgc15225@fpt.edu.vn
+      
+    .up
+      a#scrolluptop.scrollup.custom(href='#')
+        span.back-top.deep-black.text-uppercase back top
+ 
 
- script(src='/assets/js/jquery-2.1.4.min.js')
- script(src='/assets/js/bootstrap.min.js')
- script(src='/assets/js/jquery.isotope.min.js')
- script(src='/assets/js/lightbox.js')
- script(src="/assets/js/circle-effect.js")
- script(src='/assets/js/jquery.magnific-popup.min.js')
- script(src='/assets/js/owl.carousel.min.js')
- script(src='/assets/js/jquery.counterup.min.js')
- script(src='/assets/js/waypoints.min.js')
- script(src='/assets/js/script.js')
- script(src='https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js')
- script(src='https://unpkg.com/sweetalert/dist/sweetalert.min.js')
- if status
+
+script(src='/assets/js/jquery-2.1.4.min.js')
+script(src='/assets/js/bootstrap.min.js')
+script(src='/assets/js/jquery.isotope.min.js')
+script(src='/assets/js/lightbox.js')
+script(src="/assets/js/circle-effect.js")
+script(src='/assets/js/jquery.magnific-popup.min.js')
+script(src='/assets/js/owl.carousel.min.js')
+script(src='/assets/js/jquery.counterup.min.js')
+script(src='/assets/js/waypoints.min.js')
+script(src='/assets/js/script.js')
+script(src='https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js')
+script(src='https://unpkg.com/sweetalert/dist/sweetalert.min.js')
+if status
     script.
        swal({title: `#{status}`,});  

@@ -1,0 +1,239 @@
+extends ../template/customerHome.template.pug
+block newProduct
+ section#blog-single.blog-single-content.pt90
+  .container
+    .row
+      .blog-single-content
+        .row
+          .col-sm-9
+            .blog-single-right-side
+              .blog-single-main-img
+                img(src='assets/img/blog/blog-s.jpg', alt='image')
+              .blog-main-link.deep-black.mt20
+                h2
+                  a(href='#') Lorem ipsum dolor sit amet consectetur adipisicing elit sed
+              // //.blog-main-link
+              .blog-meta.mt10.ul-li
+                ul.meta-list
+                  li
+                    a(href='#') April 16, 2017  /  
+                  li
+                    a(href='#')   Tonmoy /  
+                  li
+                    a(href='#') Design
+              // //.blog-meta
+              .blog-single-text.mt30
+                span
+                  | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazim placerat facer possim assum.
+              // // .blog-single-text
+              .blog-single-text.mt20
+                span
+                  | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis.
+              // // .blog-single-text
+              .blog-single-text.mt30.row
+                .col-sm-5
+                  img(src='assets/img/portfolio/port-11.gif', alt='image')
+                .col-sm-7
+                  span.pt50.table-display
+                    | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis.
+              // // .blog-single-text
+              .blog-single-quate.mt60
+                blockquote
+                  | lobortis nisl ut aliquip ex ea commodo consequat. Duis autem vel eum iriure dolor in hendrerit in vulputate velit esse molestie consequat, vel illum dolore eu feugiat nulla facilisis at vero eros et accumsan et iusto odio dignissim qui blandit praesent luptatum zzril delenit augue duis dolore te feugait nulla facilisi. Nam liber tempor cum soluta nobis eleifend option congue nihil imperdiet doming id quod mazimassum.
+              // // .blog-single-quate
+              .blog-single-text.mt20
+                span
+                  | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore magna aliquam erat volutpat. Ut wisi enim ad minim veniam, quis nostrud exerci tation ullamcorper suscipit lobortis.
+              // // .blog-single-text
+              .blog-share.ul-li.mt60
+                span.share-it.text-uppercase.deep-black.pull-left Share On it -
+                ul.page-head-social-list
+                  li
+                    a(href='#')
+                      span.ti-facebook
+                  li
+                    a(href='#')
+                      span.ti-twitter-alt
+                  li
+                    a(href='#')
+                      span.ti-google
+                  li
+                    a(href='#')
+                      span.ti-instagram
+                // /.page-head-social-list
+              // //.blog-share
+            // //.blog-single-right-side
+            .blog-single-comment.pt90
+              .comment-form-list
+                .comment-form-list-pic-text
+                  .author-pic.pull-left
+                    img(src='assets/img/blog/img1.png', alt='')
+                  // //.img
+                  .author-text
+                    span.author-name.deep-black Marifa Islam
+                    span.author-date 26 Apr 2017
+                    span.author-dec
+                      | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+                    span.reply-text.mt10.deep-black
+                      a(href='#!') Reply
+                // //.comment-form-list-pic-text
+                .comment-form-list-pic-text.ml50.mt30
+                  .author-pic.pull-left
+                    img(src='assets/img/blog/img2.png', alt='')
+                  // //.img
+                  .author-text
+                    span.author-name.deep-black Marifa Islam
+                    span.author-date 26 Apr 2017
+                    span.author-dec
+                      | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+                    span.reply-text.mt10.deep-black
+                      a(href='#!') Reply
+              // //.comment-form-list
+              .comment-form-list-pic-text.mt20
+                .author-pic.pull-left
+                  img(src='assets/img/blog/img4.png', alt='')
+                // //.img
+                .author-text
+                  span.author-name.deep-black Marifa Islam
+                  span.author-date 26 Apr 2017
+                  span.author-dec
+                    | Lorem ipsum dolor sit amet, consectetuer adipiscing elit, sed diam nonummy nibh euismod tincidunt ut laoreet dolore
+                  span.reply-text.mt10.deep-black
+                    a(href='#!') Reply
+              // //.comment-form-list-pic-text
+              .blog-single-comment-head.text-capitalize.pt90
+                h3.title-head.deep-black Drop your thought
+              .comment-form.mt50
+                form.clearfix(action='#')
+                  .input-field-wrapper
+                    .input-field
+                      label(for='name-f', data-error='wrong', data-success='right') Name
+                      input#name-f.validate(type='text')
+                    .input-field
+                      label(for='email', data-error='wrong', data-success='right') Email
+                      input#email.validate(type='email')
+                  .clear-fix.my-comment-box
+                    label(for='textarea1') Message
+                    textarea#textarea1(name='#', cols='30', rows='10')
+                  button.popin-btn(type='submit') Drop Comment
+            // //.blog-single-comment
+          // /.col-sm-9
+          .col-sm-3
+            .blog-single-right-side-bar
+              .blog-search.mb80
+                form(action='#', method='get')
+                  input(type='text', placeholder='Enter keywords')
+                  .nws-button
+                    button(type='submit', value='Submit')
+                      span.ti-search
+              // /.blog-search
+              .blog-single-right-side-content.mt50
+                .blog-single-side-title.text-capitalize
+                  h2.widgettitle.deep-black Categoris
+                // //.widgettitle
+                .category-item.mt20.ul-li
+                  ul.category-item-list.ul-li-block
+                    li
+                      a(href='#') Design
+                      span.badge.pull-right 25
+                    li
+                      a(href='#') Product
+                      span.badge.pull-right 25
+                    li
+                      a(href='#') SEO
+                      span.badge.pull-right 75
+                    li
+                      a(href='#') Web
+                      span.badge.pull-right 14
+                    li
+                      a(href='#') Teach
+                      span.badge.pull-right 26
+                // /.category-item
+              // //.blog-single-right-side-content
+              .blog-single-right-side-content.mt50
+                .blog-single-side-title.text-capitalize
+                  h2.widgettitle.deep-black recent post
+                // //.widgettitle
+                .recent-post-list.mt30
+                  .recent-blog-item
+                    .side-tab-img-text
+                      .rec-img
+                        img(src='assets/img/recent-blog/recent-1.jpg', alt='image')
+                      .side-tab-text.ul-li
+                        .rec-link
+                          h3
+                            a(href='#') Hacks to make  your holday better
+                        ul.rec-nws-meta
+                          li
+                            a(href='#')
+                              i.ti-timer
+                              |  oct 10, 2016
+                    // //img-text
+                    .side-tab-img-text
+                      .rec-img
+                        img(src='assets/img/recent-blog/recent-2.jpg', alt='image')
+                      .side-tab-text.ul-li
+                        .rec-link
+                          h3
+                            a(href='#') Hacks to make  your holday better
+                        ul.rec-nws-meta
+                          li
+                            a(href='#')
+                              i.ti-timer
+                              |  oct 10, 2016
+                    .side-tab-img-text
+                      .rec-img
+                        img(src='assets/img/recent-blog/recent-3.jpg', alt='image')
+                      .side-tab-text.ul-li
+                        .rec-link
+                          h3
+                            a(href='#') Hacks to make  your holday better
+                        ul.rec-nws-meta
+                          li
+                            a(href='#')
+                              i.ti-timer
+                              |  oct 10, 2016
+                    // //img-text
+                    .side-tab-img-text
+                      .rec-img
+                        img(src='assets/img/recent-blog/recent-4.jpg', alt='image')
+                      .side-tab-text.ul-li
+                        .rec-link
+                          h3
+                            a(href='#') Hacks to make  your holday better
+                        ul.rec-nws-meta
+                          li
+                            a(href='#')
+                              i.ti-timer
+                              |  oct 10, 2016
+                    // //img-text
+              // //.blog-single-right-side-content
+              .blog-single-right-side-content.mt50
+                .blog-single-side-title.text-capitalize
+                  h2.widgettitle.deep-black Tags
+                // //.widgettitle
+                .blog-tag.ul-li.mt30
+                  ul.blog-tag-list
+                    li
+                      a(href='#') Design
+                    li
+                      a(href='#') Web Design
+                    li
+                      a(href='#') Photo
+                    li
+                      a(href='#') HTML
+                    li
+                      a(href='#') Joomla
+                    li
+                      a(href='#') Wordpress
+                    li
+                      a(href='#') PSD
+                    li
+                      a(href='#') Logo
+              // //.blog-single-right-side-content
+            // //.blog-single-right-side-bar
+          // /.col-sm-3
+        // /.row
+      // //.blog-single-content
+    // /.row
+  // /.container

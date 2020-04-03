@@ -1,49 +1,168 @@
 extends ../template/customerHome.template.pug
 //- Block product filter
 block productTypeDataFilter
-
+ section#portfolio.portfolio-section
+  .container
+    .row
+      .portfolio-content
+        .portfolio-tab.pb55
+          #filters.button-group.pb45
+            button(class= 'active tab-button' data-filter='*')
+              | All
+              span #{dataAllProduct.length}
     
-    button(class= 'active tab-button' data-filter='*')
-        | All
-        span #{dataAllProduct.length}
-    
-    each value in dataPT
-        -let filter = "."+value.TP_id
+            each value in dataPT
+              -let filter = "."+value.TP_id
       
-        button.tab-button(data-filter=filter) 
-            | #{value.TP_name}
-            span #{value.data.length}
+              button.tab-button(data-filter=filter) 
+                | #{value.TP_name}
+                span #{value.data.length}
 
-//- Block show product
-block showProduct
-    each data in dataAllProduct
-      -let urlAddCart = '/add-to-cart/'+data._id
-      -let filter = data.TP_id.join(' ') +" item item-grid"
-      -let imgSrc = data.P_picture.slice(7)
-      div(class= filter id=data._id)
-        .item-wrap
-            .work-item
-                .work-pic
-                    img(src=imgSrc, alt='image'   )
-                .hover-content
-                    .hover-text.text-center
-                        a(href=imgSrc, data-lightbox='roadtrip')
-                          span.ti-control-forward
+          .portfolio-tab-text-pic.row
+              #posts
+                each data in dataAllProduct
+                  -let urlAddCart = '/add-to-cart/'+data._id
+                  -let filter = data.TP_id.join(' ') +" item item-grid"
+                  -let imgSrc = data.P_picture.slice(7)
+                  div(class=filter id=data._id)
+                    .item-wrap
+                      .work-item
+                        .work-pic
+                          img(src=imgSrc, alt='image'   )
+                        .hover-content
+                          .hover-text.text-center
+                            a(href=imgSrc, data-lightbox='roadtrip')
+                              span.ti-control-forward
                         
-                    .project-description.text-uppercase.ul-li
-                        h3 #{data.P_name}
+                          .project-description.text-uppercase.ul-li
+                              h3 #{data.P_name}
                            
-                        p(style="color:black") #{data.P_unit_price.toString()} $
-                        ul.project-catagorry.text-capitalize
+                              p(style="color:black") #{data.P_unit_price.toString()} $
+                              ul.project-catagorry.text-capitalize
                         
-                        if(data.P_unit <=0)
-                            p(style='color:red').text-capitalize.project-catagorry  out of stock                    
-                        if(data.P_unit <=5 && data.P_unit >0)
-                            span.ti-shopping-cart
-                            a(href=urlAddCart style='color:black').text-capitalize.project-catagorry   Add to cart
-                            
-                            p(style={color: 'red','font-size': '12px'}) Only #{data.P_unit} left 
-                        if(data.P_unit>5)
-                            span.ti-shopping-cart
-                            a(href=urlAddCart style='color:black').text-capitalize.project-catagorry   Add to cart
-                            
+                                if(data.P_unit <=0)
+                                  p(style='color:red').text-capitalize.project-catagorry  out of stock                    
+                                if(data.P_unit <=5 && data.P_unit >0)
+                                  span.ti-shopping-cart
+                                  a(href=urlAddCart style='color:black').text-capitalize.project-catagorry   Add to cart
+                                  p(style={color: 'red','font-size': '12px'}) Only #{data.P_unit} left 
+                                if(data.P_unit>5)
+                                  span.ti-shopping-cart
+                                  a(href=urlAddCart style='color:black').text-capitalize.project-catagorry   Add to cart
+
+block newProduct
+
+ section#newsletter.newsletter-section
+  .page-head-overlay
+  .container
+    .row
+      .newsletter-section-content
+        .newsletter-title.pb75
+          h2.deep-black Subscribe On My Newsletter
+        .newsletter-form
+          form.input-group(action='#')
+            input.form-control(type='email', placeholder='Enter Your Email')
+            span.input-group-addon
+              button(type='submit')
+                span.deep-black.ti-arrow-right
+
+
+ section#service.service-section.pt90.pb40
+  .container
+    .row
+      .section-title.text-capitalize.deep-black.pb75
+        h2 Our latest blog
+      .latest-blog-content
+        .row
+          .col-md-4
+            .latest-blog-text-pic
+              .latest-blog-img.mb10
+                img(src='assets/img/blog/blog-5.jpg', alt='img')
+                .blog-meta.mt20.ul-li
+                  ul.meta-list
+                    li
+                      a(href='#') April 16, 2017  /  
+                    li
+                      a(href='#')   Tonmoy /  
+                    li
+                      a(href='#') Design
+              .latest-blog-text
+                .blog-head
+                  h2
+                    a(href='#') Lorem ipsum dolor sit ametely, con-sectetu
+
+                .blog-details.mt15
+                  p
+                    | Excepteur sint occaecat cupidatat nonmaly proident, sunt.
+
+                .blog-read-more.text-capitalize.pull-left
+                  a(href='#')
+                    | read more
+                    span.ti-arrow-right
+
+                .latest-blog-comments.text-capitalize.pull-right
+                  a(href='#')
+                    span.ti-comments  5 Comments
+    
+          .col-md-4
+            .latest-blog-text-pic
+              .latest-blog-img.mb10
+                img(src='assets/img/blog/blog-5.jpg', alt='img')
+                .blog-meta.mt20.ul-li
+                  ul.meta-list
+                    li
+                      a(href='#') April 16, 2017  /  
+                    li
+                      a(href='#')   Tonmoy /  
+                    li
+                      a(href='#') Design
+
+              .latest-blog-text
+                .blog-head
+                  h2
+                    a(href='#') Lorem ipsum dolor sit ametely, con-sectetu
+         
+                .blog-details.mt15
+                  p
+                    | Excepteur sint occaecat cupidatat nonmaly proident, sunt.
+
+                .blog-read-more.text-capitalize.pull-left
+                  a(href='#')
+                    | read more
+                    span.ti-arrow-right
+
+                .latest-blog-comments.text-capitalize.pull-right
+                  a(href='#')
+                    span.ti-comments  5 Comments
+
+          .col-md-4
+            .latest-blog-text-pic
+              .latest-blog-img.mb10
+                img(src='assets/img/blog/blog-5.jpg', alt='img')
+                .blog-meta.mt20.ul-li
+                  ul.meta-list
+                    li
+                      a(href='#') April 16, 2017  /  
+                    li
+                      a(href='#')   Tonmoy /  
+                    li
+                      a(href='#') Design
+   
+              .latest-blog-text
+                .blog-head
+                  h2
+                    a(href='#') Lorem ipsum dolor sit ametely, con-sectetu
+       
+                .blog-details.mt15
+                  p
+                    | Excepteur sint occaecat cupidatat nonmaly proident, sunt.
+  
+                .blog-read-more.text-capitalize.pull-left
+                  a(href='#')
+                    | read more
+                    span.ti-arrow-right
+
+                .latest-blog-comments.text-capitalize.pull-right
+                  a(href='#')
+                    span.ti-comments  5 Comments
+ 

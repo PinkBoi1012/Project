@@ -32,6 +32,11 @@ clientController.renderHome = async function(req, res) {
     console.log(err);
   }
 };
+// Render Product Info
+clientController.renderProductInfo = async function(req, res) {
+  return res.render("./client/productInfo");
+};
+
 // add To cart
 clientController.addToCart = async function(req, res) {
   let productID = req.params._id;
@@ -68,4 +73,5 @@ clientController.addToCart = async function(req, res) {
   res.redirect("/");
   return;
 };
+
 module.exports = clientController;
