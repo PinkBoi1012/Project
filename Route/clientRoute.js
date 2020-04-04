@@ -13,6 +13,6 @@ route.get("/add-to-cart/:_id", clientRoute.addToCart);
 // @Route   GET /
 // @Des     Product Info
 // @Access  Public
-route.get("/product/:_id", clientRoute.renderProductInfo);
+route.get("/productInfo/:_id", clientRoute.renderProductInfo);
 
 module.exports = route;

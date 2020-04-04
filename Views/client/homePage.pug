@@ -24,6 +24,7 @@ block productTypeDataFilter
                   -let urlAddCart = '/add-to-cart/'+data._id
                   -let filter = data.TP_id.join(' ') +" item item-grid"
                   -let imgSrc = data.P_picture.slice(7)
+                  -let productInfoURL = "/productInfo/"+data._id
                   div(class=filter id=data._id)
                     .item-wrap
                       .work-item
@@ -31,7 +32,7 @@ block productTypeDataFilter
                           img(src=imgSrc, alt='image'   )
                         .hover-content
                           .hover-text.text-center
-                            a(href=imgSrc, data-lightbox='roadtrip')
+                            a(href=productInfoURL)
                               span.ti-control-forward
                         
                           .project-description.text-uppercase.ul-li

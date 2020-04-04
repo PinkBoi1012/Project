@@ -4,6 +4,7 @@ const customer = require("../models/Customer");
 const product = require("../models/Product");
 const productType = require("../models/TypeProduct");
 const Cart = require("../models/Cart");
+const moment = require("moment");
 // Render Home Page
 clientController.renderHome = async function(req, res) {
   try {
@@ -34,9 +35,28 @@ clientController.renderHome = async function(req, res) {
 };
 // Render Product Info
 clientController.renderProductInfo = async function(req, res) {
-  return res.render("./client/productInfo");
-};
+  let exitProduct = await product.findById(
+    req.params._id,
+    "P_create_at _id P_name P_description P_content P_unit_price P_unit P_picture"
+  );
+  if (!exitProduct) {
+    return res.redirect("/");
+  }
 
+  let data = {
+    id: exitProduct._id,
+    name: exitProduct.P_name,
+    content: exitProduct.P_content,
+    date: moment(exitProduct.P_create_at).format("MMMM D, YYYY"),
+    picture: exitProduct.P_picture.slice(7),
+    description: exitProduct.P_description,
+    price: exitProduct.P_unit_price,
+    stock: exitProduct.P_unit
+  };
+  console.log(data.picture);
+  return res.render("./client/productInfo", { data });
+};
+// .replace(new RegExp("\r?\n", "g"), " <br> ")
 // add To cart
 clientController.addToCart = async function(req, res) {
   let productID = req.params._id;
@@ -50,7 +70,7 @@ clientController.addToCart = async function(req, res) {
     res.redirect("/");
     return;
   }
-  // console.log(productFind._id);
+
   let addCart = await cart.add(productFind, productFind._id);
 
   if (addCart === "ERROR qty") {
