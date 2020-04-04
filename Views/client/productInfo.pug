@@ -12,21 +12,24 @@ block newProduct
             .blog-single-right-side
               .blog-single-main-img
                 -let linkIMG = "/"+data.picture
-                img(src=linkIMG, alt='image' style="width:900px;height:600px; center")
+                img(src=linkIMG, alt='image' style="width:900px;height:auto; center")
               .blog-main-link.deep-black.mt20
               // //.blog-main-link
               .blog-meta.mt10.ul-li
+                
                 ul.meta-list
                   li
                      a #{data.date} 
                   
               // //.blog-meta
+              br
+              h3(style="color:black" ) Description
               .mt30
                 span
                   -let content = "<p>" + data.content.replace(/\n/g, "</p>\n<p>") + "</p>"
                   p !{content}
              
-             
+              br
               .blog-share.ul-li.mt60
                 span.share-it.text-uppercase.deep-black.pull-left Share On it -
                 ul.page-head-social-list
@@ -36,12 +39,7 @@ block newProduct
                   li
                     a(href='#')
                       span.ti-twitter-alt
-                  li
-                    a(href='#')
-                      span.ti-google
-                  li
-                    a(href='#')
-                      span.ti-instagram
+
                 // /.page-head-social-list
               // //.blog-share
             // //.blog-single-right-side     
@@ -52,101 +50,52 @@ block newProduct
                 .blog-single-side-title.text-capitalize
                   h2.widgettitle.deep-black #{data.name}
                 // //.widgettitle
+                br
+
                 .category-item.mt20.ul-li
                   ul.category-item-list.ul-li-block
                     li
                       a Price
                       span.badge.pull-right #{data.price} $
                     li
-                      if(data.stock <=5 )
-                       a There are only have #{data.stoke} products
 
-                // /.category-item
-              // //.blog-single-right-side-content
+
               .blog-single-right-side-content.mt50
+                if(data.stock <=5 && data.stock >0)
+                  a(style="color:red") There are only have !{data.stock} products
+                  br
+                  p Button add cart
+                if(data.stock <=0 )
+                  a(style="color:red") Sorry this product is out of stoke.
+                  br
+                if(data.stock > 5)
+                  p Button add cart
+              if arSimilarP[0] !== undefined
+               .blog-single-right-side-content.mt50
                 .blog-single-side-title.text-capitalize
-                  h2.widgettitle.deep-black recent post
+                  h2.widgettitle.deep-black similar product
                 // //.widgettitle
                 .recent-post-list.mt30
                   .recent-blog-item
-                    .side-tab-img-text
+                   
+                  
+                    each data in arSimilarP
+                     -let img = "/"+data.picture.slice(7)
+                     -let linkProduct = '/productInfo/' + data.id
+                     .side-tab-img-text
                       .rec-img
-                        img(src='assets/img/recent-blog/recent-1.jpg', alt='image')
+                       a(href=linkProduct)
+                        img(src=img)
                       .side-tab-text.ul-li
                         .rec-link
                           h3
-                            a(href='#') Hacks to make  your holday better
+                            a(href=linkProduct) !{data.name}
+                          p Price : 
                         ul.rec-nws-meta
                           li
                             a(href='#')
                               i.ti-timer
-                              |  oct 10, 2016
-                    // //img-text
-                    .side-tab-img-text
-                      .rec-img
-                        img(src='assets/img/recent-blog/recent-2.jpg', alt='image')
-                      .side-tab-text.ul-li
-                        .rec-link
-                          h3
-                            a(href='#') Hacks to make  your holday better
-                        ul.rec-nws-meta
-                          li
-                            a(href='#')
-                              i.ti-timer
-                              |  oct 10, 2016
-                    .side-tab-img-text
-                      .rec-img
-                        img(src='assets/img/recent-blog/recent-3.jpg', alt='image')
-                      .side-tab-text.ul-li
-                        .rec-link
-                          h3
-                            a(href='#') Hacks to make  your holday better
-                        ul.rec-nws-meta
-                          li
-                            a(href='#')
-                              i.ti-timer
-                              |  oct 10, 2016
-                    // //img-text
-                    .side-tab-img-text
-                      .rec-img
-                        img(src='assets/img/recent-blog/recent-4.jpg', alt='image')
-                      .side-tab-text.ul-li
-                        .rec-link
-                          h3
-                            a(href='#') Hacks to make  your holday better
-                        ul.rec-nws-meta
-                          li
-                            a(href='#')
-                              i.ti-timer
-                              |  oct 10, 2016
-                    // //img-text
-              // //.blog-single-right-side-content
-              .blog-single-right-side-content.mt50
-                .blog-single-side-title.text-capitalize
-                  h2.widgettitle.deep-black Tags
-                // //.widgettitle
-                .blog-tag.ul-li.mt30
-                  ul.blog-tag-list
-                    li
-                      a(href='#') Design
-                    li
-                      a(href='#') Web Design
-                    li
-                      a(href='#') Photo
-                    li
-                      a(href='#') HTML
-                    li
-                      a(href='#') Joomla
-                    li
-                      a(href='#') Wordpress
-                    li
-                      a(href='#') PSD
-                    li
-                      a(href='#') Logo
-              // //.blog-single-right-side-content
-            // //.blog-single-right-side-bar
-          // /.col-sm-3
-        // /.row
-      // //.blog-single-content
-    // /.row
-  // /.container
+                              |  !{data.date}
+                     hr 
+
+                                                 
