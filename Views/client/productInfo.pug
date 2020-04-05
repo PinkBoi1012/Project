@@ -60,16 +60,36 @@ block newProduct
                     li
 
 
+
               .blog-single-right-side-content.mt50
                 if(data.stock <=5 && data.stock >0)
                   a(style="color:red") There are only have !{data.stock} products
-                  br
+
+                 
                   p Button add cart
                 if(data.stock <=0 )
                   a(style="color:red") Sorry this product is out of stoke.
                   br
                 if(data.stock > 5)
-                  p Button add cart
+                  .contact-adress-form
+                    -let link = "/productInfo/"+data.id
+                    form#contact_form(enctype="form-data"  action=link method="POST")
+                      div.contact-info-item
+                        input#unitProduct(name="unitProduct" type="number"  value=1 min="1"  style="text-align: center")
+                        span
+                         i.fa.fa-user(aria-hidden="true")
+                      br
+                      br
+                      div.contact-info-item
+                        button.text-uppercase(type="submit" style="width:100%") Add
+                          i.fa.fa-angle-right(aria-hidden="true") 
+              br
+              br
+              br
+              br
+              br
+              br
+              br
               if arSimilarP[0] !== undefined
                .blog-single-right-side-content.mt50
                 .blog-single-side-title.text-capitalize
