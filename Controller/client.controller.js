@@ -35,7 +35,7 @@ clientController.renderHome = async function (req, res) {
 };
 //Render Cart info
 clientController.renderCartInfo = async function (req, res) {
-  console.log("Hello");
+  res.render("client/viewCart");
 };
 // Render Product Info
 clientController.renderProductInfo = async function (req, res) {

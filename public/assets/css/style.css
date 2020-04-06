@@ -747,7 +747,8 @@ Start of footer section [*7]
   max-width: 1170px;
   margin-top: -180px;
   margin: 0 auto -150px auto;
-  position: relative;
+
+  bottom: 0;
 }
 footer {
   position: absolute;
