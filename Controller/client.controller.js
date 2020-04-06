@@ -6,11 +6,11 @@ const productType = require("../models/TypeProduct");
 const Cart = require("../models/Cart");
 const moment = require("moment");
 // Render Home Page
-clientController.renderHome = async function (req, res) {
+clientController.renderHome = async function(req, res) {
   try {
     // Get data of product type and product in that and number of that product.
     let dataProductType = await productType.find({}, "_id TP_name");
-    let promisesDataPT = dataProductType.map(async function (x) {
+    let promisesDataPT = dataProductType.map(async function(x) {
       let PTdata = await product.find({ TP_id: x._id }, "TP_id");
       return { TP_id: x._id, TP_name: x.TP_name, data: PTdata };
     });
@@ -34,11 +34,14 @@ clientController.renderHome = async function (req, res) {
   }
 };
 //Render Cart info
-clientController.renderCartInfo = async function (req, res) {
+clientController.renderCartInfo = async function(req, res) {
+  let cart = new Cart(req.session.cart);
+  console.log(cart.generateArray());
   res.render("client/viewCart");
 };
+
 // Render Product Info
-clientController.renderProductInfo = async function (req, res) {
+clientController.renderProductInfo = async function(req, res) {
   let exitProduct = await product.findById(
     req.params._id,
     "P_create_at _id P_name P_description P_content P_unit_price P_unit P_picture TP_id"
@@ -52,18 +55,18 @@ clientController.renderProductInfo = async function (req, res) {
     .limit(3)
     .sort({ P_create_at: -1 });
 
-  let arraySimilarProduct = similarProduct.filter(function (x) {
+  let arraySimilarProduct = similarProduct.filter(function(x) {
     return x._id.toString() !== exitProduct._id.toString();
   });
 
-  let arSimilarP = arraySimilarProduct.map(function (x) {
+  let arSimilarP = arraySimilarProduct.map(function(x) {
     return {
       name: x.P_name,
       picture: x.P_picture,
       id: x._id,
       date: moment(x.P_create_at.P_create_at).format("MMMM D, YYYY"),
       price: x.P_unit_price,
-      unit: x.P_unit,
+      unit: x.P_unit
     };
   });
 
@@ -75,7 +78,7 @@ clientController.renderProductInfo = async function (req, res) {
     picture: exitProduct.P_picture.slice(7),
     description: exitProduct.P_description,
     price: exitProduct.P_unit_price,
-    stock: exitProduct.P_unit,
+    stock: exitProduct.P_unit
   };
   if (req.query.valid) {
     let status = req.query.valid;
@@ -85,7 +88,7 @@ clientController.renderProductInfo = async function (req, res) {
 };
 // .replace(new RegExp("\r?\n", "g"), " <br> ")
 // add To cart
-clientController.addToCart = async function (req, res) {
+clientController.addToCart = async function(req, res) {
   let productID = req.params._id;
   let unitProduct = req.body.unitProduct ? unitProduct : 1;
   let cart = new Cart(req.session.cart ? req.session.cart : {});
@@ -123,7 +126,7 @@ clientController.addToCart = async function (req, res) {
   return;
 };
 
-clientController.addCartProductInfo = async function (req, res) {
+clientController.addCartProductInfo = async function(req, res) {
   let productID = req.params._id;
   let unitProduct = req.body.unitProduct ? req.body.unitProduct : 1;
   let cart = new Cart(req.session.cart ? req.session.cart : {});

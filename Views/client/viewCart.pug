@@ -1,3 +1,39 @@
 extends ../template/client.template.pug
 block content
+ 
  p Cart View 
+    if session.cart == undefined || Object.keys(session.cart.items).length <0
+        h3(style="color:black") Cart 
+            span(style="color:black") (0 product)
+        br
+        br
+        br
+        br
+        br
+        br
+        br
+        br
+        br
+        br
+        br
+        br
+        br
+    if session.cart
+        h3(style="color:black") Cart 
+            -let product = session.cart.totalQty > 1 ? "products":"product"
+            span(style="color:black") ( #{session.cart.totalQty} #{product} )
+        br
+        table.table-responsive(-sm|-md|-lg|-xl style="border-top-style: none; border-left-style: none; border-right-style: none; border-bottom-style: none;")
+            tbody
+       
+                each data in session.cart
+                    //- -console.log(data)
+                    //- -let picture = 
+                tr
+                    td Hinh anh
+                    td thong in
+                    td so luong + -
+                    td gia ca
+         
+
+
