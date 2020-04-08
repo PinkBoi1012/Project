@@ -12,9 +12,14 @@ route.get("/add-to-cart/:_id", clientRoute.addToCart);
 
 route.post("/add-to-cart/:_id", clientRoute.addToCart);
 // @Route   GET /
-// @Des     Add to Cart
+// @Des     minusOne
 // @Access  Public
 route.get("/minusOne/:_id", clientRoute.minusOne);
+// @Route   GET /
+// @Des     PlusOne
+// @Access  Public
+route.get("/plusOne/:_id", clientRoute.plusOne);
+
 // @Route   GET / /productInfo/:_id
 // @Des     Product Info
 // @Access  Public
@@ -27,4 +32,6 @@ route.post("/productInfo/:_id", clientRoute.addCartProductInfo);
 // @Des     show cart information
 // @Access  Public
 route.get("/cartInfo", clientRoute.renderCartInfo);
+
+route.get("/deleteItemCart/:_id", clientRoute.deleteItemCart);
 module.exports = route;

@@ -6,7 +6,7 @@ module.exports = function Cart(oldCart) {
   this.add = function (item, id, unit) {
     let storedItem = this.items[id];
     let unitProduct = parseInt(unit);
-    console.log(unitProduct);
+
     if (!storedItem) {
       storedItem = this.items[id] = { item: item, qty: 0, price: 0 };
     }
@@ -14,7 +14,7 @@ module.exports = function Cart(oldCart) {
     if (storedItem.qty + unitProduct > 5) {
       return "ERROR qty";
     }
-    if (storedItem.qty + unitProduct < 0) {
+    if (storedItem.qty + unitProduct <= 0) {
       return "ERROR qty 2";
     }
     if (this.totalQty + unitProduct > 20) {
@@ -42,5 +42,17 @@ module.exports = function Cart(oldCart) {
       arr.push(this.items[id]);
     }
     return arr;
+  };
+  this.removeItem = function (id) {
+    let storedItem = this.items[id];
+    let unitProductPrice = storedItem.item.P_unit_price;
+    this.totalQty -= storedItem.qty;
+
+    this.totalPrice = (
+      parseFloat(this.totalPrice) -
+      parseFloat(unitProductPrice) * storedItem.qty
+    ).toFixed(2);
+
+    delete this.items[id];
   };
 };

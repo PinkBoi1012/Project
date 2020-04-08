@@ -28,7 +28,7 @@ block content
                 //- -console.log(session.cart)
                 each data in session.cart.items
                     //- -console.log(data)
-                    -let img = data.item.P_picture.slice(7);
+                    -let img = "/"+data.item.P_picture.slice(7);
                     -let qty = data.qty
                     -let id = data.item._id
                     -let minusOne = "/minusOne/"+id
@@ -42,9 +42,13 @@ block content
                             h3(style="color:black") !{data.item.P_name}
                             br
                             p !{data.item.P_description}
-                            br
                             if min < 5 
                                 p(style="color:red") There's only !{min}  item
+                            //- Delete Cart
+                            -let link = "/deleteItemCart/"+id
+                            br
+                            a( href=link)
+                                p(style=("color: red")) Remove
                         td(style="width:15%; padding:10px;" align='center') !{data.price} $
                         td(style="width:15%; padding:10px;" align='center')
                             .input-group
@@ -57,8 +61,12 @@ block content
          
         br
         br
-        - let linkCheckOut = "#"
-        h3(style="color:black") Total Price: #{session.cart.totalPrice} $
+        - let linkCheckOut = "#" 
+
+        if (session.cart.totalPrice <=0)
+            h3(style="color:black") Total Price: #{session.cart.totalPrice} $
+        else        
+            h3(style="color:black") Total Price: #{session.cart.totalPrice} $
             a.btn.btn-default(style="float:right; " href=linkCheckOut ) 
                 h3 Check Out 
 
@@ -132,7 +140,7 @@ block scriptCart
                 //- tru du lieu
                           
                 let result =  current - prev
-                console.log(result)
+            
                 let data = {unitProduct : result};
                
                 //- cong du lieu

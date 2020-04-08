@@ -35,22 +35,30 @@ clientController.renderHome = async function (req, res) {
 };
 //Render Cart info
 clientController.renderCartInfo = async function (req, res) {
-  if (!req.query.valid) {
-    if (req.session.cart) {
+  if (req.session.cart) {
+    if (!req.query.valid) {
       let cart = new Cart(req.session.cart);
+
       return res.render("client/viewCart");
     }
+    if (req.query.valid) {
+      let status = req.query.valid;
 
-    return res.render("client/viewCart");
-  }
-  if (req.session.cart) {
-    let cart = new Cart(req.session.cart);
-    return res.render("client/viewCart");
+      let cart = new Cart(req.session.cart);
+      return res.render("client/viewCart", { status });
+    }
   }
 
   return res.render("client/viewCart");
 };
-
+// Remove item cart
+clientController.deleteItemCart = async function (req, res) {
+  let cart = new Cart(req.session.cart);
+  let id = req.params._id;
+  cart.removeItem(id);
+  req.session.cart = cart;
+  return res.redirect("/cartInfo");
+};
 // Render Product Info
 clientController.renderProductInfo = async function (req, res) {
   let exitProduct = await product.findById(
@@ -180,6 +188,50 @@ clientController.minusOne = async function (req, res) {
   let productID = req.params._id;
 
   let unitProduct = -1;
+  let cart = new Cart(req.session.cart ? req.session.cart : {});
+
+  let productFind = await product.findById(
+    productID,
+    "P_unit P_unit_price P_picture P_name _id P_description"
+  );
+  if (!productFind) {
+    res.redirect("/");
+    return;
+  }
+
+  let addCart = await cart.add(productFind, productFind._id, unitProduct);
+
+  if (addCart === "ERROR qty") {
+    let data = "This items can not buy more than 5 items";
+    res.redirect("/cartInfo/?valid=" + data);
+    return;
+  }
+  if (addCart === "ERROR totalQty") {
+    let data = "Cart quantity items can not more than 20 items";
+    res.redirect("/cartInfo/?valid=" + data);
+    return;
+  }
+  if (addCart === "ERROR P_unit") {
+    let data = "Product quantity is not enough. Please choose another product";
+    res.redirect("/cartInfo/?valid=" + data);
+    return;
+  }
+  if (addCart === "ERROR qty 2") {
+    let data = "This items quantity need more than 1";
+    res.redirect("/cartInfo/?valid=" + data);
+    return;
+  }
+
+  req.session.cart = cart;
+
+  res.redirect("/cartInfo/");
+  return;
+};
+
+clientController.plusOne = async function (req, res) {
+  let productID = req.params._id;
+
+  let unitProduct = 1;
   let cart = new Cart(req.session.cart ? req.session.cart : {});
 
   let productFind = await product.findById(
