@@ -1,7 +1,6 @@
 extends ../template/client.template.pug
 block content
- 
- p Cart View 
+
     if session.cart == undefined || Object.keys(session.cart.items).length <0
         h3(style="color:black") Cart 
             span(style="color:black") (0 product)
@@ -23,17 +22,159 @@ block content
             -let product = session.cart.totalQty > 1 ? "products":"product"
             span(style="color:black") ( #{session.cart.totalQty} #{product} )
         br
-        table.table-responsive(-sm|-md|-lg|-xl style="border-top-style: none; border-left-style: none; border-right-style: none; border-bottom-style: none;")
+        table(style="width:100%")
             tbody
-       
-                each data in session.cart
+
+                //- -console.log(session.cart)
+                each data in session.cart.items
                     //- -console.log(data)
-                    //- -let picture = 
-                tr
-                    td Hinh anh
-                    td thong in
-                    td so luong + -
-                    td gia ca
+                    -let img = data.item.P_picture.slice(7);
+                    -let qty = data.qty
+                    -let id = data.item._id
+                    -let minusOne = "/minusOne/"+id
+                    -let plusOne = "/plusOne/"+id
+
+                    -let min = data.item.P_unit
+                    tr(style="padding-top:20px;  padding-bottom:20px;")
+                        td(style="width:20%; padding:10px;" align='center')
+                            img(src=img width=auto height='40px')
+                        td(style="width:50%; padding:10px;  vertical-align: top;   text-align: left;"  ) 
+                            h3(style="color:black") !{data.item.P_name}
+                            br
+                            p !{data.item.P_description}
+                            br
+                            if min < 5 
+                                p(style="color:red") There's only !{min}  item
+                        td(style="width:15%; padding:10px;" align='center') !{data.price} $
+                        td(style="width:15%; padding:10px;" align='center')
+                            .input-group
+                                span.input-group-btn
+                                    a.btn.btn-default(href=minusOne) -
+                                input#inputUnit.form-control(type="number" name=id value=qty minunit=min style=" text-align: center;")
+                                span.input-group-btn
+                                    a.btn.btn-default(href=plusOne) +
+
          
+        br
+        br
+        - let linkCheckOut = "#"
+        h3(style="color:black") Total Price: #{session.cart.totalPrice} $
+            a.btn.btn-default(style="float:right; " href=linkCheckOut ) 
+                h3 Check Out 
+
+        
 
 
+block scriptCart
+    script(src='/js/bootstrap-number-input.js')  
+    script.
+         function reloadPage(){
+            window.location.reload()
+        }
+        function redirectToHome(){
+            window.location.href = '/'
+        }
+
+    
+        $("input[id=inputUnit]").on('focusin', function(){
+        $(this).data('val', $(this).val());
+        }).on('change', function(){
+        let min = parseInt($(this).attr("minunit"))
+       
+        var prev = parseInt($(this).data('val'));
+        var current = parseInt($(this).val());
+        if (current <=0){
+            swal({title: "Unit need more than 0"}); 
+            $(this).val(prev)
+             return;
+        }
+        if (current >min){
+            swal({title: "This product only have "+min});  
+            $(this).val(prev)
+             return;
+        }
+        if( current>5){
+            swal({title: "Unit can not more than 5"});  
+            $(this).val(prev)
+            return;
+        }
+   
+        else{
+        
+            if(current>prev){
+             
+                let result =  current - prev
+                let data = {unitProduct : result};
+                //- cong du lieu
+                let url ="/add-to-cart/"+$(this).attr("name").toString();
+                
+                $.ajax({
+                    type: "POST",
+                    url :url,
+                    data: data,
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    success: function(){
+                    },
+                    complete:function(){
+
+                        reloadPage()
+                    },  
+                    error: function () {
+                        redirectToHome()
+                    },
+                } );
+    
+                
+            }
+       
+         
+            if(prev > current){
+                //- tru du lieu
+                          
+                let result =  current - prev
+                console.log(result)
+                let data = {unitProduct : result};
+               
+                //- cong du lieu
+                let url ="/add-to-cart/"+$(this).attr("name").toString();
+                
+                $.ajax({
+                    type: "POST",
+                    url :url,
+                    data: data,
+                    contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+                    success: function(){
+                    },
+                    complete:function(){
+
+                        reloadPage()
+                    },  
+                    error: function () {
+                        redirectToHome()
+                    },
+                } );
+            }
+            //- doi du lieu thien cart
+        //- }
+
+        }
+        });
+
+        //- $("#inputUnit").on("change", function(){
+        //-     let value = parseInt($(this).val());
+        //-     if (value > 5){
+        //-         //- swal({title: "Unit can not more than 5"});  
+        //-         $.ajax({
+        //-             type:'get',
+        //-             url:"http://localhost:8080/cartInfo",
+        //-             data
+        //-             success:function(data){
+        //-                 console.log(data)
+        //-             }
+        //-         })
+        //-     }
+        //-     if(value ==0){
+        //-           swal({title: "Unit need more than 0"});  
+        //-     }
+            
+        //- });

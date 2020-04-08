@@ -6,11 +6,11 @@ const productType = require("../models/TypeProduct");
 const Cart = require("../models/Cart");
 const moment = require("moment");
 // Render Home Page
-clientController.renderHome = async function(req, res) {
+clientController.renderHome = async function (req, res) {
   try {
     // Get data of product type and product in that and number of that product.
     let dataProductType = await productType.find({}, "_id TP_name");
-    let promisesDataPT = dataProductType.map(async function(x) {
+    let promisesDataPT = dataProductType.map(async function (x) {
       let PTdata = await product.find({ TP_id: x._id }, "TP_id");
       return { TP_id: x._id, TP_name: x.TP_name, data: PTdata };
     });
@@ -34,14 +34,25 @@ clientController.renderHome = async function(req, res) {
   }
 };
 //Render Cart info
-clientController.renderCartInfo = async function(req, res) {
-  let cart = new Cart(req.session.cart);
-  console.log(cart.generateArray());
-  res.render("client/viewCart");
+clientController.renderCartInfo = async function (req, res) {
+  if (!req.query.valid) {
+    if (req.session.cart) {
+      let cart = new Cart(req.session.cart);
+      return res.render("client/viewCart");
+    }
+
+    return res.render("client/viewCart");
+  }
+  if (req.session.cart) {
+    let cart = new Cart(req.session.cart);
+    return res.render("client/viewCart");
+  }
+
+  return res.render("client/viewCart");
 };
 
 // Render Product Info
-clientController.renderProductInfo = async function(req, res) {
+clientController.renderProductInfo = async function (req, res) {
   let exitProduct = await product.findById(
     req.params._id,
     "P_create_at _id P_name P_description P_content P_unit_price P_unit P_picture TP_id"
@@ -55,18 +66,18 @@ clientController.renderProductInfo = async function(req, res) {
     .limit(3)
     .sort({ P_create_at: -1 });
 
-  let arraySimilarProduct = similarProduct.filter(function(x) {
+  let arraySimilarProduct = similarProduct.filter(function (x) {
     return x._id.toString() !== exitProduct._id.toString();
   });
 
-  let arSimilarP = arraySimilarProduct.map(function(x) {
+  let arSimilarP = arraySimilarProduct.map(function (x) {
     return {
       name: x.P_name,
       picture: x.P_picture,
       id: x._id,
       date: moment(x.P_create_at.P_create_at).format("MMMM D, YYYY"),
       price: x.P_unit_price,
-      unit: x.P_unit
+      unit: x.P_unit,
     };
   });
 
@@ -78,7 +89,7 @@ clientController.renderProductInfo = async function(req, res) {
     picture: exitProduct.P_picture.slice(7),
     description: exitProduct.P_description,
     price: exitProduct.P_unit_price,
-    stock: exitProduct.P_unit
+    stock: exitProduct.P_unit,
   };
   if (req.query.valid) {
     let status = req.query.valid;
@@ -88,14 +99,15 @@ clientController.renderProductInfo = async function(req, res) {
 };
 // .replace(new RegExp("\r?\n", "g"), " <br> ")
 // add To cart
-clientController.addToCart = async function(req, res) {
+clientController.addToCart = async function (req, res) {
   let productID = req.params._id;
-  let unitProduct = req.body.unitProduct ? unitProduct : 1;
+
+  let unitProduct = req.body.unitProduct ? req.body.unitProduct : 1;
   let cart = new Cart(req.session.cart ? req.session.cart : {});
 
   let productFind = await product.findById(
     productID,
-    "P_unit P_unit_price P_picture P_name _id"
+    "P_unit P_unit_price P_picture P_name _id P_description"
   );
   if (!productFind) {
     res.redirect("/");
@@ -121,12 +133,12 @@ clientController.addToCart = async function(req, res) {
   }
 
   req.session.cart = cart;
-  console.log(cart);
+
   res.redirect("/");
   return;
 };
 
-clientController.addCartProductInfo = async function(req, res) {
+clientController.addCartProductInfo = async function (req, res) {
   let productID = req.params._id;
   let unitProduct = req.body.unitProduct ? req.body.unitProduct : 1;
   let cart = new Cart(req.session.cart ? req.session.cart : {});
@@ -160,5 +172,51 @@ clientController.addCartProductInfo = async function(req, res) {
   res.redirect(link + "Add Cart Success");
   return;
   // console.log(productID);
+};
+
+// minus One View Cart
+
+clientController.minusOne = async function (req, res) {
+  let productID = req.params._id;
+
+  let unitProduct = -1;
+  let cart = new Cart(req.session.cart ? req.session.cart : {});
+
+  let productFind = await product.findById(
+    productID,
+    "P_unit P_unit_price P_picture P_name _id P_description"
+  );
+  if (!productFind) {
+    res.redirect("/");
+    return;
+  }
+
+  let addCart = await cart.add(productFind, productFind._id, unitProduct);
+
+  if (addCart === "ERROR qty") {
+    let data = "This items can not buy more than 5 items";
+    res.redirect("/cartInfo/?valid=" + data);
+    return;
+  }
+  if (addCart === "ERROR totalQty") {
+    let data = "Cart quantity items can not more than 20 items";
+    res.redirect("/cartInfo/?valid=" + data);
+    return;
+  }
+  if (addCart === "ERROR P_unit") {
+    let data = "Product quantity is not enough. Please choose another product";
+    res.redirect("/cartInfo/?valid=" + data);
+    return;
+  }
+  if (addCart === "ERROR qty 2") {
+    let data = "This items quantity need more than 1";
+    res.redirect("/cartInfo/?valid=" + data);
+    return;
+  }
+
+  req.session.cart = cart;
+
+  res.redirect("/cartInfo/");
+  return;
 };
 module.exports = clientController;

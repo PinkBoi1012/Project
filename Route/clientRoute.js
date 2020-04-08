@@ -10,6 +10,11 @@ route.get("/", clientRoute.renderHome);
 // @Access  Public
 route.get("/add-to-cart/:_id", clientRoute.addToCart);
 
+route.post("/add-to-cart/:_id", clientRoute.addToCart);
+// @Route   GET /
+// @Des     Add to Cart
+// @Access  Public
+route.get("/minusOne/:_id", clientRoute.minusOne);
 // @Route   GET / /productInfo/:_id
 // @Des     Product Info
 // @Access  Public

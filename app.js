@@ -11,14 +11,14 @@ const MongoStore = require("connect-mongo")(session);
 // connect db
 mongoose
   .connect(key.mongoURL, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(mess => console.log("mongoose is connect"))
-  .catch(err => {
+  .then((mess) => console.log("mongoose is connect"))
+  .catch((err) => {
     console.log(err);
   });
 
 //config body parser
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
+
 // config cookie parser
 
 app.use(cookieParser(key.secret));
@@ -36,7 +36,7 @@ app.use(
     saveUninitialized: false,
 
     store: new MongoStore({ mongooseConnection: mongoose.connection }),
-    cookie: { maxAge: 180 * 60 * 1000 }
+    cookie: { maxAge: 180 * 60 * 1000 },
   })
 );
 
@@ -44,7 +44,7 @@ app.use(express.static("public"));
 app.use("/user", userRoute);
 app.use(
   "/",
-  function(req, res, next) {
+  function (req, res, next) {
     res.locals.session = req.session;
     next();
   },
