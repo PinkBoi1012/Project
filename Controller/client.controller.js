@@ -5,6 +5,7 @@ const product = require("../models/Product");
 const productType = require("../models/TypeProduct");
 const Cart = require("../models/Cart");
 const moment = require("moment");
+
 // Render Home Page
 clientController.renderHome = async function (req, res) {
   try {
@@ -270,5 +271,57 @@ clientController.plusOne = async function (req, res) {
 
   res.redirect("/cartInfo/");
   return;
+};
+//Render and check cart if product not enough unit minimus m update cart and show alert
+clientController.rendercheckOut = async function (req, res) {
+  res.render("client/checkout");
+};
+
+clientController.checkOut = async function (req, res) {
+  let cartArr = new Cart(req.session.cart).generateArray();
+  let cartData = new Cart(req.session.cart);
+  let totalQty = req.session.cart.totalQty;
+  let totalPrice = req.session.cart.totalPrice;
+
+  await cartArr.forEach(async function (data) {
+    let id = data.item._id;
+    let checkUnit = await product.findById(id, "_id P_unit");
+    let cartItemQty = cartData.items[id].qty;
+    let productQty = checkUnit.P_unit;
+    if (cartItemQty > productQty) {
+    }
+  });
+};
+
+// Payment
+clientController.payment = async function (req, res) {
+  if (!req.session.cart) {
+    res.redirect("/");
+    return;
+  }
+  var cart = new Cart(req.session.cart);
+  const stripe = require("stripe")(
+    "sk_test_4tkyEOasqlYKV0kclVp3cXk900geCCC4PS"
+  );
+
+  stripe.charges.create(
+    {
+      currency: "usd",
+      amount: cart.totalPrice * 100,
+      source: req.body.stripeToken,
+      description: "Test Charge",
+      receipt_email: "bop5565237@gmail.com",
+    },
+    function (err, charge) {
+      // console.log(charge);
+      if (err) {
+        console.log(err);
+        res.redirect("/checkout");
+      }
+      req.session.cart = null;
+      res.redirect("/");
+      return;
+    }
+  );
 };
 module.exports = clientController;

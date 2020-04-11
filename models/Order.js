@@ -8,10 +8,11 @@ const OrderSchema = new Schema(
     O_total: { type: Number, require: true },
     O_status: { type: String, default: "Draft" },
     note: { type: String, require: true },
-    O_create_at: { type: Date }
+    O_create_at: { type: Date },
+    paymentId: { type: String, require: true },
   },
   {
-    versionKey: false
+    versionKey: false,
   }
 );
 

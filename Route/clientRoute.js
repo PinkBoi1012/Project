@@ -33,5 +33,11 @@ route.post("/productInfo/:_id", clientRoute.addCartProductInfo);
 // @Access  Public
 route.get("/cartInfo", clientRoute.renderCartInfo);
 
+route.get("/checkout", clientRoute.rendercheckOut);
+route.get("/checkout", clientRoute.checkOut);
+//Delete item cart
 route.get("/deleteItemCart/:_id", clientRoute.deleteItemCart);
+//Payment
+
+route.post("/payment", clientRoute.payment);
 module.exports = route;

@@ -41,6 +41,7 @@ block content
                         td(style="width:50%; padding:10px;  vertical-align: top;   text-align: left;"  ) 
                             h3(style="color:black") !{data.item.P_name}
                             br
+                            -console.log(data.item)
                             p !{data.item.P_description}
                             if min < 5 
                                 p(style="color:red") There's only !{min}  item
@@ -61,7 +62,7 @@ block content
          
         br
         br
-        - let linkCheckOut = "#" 
+        - let linkCheckOut = "/checkout" 
 
         if (session.cart.totalPrice <=0)
             h3(style="color:black") Total Price: #{session.cart.totalPrice} $
