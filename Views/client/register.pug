@@ -1,0 +1,27 @@
+extends ../template/client.template.pug
+block content
+    link(rel="stylesheet", href="../css/login.css")
+
+    .wrapper.fadeInDown
+          #formContent
+            // Tabs Titles
+            // Icon
+            .fadeIn.first
+            // Login Form
+            form(action="/customer/register" method="POST")
+                input#email.fadeIn.second(type='text', name='email', placeholder='Email',value=values? values.email :'')
+                p#emailErrorInput.fadeIn.second
+                input#fullname.fadeIn.second(type='text', name='fullname', placeholder='Full Name',value=values? values.fullname :'')
+                p#fullnameErrorInput.fadeIn.second
+                input#phone.fadeIn.second(type='text', name='phone', placeholder='Phone Number',value=values? values.phone :'')
+                p#phoneErrorInput.fadeIn.second
+                input#password.fadeIn.second(type='password', name='password', placeholder='Password',value ="")
+                p#passwordErrorInput.fadeIn.second
+                input#password2.fadeIn.second(type='password', name='password2', placeholder='Password Confirm',value ="")
+                p#password2ErrorInput.fadeIn.second
+                input.fadeIn.third(type='submit', value='Register')
+            #formFooter
+                a.underlineHover(href='/login') Login
+    
+
+ 

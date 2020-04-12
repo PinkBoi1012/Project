@@ -1,10 +1,25 @@
 const express = require("express");
 const route = express.Router();
 const clientRoute = require("../Controller/client.controller");
+
 // @Route   GET /
 // @Des     Render HomePage
 // @Access  Public
 route.get("/", clientRoute.renderHome);
+// @Route   GET /
+// @Des     Render Login customer
+// @Access  Public
+route.get("/login", clientRoute.renderLogin);
+
+// Render REgister
+route.get("/register", clientRoute.renderRegister);
+// Render Forgot password
+route.get("/forgotPassword", clientRoute.renderForgotPassword);
+// @Route   POST /customer/login
+// @Des     Login handle
+// @Access  Public
+route.post("/customer/login", clientRoute.handleLogin);
+
 // @Route   GET /
 // @Des     Add to Cart
 // @Access  Public

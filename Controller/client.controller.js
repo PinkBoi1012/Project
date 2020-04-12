@@ -5,7 +5,23 @@ const product = require("../models/Product");
 const productType = require("../models/TypeProduct");
 const Cart = require("../models/Cart");
 const moment = require("moment");
+const Order = require("../models/Order");
+// Render Login Customer
+clientController.renderLogin = async function (req, res) {
+  res.render("./client/login");
+  return;
+};
+// Render Forger Password Customer
 
+clientController.renderForgotPassword = async function (req, res) {
+  res.render("./client/forgotPassword");
+  return;
+};
+// Render Register Customer
+clientController.renderRegister = async function (req, res) {
+  res.render("./client/register");
+  return;
+};
 // Render Home Page
 clientController.renderHome = async function (req, res) {
   try {
@@ -107,6 +123,18 @@ clientController.renderProductInfo = async function (req, res) {
   return res.render("./client/productInfo", { data, arSimilarP });
 };
 // .replace(new RegExp("\r?\n", "g"), " <br> ")
+
+// handling Login customer
+clientController.handleLogin = async function (req, res) {
+  // check email and pass word.
+  // Check active
+  console.log("HAY");
+  return;
+};
+// handling Register Customer
+// handling Forget password customer
+// handling send mail active customer
+
 // add To cart
 clientController.addToCart = async function (req, res) {
   let productID = req.params._id;
@@ -318,10 +346,16 @@ clientController.payment = async function (req, res) {
         console.log(err);
         res.redirect("/checkout");
       }
+      // neu khong bi loi
+      // create new order and save it to database
+      // const order = new Order({
+      //   user: req.
+      // })
       req.session.cart = null;
       res.redirect("/");
       return;
     }
   );
 };
+
 module.exports = clientController;

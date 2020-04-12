@@ -14,30 +14,30 @@ const addProductValidate = require("../Validate/user/validate.addProduct");
 const fs = require("fs");
 
 // Render login Page
-userController.renderLogin = function(req, res) {
+userController.renderLogin = function (req, res) {
   return res.render("admin/login");
 };
 // Render forgot password page
-userController.renderForgetPasswordPage = function(req, res) {
+userController.renderForgetPasswordPage = function (req, res) {
   res.render("admin/forgot");
   return;
 };
 
 // Render Admin register Page
-userController.renderAdminRegisterPage = function(req, res) {
+userController.renderAdminRegisterPage = function (req, res) {
   return res.render("admin/register");
 };
 // Render reset password Page
-userController.renderResetPasswordPage = function(req, res) {
+userController.renderResetPasswordPage = function (req, res) {
   return res.render("admin/resetpassword");
 };
 // Render Admin page
-userController.renderAdminMainPage = function(req, res) {
+userController.renderAdminMainPage = function (req, res) {
   return res.render("admin/dashboard");
 };
 
 //Render Admin product type page
-userController.renderAdminProductTypePage = async function(req, res) {
+userController.renderAdminProductTypePage = async function (req, res) {
   let dataProductType = await productType.find();
   var error = req.query.valid;
 
@@ -49,7 +49,7 @@ userController.renderAdminProductTypePage = async function(req, res) {
   return;
 };
 // Render mangager product page
-userController.renderAdminProductPage = async function(req, res) {
+userController.renderAdminProductPage = async function (req, res) {
   let productData = await product
     .find()
     .select("_id P_name P_unit_price P_unit");
@@ -63,35 +63,35 @@ userController.renderAdminProductPage = async function(req, res) {
 };
 
 //render order manager page
-userController.renderOrderManagerPage = function(req, res) {
+userController.renderOrderManagerPage = function (req, res) {
   res.render("admin/orderManager");
   return;
 };
 //render customer manager page
-userController.renderCustomerManagerPage = function(req, res) {
+userController.renderCustomerManagerPage = function (req, res) {
   res.render("admin/customerManager");
   return;
 };
 
 //render Add product page
-userController.renderAddProductPage = async function(req, res) {
+userController.renderAddProductPage = async function (req, res) {
   let productTypeInfo = await productType.find().select("_id TP_name");
   let productDataDefaultSelectArray = [];
 
   res.render("admin/addProduct", {
     productTypeInfo,
-    productDataDefaultSelectArray
+    productDataDefaultSelectArray,
   });
   return;
 };
 //render Add product Type page
-userController.renderAddProductTypePage = function(req, res) {
+userController.renderAddProductTypePage = function (req, res) {
   res.render("admin/addProductType");
   return;
 };
 
 //render Product Type Information
-userController.renderProductTypeUpdate = async function(req, res) {
+userController.renderProductTypeUpdate = async function (req, res) {
   let data = await productType.findById(req.params._id);
   if (!data) {
     return res.redirect("/user/producttype");
@@ -100,14 +100,14 @@ userController.renderProductTypeUpdate = async function(req, res) {
   return;
 };
 // login Admin Function
-userController.login = function(req, res) {
+userController.login = function (req, res) {
   const { errors, isValid } = loginValidate(req.body);
   if (errors) {
     if (!isValid) {
       res.render("admin/login", { errors, values: req.body });
       return;
     }
-    User.findOne({ email: req.body.email }).then(function(data) {
+    User.findOne({ email: req.body.email }).then(function (data) {
       if (data) {
         if (!data.active) {
           errors.email =
@@ -123,7 +123,7 @@ userController.login = function(req, res) {
 
         res.cookie("user", data.id, {
           signed: true,
-          expires: new Date(Date.now() + 8 * 3600000)
+          expires: new Date(Date.now() + 8 * 3600000),
         });
         res.redirect("/user/dashboard");
 
@@ -137,7 +137,7 @@ userController.login = function(req, res) {
 };
 
 // register Addmin
-userController.register = async function(req, res) {
+userController.register = async function (req, res) {
   const { errors, isValid } = resigterValidate(req.body);
 
   let userExit = await User.find({ email: req.body.email });
@@ -158,12 +158,12 @@ userController.register = async function(req, res) {
     email: req.body.email,
     fullname: req.body.fullname,
     password,
-    phone: req.body.phone
+    phone: req.body.phone,
   });
 
-  user.save(async function(err, userData) {
+  user.save(async function (err, userData) {
     let token = await jwt.sign({ _id: userData._id }, key.secret, {
-      expiresIn: "24h"
+      expiresIn: "24h",
     });
     let content =
       "<p>Please Click This Link To Active Admin Account:</p><a href=http://localhost:8080/user/active/" +
@@ -180,17 +180,17 @@ userController.register = async function(req, res) {
 };
 
 // Active user Account
-userController.getActiveUserToken = function(req, res) {
-  jwt.verify(req.params._id, key.secret, function(err, decoded) {
+userController.getActiveUserToken = function (req, res) {
+  jwt.verify(req.params._id, key.secret, function (err, decoded) {
     if (err) {
       res.send(
         "Token is expired.We has send another token, Please check your email again "
       );
       return;
     }
-    User.findById(decoded._id, function(err, data1) {
+    User.findById(decoded._id, function (err, data1) {
       if (data1.active == false) {
-        User.findByIdAndUpdate(decoded._id, { active: true }, function(
+        User.findByIdAndUpdate(decoded._id, { active: true }, function (
           err,
           data
         ) {
@@ -207,7 +207,7 @@ userController.getActiveUserToken = function(req, res) {
   });
 };
 // Sent Forgot password, send Mail
-userController.sentForgotUserPassword = async function(req, res) {
+userController.sentForgotUserPassword = async function (req, res) {
   const { errors, isValid } = forgetPasswordValidate(req.body);
   if (!isValid) {
     res.render("admin/forgot", { errors, values: req.body });
@@ -220,7 +220,7 @@ userController.sentForgotUserPassword = async function(req, res) {
     return;
   }
   let token = await jwt.sign({ _id: findUser._id }, key.secret, {
-    expiresIn: "24h"
+    expiresIn: "24h",
   });
   let subject = `Recovery Account ${findUser.email}`;
   let content =
@@ -231,7 +231,7 @@ userController.sentForgotUserPassword = async function(req, res) {
   return;
 };
 // Submit new Product Type
-userController.addProductType = async function(req, res) {
+userController.addProductType = async function (req, res) {
   const { errors, isValid } = addProductTypeValidate(req.body);
   let isNameExist = await productType.findOne({ TP_name: req.body.TP_name });
   if (isNameExist) {
@@ -246,15 +246,15 @@ userController.addProductType = async function(req, res) {
   }
   let newProductType = new productType({
     TP_name: req.body.TP_name,
-    TP_description: req.body.TP_description
+    TP_description: req.body.TP_description,
   });
   // Add product type and save turn back to product type page
-  newProductType.save(function(err, data) {
+  newProductType.save(function (err, data) {
     return res.redirect("producttype");
   });
 };
 // update product type
-userController.editProductType = async function(req, res) {
+userController.editProductType = async function (req, res) {
   const { errors, isValid } = addProductTypeValidate(req.body);
 
   let data = await productType.findOne({ TP_name: req.body.TP_name });
@@ -273,10 +273,10 @@ userController.editProductType = async function(req, res) {
   }
   let change = {
     TP_name: req.body.TP_name,
-    TP_description: req.body.TP_description
+    TP_description: req.body.TP_description,
   };
 
-  productType.findByIdAndUpdate(req.body._id, change, function(err, data) {
+  productType.findByIdAndUpdate(req.body._id, change, function (err, data) {
     if (err) {
       return;
     }
@@ -285,26 +285,26 @@ userController.editProductType = async function(req, res) {
   });
 };
 // Delete product type
-userController.deleteProductType = async function(req, res) {
+userController.deleteProductType = async function (req, res) {
   let findProductHavePT = await product.find({ TP_id: req.params._id });
   if (findProductHavePT.length != 0) {
-    let data = await encodeURIComponent(findProductHavePT.map(x => x.P_name));
+    let data = await encodeURIComponent(findProductHavePT.map((x) => x.P_name));
     res.redirect("/user/producttype/?valid=" + data.toString());
     return;
   }
-  productType.findByIdAndRemove(req.params._id, function(err, data) {
+  productType.findByIdAndRemove(req.params._id, function (err, data) {
     res.redirect("/user/producttype");
     return;
   });
 };
 
 // Add new product
-userController.addProduct = async function(req, res) {
+userController.addProduct = async function (req, res) {
   let existProduct = await product.find({ P_name: req.body.P_name });
   let productTypeInfo = await productType.find().select("_id TP_name");
   let { errors, isValid } = addProductValidate(req.body);
 
-  let productDataDefaultSelect = function() {
+  let productDataDefaultSelect = function () {
     if (typeof req.body.TP_id === "string") {
       return [req.body.TP_id];
     } else if (typeof req.body.TP_id === "object") {
@@ -314,7 +314,7 @@ userController.addProduct = async function(req, res) {
     return [];
   };
 
-  let productDataDefaultSelectArray = productDataDefaultSelect().map(x =>
+  let productDataDefaultSelectArray = productDataDefaultSelect().map((x) =>
     x.toString()
   );
 
@@ -324,7 +324,7 @@ userController.addProduct = async function(req, res) {
       errors,
       values: req.body,
       productTypeInfo,
-      productDataDefaultSelectArray
+      productDataDefaultSelectArray,
     });
     return;
   } else if (!isValid && req.file == undefined) {
@@ -334,7 +334,7 @@ userController.addProduct = async function(req, res) {
       errors,
       values: req.body,
       productTypeInfo,
-      productDataDefaultSelectArray
+      productDataDefaultSelectArray,
     });
     return;
   } else if (req.file == undefined) {
@@ -343,7 +343,7 @@ userController.addProduct = async function(req, res) {
       errors,
       values: req.body,
       productTypeInfo,
-      productDataDefaultSelectArray
+      productDataDefaultSelectArray,
     });
     return;
   }
@@ -357,10 +357,10 @@ userController.addProduct = async function(req, res) {
     P_unit_price: req.body.P_unit_price,
     P_unit: req.body.P_unit,
     P_picture: req.file.path,
-    TP_id: req.body.TP_id
+    TP_id: req.body.TP_id,
   });
 
-  newProduct.save(function(err) {
+  newProduct.save(function (err) {
     res.redirect("/user/product");
     return;
   });
@@ -382,13 +382,13 @@ userController.addProduct = async function(req, res) {
 };
 
 // GET Update product page
-userController.renderUpdateProduct = async function(req, res) {
+userController.renderUpdateProduct = async function (req, res) {
   // slice public
   let productTypeInfo = await productType.find();
   let values = await product.findById(req.params._id);
   let pic = await values.P_picture.slice(6);
   let productDataDefaultSelect = Object.values(values.TP_id);
-  let productDataDefaultSelectArray = productDataDefaultSelect.map(x =>
+  let productDataDefaultSelectArray = productDataDefaultSelect.map((x) =>
     x.toString()
   );
 
@@ -396,20 +396,20 @@ userController.renderUpdateProduct = async function(req, res) {
     values,
     productTypeInfo,
     productDataDefaultSelectArray,
-    pic
+    pic,
   });
 };
 
 // Delete product
-userController.deleteProduct = async function(req, res) {
+userController.deleteProduct = async function (req, res) {
   let findProduct = await product.findById(req.params._id);
   let path = findProduct.P_picture;
-  fs.unlink(path, err => {
+  fs.unlink(path, (err) => {
     if (err) {
       res.redirect("/user/product");
       return;
     }
-    product.findByIdAndRemove(req.params._id, function(err) {
+    product.findByIdAndRemove(req.params._id, function (err) {
       let data = "Success";
       res.redirect("/user/product?valid=" + data);
       return;
@@ -417,13 +417,13 @@ userController.deleteProduct = async function(req, res) {
   });
 };
 // Update product
-userController.updateProduct = async function(req, res) {
+userController.updateProduct = async function (req, res) {
   let productFind = await product.findById({ _id: req.body._id });
 
   let pic = await productFind.P_picture.slice(6);
   let existProduct = await product.find({ P_name: req.body.P_name });
   let productTypeInfo = await productType.find().select("_id TP_name");
-  let productDataDefaultSelect = await function() {
+  let productDataDefaultSelect = await function () {
     if (typeof req.body.TP_id === "string") {
       return [req.body.TP_id];
     } else if (typeof req.body.TP_id === "object") {
@@ -432,7 +432,7 @@ userController.updateProduct = async function(req, res) {
     return [];
   };
 
-  let productDataDefaultSelectArray = productDataDefaultSelect().map(x =>
+  let productDataDefaultSelectArray = productDataDefaultSelect().map((x) =>
     x.toString()
   );
   let { errors, isValid } = addProductValidate(req.body);
@@ -442,7 +442,7 @@ userController.updateProduct = async function(req, res) {
       values: req.body,
       productTypeInfo,
       pic,
-      productDataDefaultSelectArray
+      productDataDefaultSelectArray,
     });
     return;
   } else if (productFind.length > 0 && productFind.P_name != req.body.P_name) {
@@ -452,7 +452,7 @@ userController.updateProduct = async function(req, res) {
       values: req.body,
       productTypeInfo,
       pic,
-      productDataDefaultSelectArray
+      productDataDefaultSelectArray,
     });
     return;
   } else if (req.file == undefined) {
@@ -462,10 +462,10 @@ userController.updateProduct = async function(req, res) {
       P_description: req.body.P_description,
       P_content: req.body.P_content,
       P_unit_price: req.body.P_unit_price,
-      P_unit: req.body.P_unit
+      P_unit: req.body.P_unit,
     };
 
-    product.findByIdAndUpdate(req.body._id, data, function(err) {
+    product.findByIdAndUpdate(req.body._id, data, function (err) {
       if (err) {
         return;
       }
@@ -476,7 +476,7 @@ userController.updateProduct = async function(req, res) {
     let oldProduct = await product.findById(req.body._id);
     let filePath = oldProduct.P_picture;
 
-    fs.unlink(filePath, function(err) {
+    fs.unlink(filePath, function (err) {
       return;
     });
 
@@ -488,9 +488,9 @@ userController.updateProduct = async function(req, res) {
       P_content: req.body.P_content,
       P_unit_price: req.body.P_unit_price,
       P_unit: req.body.P_unit,
-      P_picture: path_img
+      P_picture: path_img,
     };
-    product.findByIdAndUpdate(req.body._id, data, function(err) {
+    product.findByIdAndUpdate(req.body._id, data, function (err) {
       res.redirect("/user/product");
       return;
     });

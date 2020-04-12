@@ -9,16 +9,16 @@ const addProductValidate = require("../Validate/user/validate.addProduct");
 const product = require("../models/Product");
 const productType = require("../models/TypeProduct");
 const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
+  destination: function (req, file, cb) {
     cb(null, "./public/uploads");
   },
-  filename: function(req, file, cb) {
+  filename: function (req, file, cb) {
     const now = new Date().toISOString();
     const date = now.replace(/:/g, "-");
     cb(null, date + file.originalname);
-  }
+  },
 });
-const fileFilter = function(req, file, cb) {
+const fileFilter = function (req, file, cb) {
   let { errors, isValid } = addProductValidate(req.body);
   if (!isValid) {
     cb(null, false);
@@ -194,14 +194,14 @@ route.get(
 route.post(
   "/addProduct",
   userAuth.checkAuthLogin,
-  function(req, res, next) {
-    upload.single("P_picture")(req, res, async function(err) {
+  function (req, res, next) {
+    upload.single("P_picture")(req, res, async function (err) {
       if (err) {
         let values = req.body;
         let errors = {};
 
         errors.P_picture = "Choose Product Picture right format (jpeg/png)";
-        let productDataDefaultSelect = function() {
+        let productDataDefaultSelect = function () {
           if (typeof req.body.TP_id === "string") {
             return [req.body.TP_id];
           } else if (typeof req.body.TP_id === "object") {
@@ -211,7 +211,7 @@ route.post(
         };
 
         let productDataDefaultSelectArray = await productDataDefaultSelect().map(
-          x => x.toString()
+          (x) => x.toString()
         );
 
         let productTypeInfo = await productType.find().select("_id TP_name");
@@ -219,7 +219,7 @@ route.post(
           productTypeInfo,
           productDataDefaultSelectArray,
           errors,
-          values
+          values,
         });
         return;
       }
@@ -242,14 +242,14 @@ route.get(
 route.post(
   "/updateProduct",
   userAuth.checkAuthLogin,
-  function(req, res, next) {
-    upload.single("P_picture")(req, res, async function(err) {
+  function (req, res, next) {
+    upload.single("P_picture")(req, res, async function (err) {
       if (err) {
         let productData = await product.findById(req.body._id);
         let errors = {};
         errors.P_picture = "Choose Product Picture right format (jpeg/png)";
 
-        let productDataDefaultSelect = function() {
+        let productDataDefaultSelect = function () {
           if (typeof req.body.TP_id === "string") {
             return [req.body.TP_id];
           } else if (typeof req.body.TP_id === "Object") {
@@ -257,8 +257,8 @@ route.post(
           }
           return [];
         };
-        let productDataDefaultSelectArray = productDataDefaultSelect().map(x =>
-          x.toString()
+        let productDataDefaultSelectArray = productDataDefaultSelect().map(
+          (x) => x.toString()
         );
         let productTypeInfo = await productType.find().select("_id TP_name");
 
@@ -269,7 +269,7 @@ route.post(
           pic,
           values: req.body,
           productTypeInfo,
-          productDataDefaultSelectArray
+          productDataDefaultSelectArray,
         });
         return;
       }
@@ -288,7 +288,7 @@ route.get(
 );
 
 // clear cookie
-route.get("/signout", function(req, res) {
+route.get("/signout", function (req, res) {
   res.clearCookie("user");
   return res.redirect("/user/login");
 });
