@@ -84,20 +84,15 @@ route.get(
   UserController.getActiveUserToken
 );
 
-//@route    POST
-//@desc     Send link to mail to reset password
-//@access   Public
-route.post("/forgot", UserController.sentForgotUserPassword);
-
 //@route    GET
 //@desc     Change password
 //@access   private
 route.get("/resetpassword/:_id", UserController.renderResetPasswordPage);
 
-//@route    GET
+//@route    post
 //@desc     Change password
 //@access   private
-route.get("/resetpassword/:_id", UserController.renderResetPasswordPage);
+route.post("/forgot", UserController.handleForgot);
 //@route    POST
 //@desc     Register Admin
 //@access   private

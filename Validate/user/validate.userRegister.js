@@ -1,6 +1,7 @@
 const Validator = require("validator");
 const isEmpty = require("../is-empty");
 module.exports = function validatorRegisterInput(data) {
+  console.log(data);
   let errors = {};
   data.email = !isEmpty(data.email) ? data.email : "";
   data.password = !isEmpty(data.password) ? data.password : "";
@@ -10,6 +11,9 @@ module.exports = function validatorRegisterInput(data) {
   // Check empty
 
   // check phone number
+  if (!Validator.isNumeric(data.phone)) {
+    errors.phone = "Phone Number must have numberic format";
+  }
   if (!Validator.isLength(data.phone, { min: 10, max: 10 })) {
     errors.phone = "Phone number is have 10 digits";
   }
@@ -47,6 +51,6 @@ module.exports = function validatorRegisterInput(data) {
   }
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };

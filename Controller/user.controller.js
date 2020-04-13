@@ -12,7 +12,7 @@ const key = require("../config/keys");
 const addProductTypeValidate = require("../Validate/user/validate.addProductType");
 const addProductValidate = require("../Validate/user/validate.addProduct");
 const fs = require("fs");
-
+const ValidateResetPassword = require("../Validate/user/validate.userResetPassword");
 // Render login Page
 userController.renderLogin = function (req, res) {
   return res.render("admin/login");
@@ -22,14 +22,39 @@ userController.renderForgetPasswordPage = function (req, res) {
   res.render("admin/forgot");
   return;
 };
+// handle forgot and change password
+userController.handleForgot = async function async(req, res) {
+  let { errors, isValid } = ValidateResetPassword(req.body);
+  if (!isValid) {
+    let a = req.body._id;
+    return res.render("admin/resetpassword", { data: { _id: a }, errors });
+  }
+  let salt = bcrypt.genSaltSync(10);
+  let newPassword = bcrypt.hashSync(req.body.password, salt);
+  console.log(newPassword);
+  let findUSer = await User.findByIdAndUpdate(req.body._id, {
+    password: newPassword,
+  });
+  return res.redirect("/user");
+};
 
 // Render Admin register Page
 userController.renderAdminRegisterPage = function (req, res) {
   return res.render("admin/register");
 };
 // Render reset password Page
-userController.renderResetPasswordPage = function (req, res) {
-  return res.render("admin/resetpassword");
+userController.renderResetPasswordPage = async function (req, res) {
+  jwt.verify(req.params._id, key.secret, async function (err, decoded) {
+    if (err) {
+      return res.render("admin/login");
+    }
+
+    let findUser = await User.findById(decoded._id);
+    console.log(findUser);
+    return res.render("admin/resetpassword", {
+      data: findUser._id,
+    });
+  });
 };
 // Render Admin page
 userController.renderAdminMainPage = function (req, res) {
@@ -228,6 +253,7 @@ userController.sentForgotUserPassword = async function (req, res) {
     token +
     ">Link";
   sendMail(req.body.email, subject, content);
+  res.redirect("/user");
   return;
 };
 // Submit new Product Type

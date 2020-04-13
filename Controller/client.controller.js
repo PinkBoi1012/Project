@@ -6,6 +6,7 @@ const productType = require("../models/TypeProduct");
 const Cart = require("../models/Cart");
 const moment = require("moment");
 const Order = require("../models/Order");
+const loginValid = require("../middlewares/Authentication.customer");
 // Render Login Customer
 clientController.renderLogin = async function (req, res) {
   res.render("./client/login");
