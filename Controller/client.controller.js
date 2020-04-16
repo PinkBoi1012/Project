@@ -6,21 +6,23 @@ const productType = require("../models/TypeProduct");
 const Cart = require("../models/Cart");
 const moment = require("moment");
 const Order = require("../models/Order");
-const loginValid = require("../middlewares/Authentication.customer");
+const validate = require("../Validate/customer/validate.customer");
+const bcrypt = require("bcryptjs");
+
 // Render Login Customer
 clientController.renderLogin = async function (req, res) {
-  res.render("./client/login");
+  res.render("./client/login", { csrfToken: req.csrfToken() });
   return;
 };
 // Render Forger Password Customer
 
 clientController.renderForgotPassword = async function (req, res) {
-  res.render("./client/forgotPassword");
+  res.render("./client/forgotPassword", { csrfToken: req.csrfToken() });
   return;
 };
 // Render Register Customer
 clientController.renderRegister = async function (req, res) {
-  res.render("./client/register");
+  res.render("./client/register", { csrfToken: req.csrfToken() });
   return;
 };
 // Render Home Page
@@ -57,17 +59,20 @@ clientController.renderCartInfo = async function (req, res) {
     if (!req.query.valid) {
       let cart = new Cart(req.session.cart);
 
-      return res.render("client/viewCart");
+      return res.render("client/viewCart", { csrfToken: req.csrfToken() });
     }
     if (req.query.valid) {
       let status = req.query.valid;
 
       let cart = new Cart(req.session.cart);
-      return res.render("client/viewCart", { status });
+      return res.render("client/viewCart", {
+        status,
+        csrfToken: req.csrfToken(),
+      });
     }
   }
 
-  return res.render("client/viewCart");
+  return res.render("client/viewCart", { csrfToken: req.csrfToken() });
 };
 // Remove item cart
 clientController.deleteItemCart = async function (req, res) {
@@ -127,12 +132,65 @@ clientController.renderProductInfo = async function (req, res) {
 
 // handling Login customer
 clientController.handleLogin = async function (req, res) {
+  let { errors, isValid } = validate.login(req.body);
+  console.log(req.body);
+  if (!isValid) {
+    return res.render("./client/login", { errors, data: req.body });
+  }
+  let findCusMatch = await customer.findOne({ email: req.body.email });
+  if (findCusMatch === null) {
+    errors.email = "This email is not exist";
+    return res.render("./client/login", { errors, values: req.body });
+  }
+
   // check email and pass word.
-  // Check active
-  console.log("HAY");
+
+  // check password
+
+  let checkpass = await bcrypt.compareSync(
+    req.body.password,
+    findCusMatch.password
+  );
+  if (!checkpass) {
+    errors.password = "Password is wrong";
+    return res.render("./client/login", { errors, values: req.body });
+  }
+  res.cookie("customerID", findCusMatch._id, {
+    signed: true,
+    expires: new Date(Date.now() + 8 * 3600000),
+  });
+  res.cookie("customerName", findCusMatch.full_name, {
+    signed: true,
+    expires: new Date(Date.now() + 8 * 3600000),
+  });
   return;
 };
 // handling Register Customer
+clientController.handleRegister = async function (req, res) {
+  // check input valid if not re-render
+  const { errors, isValid } = validate.register(req.body);
+  // Check Customer is exist
+  let findCusMatch = await customer.findOne({ email: req.body.email });
+  if (findCusMatch) {
+    errors.email = "This email is exist.";
+    return res.render("./client/register", { errors, value: req.body });
+  }
+  if (!isValid) {
+    res.render("./client/register", { errors, values: req.body });
+    return;
+  }
+  let salt = await bcrypt.genSaltSync(10);
+  let newPassword = await bcrypt.hashSync(req.body.password, salt);
+  let newCus = new customer({
+    full_name: req.body.fullname,
+    email: req.body.email,
+    phone: req.body.phone,
+    password: newPassword,
+  });
+  newCus.save(function (err, data) {
+    res.render("./client/login");
+  });
+};
 // handling Forget password customer
 // handling send mail active customer
 

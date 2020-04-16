@@ -23,6 +23,6 @@ module.exports = function validatorLoginInput(data) {
   }
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };

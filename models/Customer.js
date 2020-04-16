@@ -5,8 +5,8 @@ const customerSchema = new Schema(
   {
     full_name: { type: String, require: true },
     email: { type: String, require: true },
-    address: { type: String, require: true },
     phone: { type: Number, require: true },
+    password: { type: String, require: true },
     create_at: { type: Date, default: new Date(), require: true },
   },
   {

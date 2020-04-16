@@ -2,8 +2,9 @@ const Validator = require("validator");
 const isEmpty = require("../is-empty");
 
 const validate = {};
-let errors = {};
+
 validate.login = function (data) {
+  let errors = {};
   data.email = !isEmpty(data.email) ? data.email : "";
   data.password = !isEmpty(data.password) ? data.password : "";
 
@@ -12,15 +13,15 @@ validate.login = function (data) {
     errors.email = "Email is invalid";
   }
   // Check password Length
-  if (Validator.isLength(data.password, { min: 5, max: 30 })) {
+  if (!Validator.isLength(data.password, { min: 5, max: 30 })) {
     errors.password = "Password length must between 5 to 30 characters.";
   }
 
   // Check  Empty valid
-  if (!Validator.isEmpty(data.email)) {
+  if (Validator.isEmpty(data.email)) {
     errors.email = "Email is require";
   }
-  if (!Validator.isEmpty(data.password)) {
+  if (Validator.isEmpty(data.password)) {
     errors.password = "Password is require";
   }
   return {
@@ -30,6 +31,7 @@ validate.login = function (data) {
 };
 
 validate.register = function (data) {
+  let errors = {};
   // check undefined
   data.email = !isEmpty(data.email) ? data.email : "";
   data.fullname = !isEmpty(data.fullname) ? data.fullname : "";
@@ -50,10 +52,10 @@ validate.register = function (data) {
 
   //Check length password
   if (!Validator.isLength(data.password, { min: 5, max: 30 })) {
-    errors.password = "Password lenght must be between 5 to 30 characters";
+    errors.password = "Password length must be between 5 to 30 characters";
   }
   if (!Validator.isLength(data.password2, { min: 5, max: 30 })) {
-    errors.password2 = "Password lenght must be between 5 to 30 characters";
+    errors.password2 = "Password length must be between 5 to 30 characters";
   }
 
   if (data.password != data.password2) {
@@ -81,6 +83,7 @@ validate.register = function (data) {
 };
 
 validate.resetPassword = function (data) {
+  let errors = {};
   data.password = !isEmpty(data.password) ? data.password : "";
   data.password2 = !isEmpty(data.password2) ? data.password2 : "";
   if (!Validator.isLength(data.password, { min: 5, max: 30 })) {
@@ -105,6 +108,7 @@ validate.resetPassword = function (data) {
   };
 };
 validate.forgot = function (data) {
+  let errors = {};
   data.email = !isEmpty(data.email) ? data.email : "";
 
   if (!Validator.isEmail(data.email)) {

@@ -23,6 +23,7 @@ block content
         .container-lg
           #example-2.cell.example.example2
               form#payment-form(action='/payment' method="POST")
+
                 div(data-locale-reversible='')
                     .row
                       .field
@@ -43,6 +44,7 @@ block content
                         #example2-card-cvc.input.empty
                         label(for='example2-card-cvc', data-tid='elements_examples.form.card_cvc_label') CVC
                         .baseline
+                        input(type="hidden" name="_csrf", value = csrfToken )
                     button(type='submit', data-tid='elements_examples.form.pay_button') Pay
                     .error(role='alert')
                       svg(xmlns='http://www.w3.org/2000/svg', width='17', height='17', viewbox='0 0 17 17')

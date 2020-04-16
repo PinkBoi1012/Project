@@ -8,6 +8,7 @@ const userRoute = require("./Route/userRoute");
 const clientRoute = require("./Route/clientRoute");
 const session = require("express-session");
 const MongoStore = require("connect-mongo")(session);
+
 // connect db
 mongoose
   .connect(key.mongoURL, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -17,7 +18,7 @@ mongoose
   });
 
 //config body parser
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // config cookie parser
 

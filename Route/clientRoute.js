@@ -1,7 +1,9 @@
 const express = require("express");
 const route = express.Router();
 const clientRoute = require("../Controller/client.controller");
-
+const csrf = require("csurf");
+const csrfProtection = csrf();
+route.use(csrfProtection);
 // @Route   GET /
 // @Des     Render HomePage
 // @Access  Public
@@ -18,8 +20,13 @@ route.get("/forgotPassword", clientRoute.renderForgotPassword);
 // @Route   POST /customer/login
 // @Des     Login handle
 // @Access  Public
-route.post("/customer/login", clientRoute.handleLogin);
+route.post("/login", clientRoute.handleLogin);
 
+// POST /customer/register
+// Handle customer register
+// access Public
+
+route.post("/register", clientRoute.handleRegister);
 // @Route   GET /
 // @Des     Add to Cart
 // @Access  Public

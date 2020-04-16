@@ -1,0 +1,176 @@
+<head>
+  <meta charset="utf-8" />
+  <title>Admin Parrots Store</title>
+  <meta name="description" content="----" />
+  <meta name="keywords" content="Premium HTML Template" />
+  <meta name="author" content="HTMLmate" />
+  <!-- Mobile Specific Meta-->
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- css-include-->
+  <!-- boorstrap-->
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/css/bootstrap-select.min.css"
+  />
+  <link rel="stylesheet" type="text/css" href="/assets/css/bootstrap.min.css" />
+  <!-- themify-icon.css-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/themify-icons.css" />
+  <!-- owl-carousel-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/owl.carousel.css" />
+  <!-- light-box-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/lightbox.css" />
+  <!-- video css-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/video.min.css" />
+  <!-- menu.css-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/menu.css" />
+  <!-- style-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
+  <!-- responsive.css-->
+  <link rel="stylesheet" type="text/css" href="/assets/css/responsive.css" />
+</head>
+<body>
+  <nav id="poppin-nav">
+    <div id="nav-off"></div>
+    <div class="text-center" id="header-logo-1">
+      <a href="/"><img src="/assets/img//logo/logo.png" alt="img" /></a>
+    </div>
+    <ul id="menu">
+      <li class="has-submenu text-capitalize">
+        <a href="/cartInfo">Cart <span> </span></a>
+      </li>
+      <li><a href="/login">Login</a></li>
+      <li><a href="/register">Register</a></li>
+    </ul>
+  </nav>
+  <div id="menu-overlay"></div>
+  <header class="not-stuck" id="site-header">
+    <div class="container">
+      <div class="row">
+        <div id="header-logo">
+          <a href="/"><img src="/assets/img//logo/logo.png" alt="img" /></a>
+        </div>
+        <div class="pull-right not-stuck" id="menu-burger">
+          <div id="menu-bar">
+            <span class="icon-bar top"></span
+            ><span class="icon-bar middle"></span
+            ><span class="icon-bar bottom"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  <section class="blog-single-content pt90" id="blog-single">
+    <div class="container">
+      <br /><br /><link rel="stylesheet" href="../css/login.css" /><style>
+        #email {
+          border-bottom: 2px solid red;
+        }
+        #phone {
+          border-bottom: 2px solid red;
+        }
+        #password {
+          border-bottom: 2px solid red;
+        }
+        #password2 {
+          border-bottom: 2px solid red;
+        }
+        #fullname {
+          border-bottom: 2px solid red;
+        }
+        #error {
+          border-bottom: 2px solid red;
+        }
+      </style>
+      <script>
+        $(document).ready(function () {
+          $("#emailErrorInput")
+            .append("Email field is require")
+            .css("color", "red");
+          $("#phoneErrorInput")
+            .append("Phone field is require")
+            .css("color", "red");
+          $("#passwordErrorInput")
+            .append("Password field is require")
+            .css("color", "red");
+          $("#password2ErrorInput")
+            .append("Password Confirm field is require")
+            .css("color", "red");
+          $("#fullnameErrorInput")
+            .append("Full name field is reqrire")
+            .css("color", "red");
+          $("#errorErrorInput").append("fullname").css("color", "red");
+        });
+      </script>
+      <div class="wrapper fadeInDown">
+        <div id="formContent">
+          <!-- Tabs Titles--><!-- Icon-->
+          <div class="fadeIn first"></div>
+          <!-- Login Form-->
+          <form action="/customer/register" method="POST">
+            <input
+              class="fadeIn second"
+              id="email"
+              type="text"
+              name="email"
+              placeholder="Email"
+              value=""
+            />
+            <p class="fadeIn second" id="emailErrorInput"></p>
+            <input
+              class="fadeIn second"
+              id="fullname"
+              type="text"
+              name="fullname"
+              placeholder="Full Name"
+              value=""
+            />
+            <p class="fadeIn second" id="fullnameErrorInput"></p>
+            <input
+              class="fadeIn second"
+              id="phone"
+              type="text"
+              name="phone"
+              placeholder="Phone Number"
+              value=""
+            />
+            <p class="fadeIn second" id="phoneErrorInput"></p>
+            <input
+              class="fadeIn second"
+              id="password"
+              type="password"
+              name="password"
+              placeholder="Password"
+              value=""
+            />
+            <p class="fadeIn second" id="passwordErrorInput"></p>
+            <input
+              class="fadeIn second"
+              id="password2"
+              type="password"
+              name="password2"
+              placeholder="Password Confirm"
+              value=""
+            />
+            <p class="fadeIn second" id="password2ErrorInput"></p>
+            <input class="fadeIn third" type="submit" value="Register" />
+          </form>
+          <div id="formFooter">
+            <a class="underlineHover" href="/login">Login</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</body>
+<br /><br /><br /><br /><br /><br /><br /><br /><br />
+<script src="/assets/js/jquery-2.1.4.min.js"></script>
+<script src="/assets/js/bootstrap.min.js"></script>
+<script src="/assets/js/jquery.isotope.min.js"></script>
+<script src="/assets/js/lightbox.js"></script>
+<script src="/assets/js/jquery.magnific-popup.min.js"></script>
+<script src="/assets/js/owl.carousel.min.js"></script>
+<script src="/assets/js/jquery.counterup.min.js"></script>
+<script src="/assets/js/waypoints.min.js"></script>
+<script src="/assets/js/script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js"></script>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
