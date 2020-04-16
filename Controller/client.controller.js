@@ -146,11 +146,8 @@ clientController.handleLogin = async function (req, res) {
   // check email and pass word.
 
   // check password
+  let checkpass = await findCusMatch.validPassword(req.body.password);
 
-  let checkpass = await bcrypt.compareSync(
-    req.body.password,
-    findCusMatch.password
-  );
   if (!checkpass) {
     errors.password = "Password is wrong";
     return res.render("./client/login", { errors, values: req.body });
@@ -179,8 +176,8 @@ clientController.handleRegister = async function (req, res) {
     res.render("./client/register", { errors, values: req.body });
     return;
   }
-  let salt = await bcrypt.genSaltSync(10);
-  let newPassword = await bcrypt.hashSync(req.body.password, salt);
+  let newPassword = await customer.encryptPassword(req.body.password);
+
   let newCus = new customer({
     full_name: req.body.fullname,
     email: req.body.email,
