@@ -1,6 +1,5 @@
 extends ../template/client.template.pug
 block content
-
     if session.cart == undefined || Object.keys(session.cart.items).length <0
         h3(style="color:black") Cart 
             span(style="color:black") (0 product)
@@ -24,10 +23,9 @@ block content
         br
         table(style="width:100%")
             tbody
-
-                //- -console.log(session.cart)
+             if session.cart.items != null
+                     
                 each data in session.cart.items
-                    //- -console.log(data)
                     -let img = "/"+data.item.P_picture.slice(7);
                     -let qty = data.qty
                     -let id = data.item._id
@@ -41,7 +39,7 @@ block content
                         td(style="width:50%; padding:10px;  vertical-align: top;   text-align: left;"  ) 
                             h3(style="color:black") !{data.item.P_name}
                             br
-                            -console.log(data.item)
+                         
                             p !{data.item.P_description}
                             if min < 5 
                                 p(style="color:red") There's only !{min}  item
@@ -54,10 +52,10 @@ block content
                         td(style="width:15%; padding:10px;" align='center')
                             .input-group
                                 span.input-group-btn
-                                    a.btn.btn-default(href=minusOne) -
-                                input#inputUnit.form-control(type="number" name=id value=qty minunit=min style=" text-align: center;")
+                                    a.btn.btn-default(href=minusOne) - 
+                                input#inputUnit.form-control(type="number" name=id value=qty csrf=csrfToken minunit=min style=" text-align: center;")
                                 span.input-group-btn
-                                    a.btn.btn-default(href=plusOne) +
+                                    a.btn.btn-default(href=plusOne) + 
 
          
         br
@@ -77,6 +75,7 @@ block content
 block scriptCart
     script(src='/js/bootstrap-number-input.js')  
     script.
+
          function reloadPage(){
             window.location.reload()
         }
@@ -88,6 +87,7 @@ block scriptCart
         $("input[id=inputUnit]").on('focusin', function(){
         $(this).data('val', $(this).val());
         }).on('change', function(){
+     
         let min = parseInt($(this).attr("minunit"))
        
         var prev = parseInt($(this).data('val'));
@@ -111,9 +111,11 @@ block scriptCart
         else{
         
             if(current>prev){
-             
+                //- -console.log(csrfToken)
+                let csrf = $(this).attr("csrf")
                 let result =  current - prev
-                let data = {unitProduct : result};
+                let data = {unitProduct : result ,  _csrf: csrf};
+             
                 //- cong du lieu
                 let url ="/add-to-cart/"+$(this).attr("name").toString();
                 
@@ -138,13 +140,13 @@ block scriptCart
        
          
             if(prev > current){
-                //- tru du lieu
+                let csrf = $(this).attr("csrf")
                           
                 let result =  current - prev
             
-                let data = {unitProduct : result};
+                let data = {unitProduct : result, _csrf: csrf};
                
-                //- cong du lieu
+
                 let url ="/add-to-cart/"+$(this).attr("name").toString();
                 
                 $.ajax({
@@ -163,27 +165,7 @@ block scriptCart
                     },
                 } );
             }
-            //- doi du lieu thien cart
-        //- }
-
+ 
         }
         });
 
-        //- $("#inputUnit").on("change", function(){
-        //-     let value = parseInt($(this).val());
-        //-     if (value > 5){
-        //-         //- swal({title: "Unit can not more than 5"});  
-        //-         $.ajax({
-        //-             type:'get',
-        //-             url:"http://localhost:8080/cartInfo",
-        //-             data
-        //-             success:function(data){
-        //-                 console.log(data)
-        //-             }
-        //-         })
-        //-     }
-        //-     if(value ==0){
-        //-           swal({title: "Unit need more than 0"});  
-        //-     }
-            
-        //- });

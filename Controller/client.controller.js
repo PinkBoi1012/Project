@@ -8,29 +8,31 @@ const moment = require("moment");
 const Order = require("../models/Order");
 const validate = require("../Validate/customer/validate.customer");
 const bcrypt = require("bcryptjs");
-
+const jwt = require("jsonwebtoken");
+const key = require("../config/keys");
+const sendMail = require("../middlewares/nodemailer.userActive");
 // Render Login Customer
-clientController.renderLogin = async function(req, res) {
+clientController.renderLogin = async function (req, res) {
   res.render("./client/login", { csrfToken: req.csrfToken() });
   return;
 };
 // Render Forger Password Customer
 
-clientController.renderForgotPassword = async function(req, res) {
+clientController.renderForgotPassword = async function (req, res) {
   res.render("./client/forgotPassword", { csrfToken: req.csrfToken() });
   return;
 };
 // Render Register Customer
-clientController.renderRegister = async function(req, res) {
+clientController.renderRegister = async function (req, res) {
   res.render("./client/register", { csrfToken: req.csrfToken() });
   return;
 };
 // Render Home Page
-clientController.renderHome = async function(req, res) {
+clientController.renderHome = async function (req, res) {
   try {
     // Get data of product type and product in that and number of that product.
     let dataProductType = await productType.find({}, "_id TP_name");
-    let promisesDataPT = dataProductType.map(async function(x) {
+    let promisesDataPT = dataProductType.map(async function (x) {
       let PTdata = await product.find({ TP_id: x._id }, "TP_id");
       return { TP_id: x._id, TP_name: x.TP_name, data: PTdata };
     });
@@ -54,7 +56,7 @@ clientController.renderHome = async function(req, res) {
   }
 };
 //Render Cart info
-clientController.renderCartInfo = async function(req, res) {
+clientController.renderCartInfo = async function (req, res) {
   if (req.session.cart) {
     if (!req.query.valid) {
       let cart = new Cart(req.session.cart);
@@ -67,7 +69,7 @@ clientController.renderCartInfo = async function(req, res) {
       let cart = new Cart(req.session.cart);
       return res.render("client/viewCart", {
         status,
-        csrfToken: req.csrfToken()
+        csrfToken: req.csrfToken(),
       });
     }
   }
@@ -75,7 +77,7 @@ clientController.renderCartInfo = async function(req, res) {
   return res.render("client/viewCart", { csrfToken: req.csrfToken() });
 };
 // Remove item cart
-clientController.deleteItemCart = async function(req, res) {
+clientController.deleteItemCart = async function (req, res) {
   let cart = new Cart(req.session.cart);
   let id = req.params._id;
   cart.removeItem(id);
@@ -83,7 +85,7 @@ clientController.deleteItemCart = async function(req, res) {
   return res.redirect("/cartInfo");
 };
 // Render Product Info
-clientController.renderProductInfo = async function(req, res) {
+clientController.renderProductInfo = async function (req, res) {
   let exitProduct = await product.findById(
     req.params._id,
     "P_create_at _id P_name P_description P_content P_unit_price P_unit P_picture TP_id"
@@ -97,18 +99,18 @@ clientController.renderProductInfo = async function(req, res) {
     .limit(3)
     .sort({ P_create_at: -1 });
 
-  let arraySimilarProduct = similarProduct.filter(function(x) {
+  let arraySimilarProduct = similarProduct.filter(function (x) {
     return x._id.toString() !== exitProduct._id.toString();
   });
 
-  let arSimilarP = arraySimilarProduct.map(function(x) {
+  let arSimilarP = arraySimilarProduct.map(function (x) {
     return {
       name: x.P_name,
       picture: x.P_picture,
       id: x._id,
       date: moment(x.P_create_at.P_create_at).format("MMMM D, YYYY"),
       price: x.P_unit_price,
-      unit: x.P_unit
+      unit: x.P_unit,
     };
   });
 
@@ -120,39 +122,77 @@ clientController.renderProductInfo = async function(req, res) {
     picture: exitProduct.P_picture.slice(7),
     description: exitProduct.P_description,
     price: exitProduct.P_unit_price,
-    stock: exitProduct.P_unit
+    stock: exitProduct.P_unit,
   };
   if (req.query.valid) {
     let status = req.query.valid;
-    return res.render("./client/productInfo", { data, arSimilarP, status });
+    return res.render("./client/productInfo", {
+      data,
+      arSimilarP,
+      status,
+      csrfToken: req.csrfToken(),
+    });
   }
-  return res.render("./client/productInfo", { data, arSimilarP });
+  return res.render("./client/productInfo", {
+    data,
+    arSimilarP,
+    csrfToken: req.csrfToken(),
+  });
 };
 // .replace(new RegExp("\r?\n", "g"), " <br> ")
+//Render ResetPassword page
+clientController.renderResetPasswordPage = async function (req, res) {
+  let decoded = await jwt.verify(req.params.id, key.secret);
+  let findCus = await customer.findById(decoded._id);
+  if (findCus) {
+    return res.render("./client/resetPassword", {
+      values: findCus._id,
+      csrfToken: req.csrfToken(),
+    });
+  }
+  // neu khong co tra ve 404
+};
 
+// handling resetPassword
+clientController.resetForgetPassword = async function (req, res) {
+  const { errors, isValid } = validate.resetPassword(req.body);
+  if (!isValid) {
+    return res.render("./client/resetPassword", {
+      errors,
+      values: req.body,
+      csrfToken: req.csrfToken(),
+    });
+  }
+  let newPass = await bcrypt.hashSync(
+    req.body.password,
+    await bcrypt.genSaltSync(10)
+  );
+  let updateCusInfo = await customer.findByIdAndUpdate(req.body._id, {
+    password: newPass,
+  });
+  return res.render("./client/login", { csrfToken: req.csrfToken() });
+};
 // handling Login customer
-clientController.handleLogin = async function(req, res) {
+clientController.handleLogin = async function (req, res) {
   let { errors, isValid } = validate.login(req.body);
-  console.log(req.body);
+
   if (!isValid) {
     return res.render("./client/login", {
       errors,
       data: req.body,
-      csrfToken: req.csrfToken()
+      csrfToken: req.csrfToken(),
     });
   }
+
   let findCusMatch = await customer.findOne({ email: req.body.email });
   if (findCusMatch === null) {
     errors.email = "This email is not exist";
     return res.render("./client/login", {
       errors,
       values: req.body,
-      csrfToken: req.csrfToken()
+      csrfToken: req.csrfToken(),
     });
   }
-
-  // check email and pass word.
-
   // check password
   let checkpass = await findCusMatch.validPassword(req.body.password);
 
@@ -161,21 +201,23 @@ clientController.handleLogin = async function(req, res) {
     return res.render("./client/login", {
       errors,
       values: req.body,
-      csrfToken: req.csrfToken()
+      csrfToken: req.csrfToken(),
     });
   }
-  res.cookie("customerID", findCusMatch._id, {
-    signed: true,
-    expires: new Date(Date.now() + 8 * 3600000)
-  });
-  res.cookie("customerName", findCusMatch.full_name, {
-    signed: true,
-    expires: new Date(Date.now() + 8 * 3600000)
-  });
-  return;
+  let customerData = {
+    _id: findCusMatch._id,
+    full_name: findCusMatch.full_name,
+  };
+  req.session.customer = customerData;
+  console.log(req.session.cart.items);
+  if (req.session.cart.items == null) {
+    res.redirect("/");
+    return;
+  }
+  return res.redirect("/cartInfo");
 };
 // handling Register Customer
-clientController.handleRegister = async function(req, res) {
+clientController.handleRegister = async function (req, res) {
   // check input valid if not re-render
   const { errors, isValid } = validate.register(req.body);
   // Check Customer is exist
@@ -185,34 +227,70 @@ clientController.handleRegister = async function(req, res) {
     return res.render("./client/register", {
       errors,
       value: req.body,
-      csrfToken: req.csrfToken()
+      csrfToken: req.csrfToken(),
     });
   }
   if (!isValid) {
     res.render("./client/register", {
       errors,
       values: req.body,
-      csrfToken: req.csrfToken()
+      csrfToken: req.csrfToken(),
     });
     return;
   }
-  let newPassword = await customer.encryptPassword(req.body.password);
 
   let newCus = new customer({
     full_name: req.body.fullname,
     email: req.body.email,
     phone: req.body.phone,
-    password: newPassword
   });
-  newCus.save(function(err, data) {
+  newCus.password = await newCus.encryptPassword(req.body.password);
+
+  newCus.save(function (err, data) {
     res.render("./client/login", { csrfToken: req.csrfToken() });
   });
 };
 // handling Forget password customer
-// handling send mail active customer
+clientController.handleSendForgotPassword = async function (req, res) {
+  const { errors, isValid } = validate.forgot(req.body);
+  if (!isValid) {
+    res.render("./client/forgotPassword", {
+      errors,
+      values: req.body,
+      csrfToken: req.csrfToken(),
+    });
+    return;
+  }
+  let findUser = await customer.findOne({ email: req.body.email });
+  if (!findUser) {
+    errors.email = "Email is not exist Please input again";
+    res.render("./client/forgotPassword", {
+      errors,
+      values: req.body,
+      csrfToken: req.csrfToken(),
+    });
+    return;
+  }
+  let token = await jwt.sign({ _id: findUser._id }, key.secret, {
+    expiresIn: "24h",
+  });
+  let subject = `Recovery Account ${findUser.email}`;
+  let content =
+    "<p>Please Click This Link To reset password Account:</p><a href=http://localhost:8080/customer/resetpassword/" +
+    token +
+    ">Link";
+  sendMail(req.body.email, subject, content);
+  res.redirect("/");
+  return;
+};
 
+// handling logout customer
+clientController.handleLogout = async function (req, res) {
+  req.session.customer = null;
+  return res.redirect("/");
+};
 // add To cart
-clientController.addToCart = async function(req, res) {
+clientController.addToCart = async function (req, res) {
   let productID = req.params._id;
 
   let unitProduct = req.body.unitProduct ? req.body.unitProduct : 1;
@@ -251,7 +329,7 @@ clientController.addToCart = async function(req, res) {
   return;
 };
 
-clientController.addCartProductInfo = async function(req, res) {
+clientController.addCartProductInfo = async function (req, res) {
   let productID = req.params._id;
   let unitProduct = req.body.unitProduct ? req.body.unitProduct : 1;
   let cart = new Cart(req.session.cart ? req.session.cart : {});
@@ -284,12 +362,11 @@ clientController.addCartProductInfo = async function(req, res) {
 
   res.redirect(link + "Add Cart Success");
   return;
-  // console.log(productID);
 };
 
 // minus One View Cart
 
-clientController.minusOne = async function(req, res) {
+clientController.minusOne = async function (req, res) {
   let productID = req.params._id;
 
   let unitProduct = -1;
@@ -333,7 +410,7 @@ clientController.minusOne = async function(req, res) {
   return;
 };
 
-clientController.plusOne = async function(req, res) {
+clientController.plusOne = async function (req, res) {
   let productID = req.params._id;
 
   let unitProduct = 1;
@@ -377,28 +454,12 @@ clientController.plusOne = async function(req, res) {
   return;
 };
 //Render and check cart if product not enough unit minimus m update cart and show alert
-clientController.rendercheckOut = async function(req, res) {
-  res.render("client/checkout");
-};
-
-clientController.checkOut = async function(req, res) {
-  let cartArr = new Cart(req.session.cart).generateArray();
-  let cartData = new Cart(req.session.cart);
-  let totalQty = req.session.cart.totalQty;
-  let totalPrice = req.session.cart.totalPrice;
-
-  await cartArr.forEach(async function(data) {
-    let id = data.item._id;
-    let checkUnit = await product.findById(id, "_id P_unit");
-    let cartItemQty = cartData.items[id].qty;
-    let productQty = checkUnit.P_unit;
-    if (cartItemQty > productQty) {
-    }
-  });
+clientController.rendercheckOut = async function (req, res) {
+  res.render("client/checkout", { csrfToken: req.csrfToken() });
 };
 
 // Payment
-clientController.payment = async function(req, res) {
+clientController.payment = async function (req, res) {
   if (!req.session.cart) {
     res.redirect("/");
     return;
@@ -414,19 +475,39 @@ clientController.payment = async function(req, res) {
       amount: cart.totalPrice * 100,
       source: req.body.stripeToken,
       description: "Test Charge",
-      receipt_email: "bop5565237@gmail.com"
+      receipt_email: "bop5565237@gmail.com",
     },
-    function(err, charge) {
-      // console.log(charge);
+    async function (err, charge) {
       if (err) {
         console.log(err);
         res.redirect("/checkout");
       }
-      // neu khong bi loi
-      // create new order and save it to database
-      // const order = new Order({
-      //   user: req.
-      // })
+      //save order
+      delete cart.add;
+      delete cart.generateArray;
+      delete cart.removeItem;
+      let order = new Order({
+        C_id: req.session.customer._id,
+        cart: cart,
+        address: charge.source.address_line1,
+        paymentId: charge.id,
+      });
+
+      //minus product unit and plus product sale number
+
+      const cartItems = cart.items;
+      for (let key in cartItems) {
+        let data = cartItems[key];
+        let findProduct = await product.findById(cartItems[key].item._id);
+        // tru san pham
+        let newP_unit = findProduct.P_unit - data.qty;
+        let newP_unit_sale = findProduct.P_unit_sale + data.qty;
+        findProduct.P_unit = newP_unit;
+        findProduct.P_unit_sale = newP_unit_sale;
+        await findProduct.save();
+        await order.save();
+      }
+
       req.session.cart = null;
       res.redirect("/");
       return;

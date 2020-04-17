@@ -7,7 +7,7 @@ const OrderSchema = new Schema(
     cart: { type: Object, require: true },
     address: { type: String, require: true },
     O_status: { type: String, default: "Payment" },
-    O_create_at: { type: Date },
+    O_create_at: { type: Date, default: Date.now() },
     paymentId: { type: String, require: true },
   },
   {

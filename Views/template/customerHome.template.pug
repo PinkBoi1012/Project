@@ -42,17 +42,18 @@ body
           span ( #{session.cart.totalQty} )
         if(!session.cart)
           span 
-    if(customer)
+    if(session.customer )
       li
-        a(href='/customerInfo') #{customer.name}
+        -let link = '/customerInfo/'+session.customer._id;
+        a(href=link) #{session.customer.full_name}
       li
-        a(href='#') Log out
-    if(!user)
+        a(href='/logout') Log out
+    
+    if(!session.customer)
       li
         a(href='/login') Login
       li
         a(href='/register') Register
-
  #menu-overlay
 
  header#site-header.not-stuck

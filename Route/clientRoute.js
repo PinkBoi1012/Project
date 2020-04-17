@@ -3,6 +3,7 @@ const route = express.Router();
 const clientRoute = require("../Controller/client.controller");
 const csrf = require("csurf");
 const csrfProtection = csrf();
+const check = require("../middlewares/Authentication.customer");
 route.use(csrfProtection);
 // @Route   GET /
 // @Des     Render HomePage
@@ -11,12 +12,24 @@ route.get("/", clientRoute.renderHome);
 // @Route   GET /
 // @Des     Render Login customer
 // @Access  Public
-route.get("/login", clientRoute.renderLogin);
-
+route.get("/login", check.checkAuthLogin, clientRoute.renderLogin);
+// logout
+route.get("/logout", clientRoute.handleLogout);
 // Render REgister
-route.get("/register", clientRoute.renderRegister);
+route.get("/register", check.checkAuthLogin, clientRoute.renderRegister);
 // Render Forgot password
-route.get("/forgotPassword", clientRoute.renderForgotPassword);
+route.get(
+  "/forgotPassword",
+  check.checkAuthLogin,
+  clientRoute.renderForgotPassword
+);
+//render reset forget password
+route.get("/customer/resetpassword/:id", clientRoute.renderResetPasswordPage);
+// handle reset forget password
+route.post("/resetPassword", clientRoute.resetForgetPassword);
+//handle send token forgot password
+route.post("/customer/forgot", clientRoute.handleSendForgotPassword);
+
 // @Route   POST /customer/login
 // @Des     Login handle
 // @Access  Public
@@ -55,8 +68,8 @@ route.post("/productInfo/:_id", clientRoute.addCartProductInfo);
 // @Access  Public
 route.get("/cartInfo", clientRoute.renderCartInfo);
 
-route.get("/checkout", clientRoute.rendercheckOut);
-route.get("/checkout", clientRoute.checkOut);
+route.get("/checkout", check.checkHasLoginPayment, clientRoute.rendercheckOut);
+
 //Delete item cart
 route.get("/deleteItemCart/:_id", clientRoute.deleteItemCart);
 //Payment

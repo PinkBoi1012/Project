@@ -68,6 +68,7 @@ block newProduct
                     -let link = "/productInfo/"+data.id
                     form#contact_form(enctype="form-data"  action=link method="POST")
                       div.contact-info-item
+                        input(type="hidden" name="_csrf", value = csrfToken )
                         input#unitProduct(name="unitProduct" type="number"  value=1 min="1"  style="text-align: center")
                         span
                          i.fa.fa-user(aria-hidden="true")
@@ -86,6 +87,7 @@ block newProduct
                     -let link = "/productInfo/"+data.id
                     form#contact_form(enctype="form-data"  action=link method="POST")
                       div.contact-info-item
+                        input(type="hidden" name="_csrf", value = csrfToken )
                         input#unitProduct(name="unitProduct" type="number"  value=1 min="1"  style="text-align: center")
                         span
                          i.fa.fa-user(aria-hidden="true")

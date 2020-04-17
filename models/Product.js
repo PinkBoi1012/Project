@@ -11,12 +11,13 @@ const productSchema = new Schema(
     P_unit: { type: Number, required: true },
     P_unit_sale: { type: Number, default: 0 },
     P_create_at: { type: Date, default: new Date() },
-    P_picture: { type: String, require: true }
+    P_picture: { type: String, require: true },
   },
   {
-    versionKey: false
+    versionKey: false,
   }
 );
+
 const decimal2JSON = (v, i, prev) => {
   if (v !== null && typeof v === "object") {
     if (v.constructor.name === "Decimal128") prev[i] = v.toString();
@@ -31,7 +32,7 @@ productSchema.set("toJSON", {
   transform: (doc, ret) => {
     decimal2JSON(ret);
     return ret;
-  }
+  },
 });
 
 module.exports = mongoose.model("product", productSchema, "products");

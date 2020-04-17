@@ -14,11 +14,11 @@ const customerSchema = new Schema(
   }
 );
 
-customerSchema.method.encryptPassword = function (password) {
+customerSchema.methods.encryptPassword = function (password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10), null);
 };
 
-customerSchema.method.validPassword = function (password) {
+customerSchema.methods.validPassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 module.exports = mongoose.model("customer", customerSchema, "customers");
