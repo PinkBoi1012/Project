@@ -27,7 +27,7 @@ block newProduct
             .blog-single-right-side
                 h3(style="color:black") Account Information
                 br
-                form(action="")
+                form(action="/customer/changeInfo")
                     input(type="hidden" name="_csrf", value = csrfToken readonly)
                     input#_id(type="hidden" name="_id" value=values? values._id :"" readonly)
                     label(for='TP_name') Full Name

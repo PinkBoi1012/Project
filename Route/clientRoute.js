@@ -39,11 +39,13 @@ route.post("/customer/forgot", clientRoute.handleSendForgotPassword);
 // @Access  Public
 route.post("/login", clientRoute.handleLogin);
 
-// POST /customer/register
+// POST /register
 // Handle customer register
 // access Public
 
 route.post("/register", clientRoute.handleRegister);
+// handle change customer information (full name and number phone)
+route.post("/customer/changeInfo", clientRoute.handleChangeCustomerInfo);
 // @Route   GET /
 // @Des     Add to Cart
 // @Access  Public

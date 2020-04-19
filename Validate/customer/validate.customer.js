@@ -3,7 +3,7 @@ const isEmpty = require("../is-empty");
 
 const validate = {};
 
-validate.login = function (data) {
+validate.login = function(data) {
   let errors = {};
   data.email = !isEmpty(data.email) ? data.email : "";
   data.password = !isEmpty(data.password) ? data.password : "";
@@ -26,11 +26,11 @@ validate.login = function (data) {
   }
   return {
     errors,
-    isValid: isEmpty(errors),
+    isValid: isEmpty(errors)
   };
 };
 
-validate.register = function (data) {
+validate.register = function(data) {
   let errors = {};
   // check undefined
   data.email = !isEmpty(data.email) ? data.email : "";
@@ -78,11 +78,11 @@ validate.register = function (data) {
   }
   return {
     errors,
-    isValid: isEmpty(errors),
+    isValid: isEmpty(errors)
   };
 };
 
-validate.resetPassword = function (data) {
+validate.resetPassword = function(data) {
   let errors = {};
   data.password = !isEmpty(data.password) ? data.password : "";
   data.password2 = !isEmpty(data.password2) ? data.password2 : "";
@@ -104,10 +104,10 @@ validate.resetPassword = function (data) {
   }
   return {
     errors,
-    isValid: isEmpty(errors),
+    isValid: isEmpty(errors)
   };
 };
-validate.forgot = function (data) {
+validate.forgot = function(data) {
   let errors = {};
   data.email = !isEmpty(data.email) ? data.email : "";
 
@@ -119,7 +119,32 @@ validate.forgot = function (data) {
   }
   return {
     errors,
-    isValid: isEmpty(errors),
+    isValid: isEmpty(errors)
+  };
+};
+
+// validate change customer info
+validate.changeCusInfo = function(data) {
+  let errors = {};
+  data.full_name = !isEmpty(data.full_name) ? data.full_name : "";
+  data.phone = !isEmpty(data.phone) ? data.phone : "";
+
+  if (!Validator.isNumeric(data.phone)) {
+    errors.phone = "Phone Number must have numberic format";
+  }
+  if (!Validator.isLength(data.phone, { min: 10, max: 10 })) {
+    errors.phone = "Phone number is have 10 digits";
+  }
+
+  if (Validator.isEmpty(data.full_name)) {
+    errors.full_name = "Full name field is require";
+  }
+  if (Validator.isEmpty(data.phone)) {
+    errors.phone = "Phone field is require";
+  }
+  return {
+    errors,
+    isValid: isEmpty(errors)
   };
 };
 module.exports = validate;

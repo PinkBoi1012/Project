@@ -27,13 +27,13 @@ block newProduct
             .blog-single-right-side
                 h3(style="color:black") Account Information
                 br
-                form(action="")
+                form(action="/customer/changeInfo" method="post")
                     input(type="hidden" name="_csrf", value = csrfToken readonly)
                     input#_id(type="hidden" name="_id" value=values? values._id :"" readonly)
-                    label(for='TP_name') Full Name
+                    label(for='full_name') Full Name
                     input#full_name.form-control(type='text', name='full_name',value=values?values.full_name:"")
-                    p#fullnameErrorInput
-                    label(for='TP_description') Phone Number
+                    p#full_nameErrorInput
+                    label(for='phone') Phone Number
                     input#phone.form-control(type='number',name='phone',value=values?values.phone :"")
                     p#phoneErrorInput
                     label(for='email') Email
@@ -47,7 +47,7 @@ block newProduct
                 .category-item.mt20.ul-li
                   ul.category-item-list.ul-li-block
                     li
-                      a(style="font-size:19px" href="#") Account Information
+                      a(style="font-size:19px" href="/customer/info") Account Information
                     li
                       a(style="font-size:19px" href="#") Change Password
                     li
