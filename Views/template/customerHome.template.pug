@@ -44,8 +44,8 @@ body
           span 
     if(session.customer )
       li
-        -let link = '/customerInfo/'+session.customer._id;
-        a(href=link) #{session.customer.full_name}
+        -let link = '/customer/info/'
+        a(href=link)  #{session.customer.full_name}
       li
         a(href='/logout') Log out
     

@@ -55,6 +55,26 @@ clientController.renderHome = async function (req, res) {
     console.log(err);
   }
 };
+// render user Page info account info
+clientController.renderCusInfo_accountInfo = async function (req, res) {
+  let matchCus = await customer.findById(
+    req.session.customer._id,
+    "_id full_name email phone"
+  );
+  return res.render("./client/customerInfo", {
+    values: matchCus,
+    csrfToken: req.csrfToken(),
+  });
+};
+
+// render user page info change password
+clientController.renderCusInfo_changePass = async function (req, res) {
+  return res.render("./client/changepass", { csrfToken: req.csrfToken() });
+};
+// render user page show order manager
+clientController.renderCusInfo_orderManager = async function (req, res) {
+  return res.render("./client/orderManager");
+};
 //Render Cart info
 clientController.renderCartInfo = async function (req, res) {
   if (req.session.cart) {
@@ -152,7 +172,8 @@ clientController.renderResetPasswordPage = async function (req, res) {
   }
   // neu khong co tra ve 404
 };
-
+//handle change customer info
+clientController.changeCustomerInfo = async function (req, res) {};
 // handling resetPassword
 clientController.resetForgetPassword = async function (req, res) {
   const { errors, isValid } = validate.resetPassword(req.body);
@@ -175,7 +196,6 @@ clientController.resetForgetPassword = async function (req, res) {
 // handling Login customer
 clientController.handleLogin = async function (req, res) {
   let { errors, isValid } = validate.login(req.body);
-
   if (!isValid) {
     return res.render("./client/login", {
       errors,
@@ -209,8 +229,8 @@ clientController.handleLogin = async function (req, res) {
     full_name: findCusMatch.full_name,
   };
   req.session.customer = customerData;
-  console.log(req.session.cart.items);
-  if (req.session.cart.items == null) {
+  console.log(req.session.cart);
+  if (req.session.cart == null || req.session.cart.items == null) {
     res.redirect("/");
     return;
   }

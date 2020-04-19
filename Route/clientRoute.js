@@ -23,8 +23,12 @@ route.get(
   check.checkAuthLogin,
   clientRoute.renderForgotPassword
 );
+//render customer info
+route.get("/customer/info/", clientRoute.renderCusInfo_accountInfo);
 //render reset forget password
-route.get("/customer/resetpassword/:id", clientRoute.renderResetPasswordPage);
+route.get("/customer/resetpassword/", clientRoute.renderCusInfo_changePass);
+// render order manager
+route.get("/customer/order", clientRoute.renderCusInfo_orderManager);
 // handle reset forget password
 route.post("/resetPassword", clientRoute.resetForgetPassword);
 //handle send token forgot password
@@ -67,7 +71,7 @@ route.post("/productInfo/:_id", clientRoute.addCartProductInfo);
 // @Des     show cart information
 // @Access  Public
 route.get("/cartInfo", clientRoute.renderCartInfo);
-
+// render checkout
 route.get("/checkout", check.checkHasLoginPayment, clientRoute.rendercheckOut);
 
 //Delete item cart

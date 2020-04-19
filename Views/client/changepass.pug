@@ -1,0 +1,70 @@
+extends ../template/customerHome.template.pug
+block newProduct
+ if errors
+        -let styleValidate = "";
+        -let showErrors = "";
+        each error,errName in errors
+            -errors.error = errName
+            -styleValidate  = styleValidate+ "#"+errName+" {border-bottom: 2px solid red;}  " 
+            -showErrors = showErrors + "$('#"+errName+"ErrorInput"+"').append('"+error+"').css('color','red'); "
+          
+          
+        style.   
+            #{styleValidate}
+            
+        script.
+            $(document).ready(function(){
+              #{showErrors} 
+            })
+ br
+ br
+ section#blog-single.blog-single-content.pt90
+  .container
+    .row
+      .blog-single-content
+        .row
+          .col-sm-9
+            .blog-single-right-side
+                h3(style="color:black") Account Information
+                br
+                form(action="")
+                    input(type="hidden" name="_csrf", value = csrfToken readonly)
+                    input#_id(type="hidden" name="_id" value=values? values._id :"" readonly)
+                    label(for='TP_name') Full Name
+                    input#full_name.form-control(type='text', name='full_name',value=values?values.full_name:"")
+                    p#fullnameErrorInput
+                    label(for='TP_description') Phone Number
+                    input#phone.form-control(type='number',name='phone',value=values?values.phone :"")
+                    p#phoneErrorInput
+                    label(for='email') Email
+                    input#email.form-control(type='text',name='email' ,value=values?values.email :"" readonly)
+                    p#emailErrorInput
+                    input.btn.btn-primary(type='submit', value='Edit')
+          .col-sm-3
+            .blog-single-right-side-bar
+              .blog-single-right-side-content.mt50
+                .blog-single-side-title.text-capitalize
+                .category-item.mt20.ul-li
+                  ul.category-item-list.ul-li-block
+                    li
+                      a(style="font-size:19px" href="#") Account Information
+                    li
+                      a(style="font-size:19px" href="#") Change Password
+                    li
+                      a(style="font-size:19px" href="#") Order Management
+
+
+ br
+ br
+ br
+
+ br
+ br
+ br
+ br
+ br
+ br
+ br
+ br
+ br
+ br
