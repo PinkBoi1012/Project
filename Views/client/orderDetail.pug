@@ -12,7 +12,7 @@ block newProduct
             .blog-single-right-side
                 h3(style="color:black") Order Detail #!{data._id} - 
                     b !{data.O_status}
-                -console.log(data)
+              
                 hr
 
                 p Order Date : !{data.O_create_at}
@@ -42,25 +42,71 @@ block newProduct
                                             li
                                                 a(style="color:black") Delivery Success
 
+                                if(data.O_status == "Delivery")
+                                    .category-item.mt20.ul-li
+                                        ul.category-item-list.ul-li-block
+                                            li
+                                                a(style="color:black") Payment 
+                                            li
+                                                a(style="color:#00AFEF") Delivery 
+                                            li
+                                                a(style="color:black") Delivery Success
+
+                                if(data.O_status == "Delivery Success")
+                                    .category-item.mt20.ul-li
+                                        ul.category-item-list.ul-li-block
+                                            li
+                                                a(style="color:black") Payment 
+                                            li
+                                                a(style="color:black") Delivery 
+                                            li
+                                                a(style="color:#00AFEF") Delivery Success
+                                if(data.O_status == "Cancel")
+                                  P(style="color:red") Cancel
                 //- 1 cai bang gom dia chi nguoi nhan, ten nguoi nhan, so dien thoai, theo doi don hang: payment , dang van chuyen, da giao 
                 br
                 hr
                 br
                 table(style="width:100%; " )
                     thead
-                        tr(style=" background-color:#F3F3F3; border-bottom:solid 1px black")
-                            th(style="width:40%; padding:10px 10px 10px 0px;" ) Product
+                        tr(style=" background-color:#F3F3F3; ")
+                            th(style="width:10%; padding:10px 10px 10px 0px;" ) Product
+                            th(style="width:30%;") 
                             th(style="width:30%; padding:10px; ") Price
                             th(style="width:20%; padding:10px;") Unit
                             th(style="width:20%; padding:10px;") Provisional
+                        
+                        each p in data.cart.items
+                            -let product = p.item;
+                            -let productName = product.P_name
+                            -let productID = product._id 
+                            -let productPicture = "/"+product.P_picture.slice(7)
+                            -let productQty = p.qty
+                            -let productUnitPrice = product.P_unit_price
+                            -let productTotalPrice = p.price 
+                            -let link = "/productInfo/"+productID
+                            tr
+                              td(style="padding:10px 10px 10px 0px;")
+                                img(src=productPicture width="150px" height="150px" )
+                              td
+                                a(href=link)
+                                  p !{productName}
+                              td
+                                p !{productUnitPrice} $
+                              td
+                                p !{productQty}
+                              td
+                                p !{productTotalPrice} $
+                            //- -console.log(product)
+                            //- -let productID = product._id
+                            
 
-                        each product in data.cart
-                            -console.log(product)
                         tr(style="border-top:solid 1px black")
                             td
                             td
+                            td
                             td Total Price
-                            td !{data.cart.totalPrice}
+                            td !{data.cart.totalPrice} $
                 //- 2 cai bang de show san pham va link toi san pham do.
 
           .col-sm-3

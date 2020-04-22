@@ -16,7 +16,13 @@ customerAuth.checkAuthLogin = function (req, res, next) {
     res.redirect("/");
   });
 };
-
+customerAuth.checkLogin = function (req, res, next) {
+  if (!req.session.customer) {
+    res.redirect("/");
+    return;
+  }
+  next();
+};
 customerAuth.checkHasLoginPayment = function (req, res, next) {
   if (req.session.customer == null) {
     res.render("./client/login", { csrfToken: req.csrfToken() });
