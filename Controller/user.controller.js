@@ -31,11 +31,11 @@ userController.handleForgot = async function async(req, res) {
   }
   let salt = bcrypt.genSaltSync(10);
   let newPassword = bcrypt.hashSync(req.body.password, salt);
-  console.log(newPassword);
+
   let findUSer = await User.findByIdAndUpdate(req.body._id, {
     password: newPassword,
   });
-  return res.redirect("/user");
+  return res.redirect("/user/login");
 };
 
 // Render Admin register Page
@@ -50,7 +50,7 @@ userController.renderResetPasswordPage = async function (req, res) {
     }
 
     let findUser = await User.findById(decoded._id);
-    console.log(findUser);
+
     return res.render("admin/resetpassword", {
       data: findUser._id,
     });
@@ -252,8 +252,9 @@ userController.sentForgotUserPassword = async function (req, res) {
     "<p>Please Click This Link To reset password Admin Account:</p><a href=http://localhost:8080/user/resetpassword/" +
     token +
     ">Link";
-  sendMail(req.body.email, subject, content);
-  res.redirect("/user");
+  await sendMail(req.body.email, subject, content);
+
+  res.redirect("/user/login");
   return;
 };
 // Submit new Product Type

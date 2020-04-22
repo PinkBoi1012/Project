@@ -26,7 +26,18 @@ head
   // responsive.css
 
   link(rel='stylesheet', type='text/css', href='/assets/css/responsive.css')
+  script(src='/assets/js/jquery-2.1.4.min.js')
+  script(src='/assets/js/bootstrap.min.js')
+  script(src='/assets/js/jquery.isotope.min.js')
+  script(src='/assets/js/lightbox.js')
 
+  script(src='/assets/js/jquery.magnific-popup.min.js')
+  script(src='/assets/js/owl.carousel.min.js')
+  script(src='/assets/js/jquery.counterup.min.js')
+  script(src='/assets/js/waypoints.min.js')
+  script(src='/assets/js/script.js')
+  script(src='https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js')
+  script(src='https://unpkg.com/sweetalert/dist/sweetalert.min.js')
 
 
 body
@@ -41,7 +52,7 @@ body
         if(session.cart)
           span ( #{session.cart.totalQty} )
         if(!session.cart)
-          span 
+          span ( 0 )
     if(session.customer )
       li
         -let link = '/customer/info/'
@@ -117,19 +128,9 @@ footer(style="position:fixed bottom:0 ")
  
 
 
-script(src='/assets/js/jquery-2.1.4.min.js')
-script(src='/assets/js/bootstrap.min.js')
-script(src='/assets/js/jquery.isotope.min.js')
-script(src='/assets/js/lightbox.js')
-script(src="/assets/js/circle-effect.js")
-script(src='/assets/js/jquery.magnific-popup.min.js')
-script(src='/assets/js/owl.carousel.min.js')
-script(src='/assets/js/jquery.counterup.min.js')
-script(src='/assets/js/waypoints.min.js')
-script(src='/assets/js/script.js')
-script(src='https://cdn.jsdelivr.net/npm/bootstrap-select@1.13.9/dist/js/bootstrap-select.min.js')
-script(src='https://unpkg.com/sweetalert/dist/sweetalert.min.js')
 if status
     script.
        swal({title: `#{status}`,});  
 
+
+script(src="/assets/js/circle-effect.js")

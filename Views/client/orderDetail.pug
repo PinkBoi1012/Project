@@ -1,0 +1,93 @@
+extends ../template/customerHome.template.pug
+block newProduct
+
+ br
+ br
+ section#blog-single.blog-single-content.pt90
+  .container
+    .row
+      .blog-single-content
+        .row
+          .col-sm-9
+            .blog-single-right-side
+                h3(style="color:black") Order Detail #!{data._id} - 
+                    b !{data.O_status}
+                -console.log(data)
+                hr
+
+                p Order Date : !{data.O_create_at}
+                hr
+                br
+                table(style="width:100%; " )
+                    thead
+                        tr(style=" background-color:#F3F3F3;")
+                            th(style="width:50%; padding:10px 10px 10px 0px;" ) Delivery Address
+                            th(style="width:30%; padding:10px; ") Description
+                            th(style="width:20%; padding:10px;") Order Tracking
+                        tr
+                            td(style="width:50%; padding:10px 10px 10px 0px;" )
+                                h4(style="color:black")  !{data.full_name}
+                                p Address: !{data.address}.
+                                p Phone Number: 0!{data.phone}
+                            td(style="width:30%; padding:10px; ")
+                                p !{data.O_description}
+                            td(style="width:20%; padding:10px;")
+                                if(data.O_status == "Payment")
+                                    .category-item.mt20.ul-li
+                                        ul.category-item-list.ul-li-block
+                                            li
+                                                a(style="color:#00AFEF") Payment 
+                                            li
+                                                a(style="color:black") Delivery 
+                                            li
+                                                a(style="color:black") Delivery Success
+
+                //- 1 cai bang gom dia chi nguoi nhan, ten nguoi nhan, so dien thoai, theo doi don hang: payment , dang van chuyen, da giao 
+                br
+                hr
+                br
+                table(style="width:100%; " )
+                    thead
+                        tr(style=" background-color:#F3F3F3; border-bottom:solid 1px black")
+                            th(style="width:40%; padding:10px 10px 10px 0px;" ) Product
+                            th(style="width:30%; padding:10px; ") Price
+                            th(style="width:20%; padding:10px;") Unit
+                            th(style="width:20%; padding:10px;") Provisional
+
+                        each product in data.cart
+                            -console.log(product)
+                        tr(style="border-top:solid 1px black")
+                            td
+                            td
+                            td Total Price
+                            td !{data.cart.totalPrice}
+                //- 2 cai bang de show san pham va link toi san pham do.
+
+          .col-sm-3
+            .blog-single-right-side-bar
+              .blog-single-right-side-content.mt50
+                .blog-single-side-title.text-capitalize
+                .category-item.mt20.ul-li
+                  ul.category-item-list.ul-li-block
+                    li
+                      a(style="font-size:19px" href="/customer/info") Account Information
+                    li
+                      a(style="font-size:19px" href="/customer/changepass") Change Password
+                    li
+                      a(style="font-size:19px" href="/customer/orderManager") Order Management
+
+ br
+ br
+ br
+
+ br
+ br
+ br
+ br
+ br
+ br
+ br
+ br
+ br
+ br
+

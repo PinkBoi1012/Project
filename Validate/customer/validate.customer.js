@@ -3,7 +3,7 @@ const isEmpty = require("../is-empty");
 
 const validate = {};
 
-validate.login = function(data) {
+validate.login = function (data) {
   let errors = {};
   data.email = !isEmpty(data.email) ? data.email : "";
   data.password = !isEmpty(data.password) ? data.password : "";
@@ -21,16 +21,17 @@ validate.login = function(data) {
   if (Validator.isEmpty(data.email)) {
     errors.email = "Email is require";
   }
+
   if (Validator.isEmpty(data.password)) {
     errors.password = "Password is require";
   }
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };
 
-validate.register = function(data) {
+validate.register = function (data) {
   let errors = {};
   // check undefined
   data.email = !isEmpty(data.email) ? data.email : "";
@@ -78,11 +79,11 @@ validate.register = function(data) {
   }
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };
 
-validate.resetPassword = function(data) {
+validate.resetPassword = function (data) {
   let errors = {};
   data.password = !isEmpty(data.password) ? data.password : "";
   data.password2 = !isEmpty(data.password2) ? data.password2 : "";
@@ -104,10 +105,10 @@ validate.resetPassword = function(data) {
   }
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };
-validate.forgot = function(data) {
+validate.forgot = function (data) {
   let errors = {};
   data.email = !isEmpty(data.email) ? data.email : "";
 
@@ -119,12 +120,12 @@ validate.forgot = function(data) {
   }
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };
 
 // validate change customer info
-validate.changeCusInfo = function(data) {
+validate.changeCusInfo = function (data) {
   let errors = {};
   data.full_name = !isEmpty(data.full_name) ? data.full_name : "";
   data.phone = !isEmpty(data.phone) ? data.phone : "";
@@ -132,10 +133,9 @@ validate.changeCusInfo = function(data) {
   if (!Validator.isNumeric(data.phone)) {
     errors.phone = "Phone Number must have numberic format";
   }
-  if (!Validator.isLength(data.phone, { min: 10, max: 10 })) {
+  if (!Validator.isLength(data.phone, { min: 9, max: 9 })) {
     errors.phone = "Phone number is have 10 digits";
   }
-
   if (Validator.isEmpty(data.full_name)) {
     errors.full_name = "Full name field is require";
   }
@@ -144,7 +144,47 @@ validate.changeCusInfo = function(data) {
   }
   return {
     errors,
-    isValid: isEmpty(errors)
+    isValid: isEmpty(errors),
   };
 };
+
+// validate change password
+validate.changeCusPassword = function (data) {
+  let errors = {};
+
+  data.curPass = !isEmpty(data.curPass) ? data.curPass : "";
+  data.password = !isEmpty(data.password) ? data.password : "";
+  data.password2 = !isEmpty(data.password2) ? data.password2 : "";
+  if (!Validator.isLength(data.curPass, { min: 5, max: 30 })) {
+    errors.curPass = "Password length must between 5 to 30 characters.";
+  }
+  if (!Validator.isLength(data.password, { min: 5, max: 30 })) {
+    errors.password = "Password length must between 5 to 30 characters.";
+  }
+
+  if (!Validator.isLength(data.password, { min: 5, max: 30 })) {
+    errors.password2 = "Password length must between 5 to 30 characters.";
+  }
+  if (data.curPass == data.password) {
+    errors.password = "New password must different current password";
+    errors.password2 = "";
+  }
+  if (data.password2 != data.password) {
+    errors.password2 = "Password Confirm must match with New Password";
+  }
+  if (Validator.isEmpty(data.curPass)) {
+    errors.curPass = "Current password is require";
+  }
+  if (Validator.isEmpty(data.password)) {
+    errors.password = "New Password is require";
+  }
+  if (Validator.isEmpty(data.password2)) {
+    errors.password2 = "Password Confirm is require";
+  }
+  return {
+    errors,
+    isValid: isEmpty(errors),
+  };
+};
+
 module.exports = validate;

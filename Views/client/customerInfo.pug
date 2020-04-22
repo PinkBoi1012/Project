@@ -8,7 +8,6 @@ block newProduct
             -styleValidate  = styleValidate+ "#"+errName+" {border-bottom: 2px solid red;}  " 
             -showErrors = showErrors + "$('#"+errName+"ErrorInput"+"').append('"+error+"').css('color','red'); "
           
-          
         style.   
             #{styleValidate}
             
@@ -27,14 +26,14 @@ block newProduct
             .blog-single-right-side
                 h3(style="color:black") Account Information
                 br
-                form(action="/customer/changeInfo" method="post")
+                form(action="/customer/changeInfo" method="POST")
                     input(type="hidden" name="_csrf", value = csrfToken readonly)
                     input#_id(type="hidden" name="_id" value=values? values._id :"" readonly)
                     label(for='full_name') Full Name
                     input#full_name.form-control(type='text', name='full_name',value=values?values.full_name:"")
                     p#full_nameErrorInput
                     label(for='phone') Phone Number
-                    input#phone.form-control(type='number',name='phone',value=values?values.phone :"")
+                    input#phone.form-control(type='text',name='phone',value=values?values.phone :"")
                     p#phoneErrorInput
                     label(for='email') Email
                     input#email.form-control(type='text',name='email' ,value=values?values.email :"" readonly)
@@ -49,9 +48,9 @@ block newProduct
                     li
                       a(style="font-size:19px" href="/customer/info") Account Information
                     li
-                      a(style="font-size:19px" href="#") Change Password
+                      a(style="font-size:19px" href="/customer/changepass") Change Password
                     li
-                      a(style="font-size:19px" href="#") Order Management
+                      a(style="font-size:19px" href="/customer/orderManager") Order Management
 
 
  br

@@ -1,21 +1,6 @@
 extends ../template/customerHome.template.pug
 block newProduct
- if errors
-        -let styleValidate = "";
-        -let showErrors = "";
-        each error,errName in errors
-            -errors.error = errName
-            -styleValidate  = styleValidate+ "#"+errName+" {border-bottom: 2px solid red;}  " 
-            -showErrors = showErrors + "$('#"+errName+"ErrorInput"+"').append('"+error+"').css('color','red'); "
-          
-          
-        style.   
-            #{styleValidate}
-            
-        script.
-            $(document).ready(function(){
-              #{showErrors} 
-            })
+
  br
  br
  section#blog-single.blog-single-content.pt90
@@ -25,21 +10,36 @@ block newProduct
         .row
           .col-sm-9
             .blog-single-right-side
-                h3(style="color:black") Account Information
+                h3(style="color:black") My Order
                 br
-                form(action="")
-                    input(type="hidden" name="_csrf", value = csrfToken readonly)
-                    input#_id(type="hidden" name="_id" value=values? values._id :"" readonly)
-                    label(for='TP_name') Full Name
-                    input#full_name.form-control(type='text', name='full_name',value=values?values.full_name:"")
-                    p#fullnameErrorInput
-                    label(for='TP_description') Phone Number
-                    input#phone.form-control(type='number',name='phone',value=values?values.phone :"")
-                    p#phoneErrorInput
-                    label(for='email') Email
-                    input#email.form-control(type='text',name='email' ,value=values?values.email :"" readonly)
-                    p#emailErrorInput
-                    input.btn.btn-primary(type='submit', value='Edit')
+                //- show order
+                if(order.length <=0 )
+                  p There are no order
+
+                if(order.length>0)
+                  table(style="width:100%; background-color:#F3F3F3;" )
+                    thead
+                      tr
+                        th(style="width:15%; padding:10px 10px 10px 0px;" ) Code Order
+                        th(style="width:15%; padding:10px; ") Order Date
+                        th(style="width:40%; padding:10px;") Products
+                        th(style="width:15%; padding:10px;" ) Total Price
+                        th(style="width:15%; padding:10px;") Status
+                      each data in order
+
+                        -let nameProduct = Object.values(data.cart.items)[0].item.P_name
+                        -let lengthObject =Object.keys(data.cart.items).length
+                        -let link = "/order/view/" + data._id
+                        tr
+                          td(style="width:15%; padding:10px 10px 10px 0px;" )
+                            a(href=link style="color:#189EFF") !{data._id}
+                          td(style="width:15%; padding:10px;" ) !{data.O_create_at}
+                          if(lengthObject <= 1)
+                            td(style="width:40%; padding:10px;") !{nameProduct}
+                          if(lengthObject >> 1) 
+                            td(style="width:40%; padding:10px;") !{nameProduct}...and !{lengthObject-1} product
+                          td(style="width:15%; padding:10px;" ) !{data.cart.totalPrice} $
+                          td(style="width:15%; padding:10px;" ) !{data.O_status}
           .col-sm-3
             .blog-single-right-side-bar
               .blog-single-right-side-content.mt50
@@ -47,20 +47,16 @@ block newProduct
                 .category-item.mt20.ul-li
                   ul.category-item-list.ul-li-block
                     li
-                      a(style="font-size:19px" href="#") Account Information
+                      a(style="font-size:19px" href="/customer/info") Account Information
                     li
-                      a(style="font-size:19px" href="#") Change Password
+                      a(style="font-size:19px" href="/customer/changepass") Change Password
                     li
-                      a(style="font-size:19px" href="#") Order Management
-
-
- br
- br
- br
+                      a(style="font-size:19px" href="/customer/orderManager") Order Management
 
  br
  br
  br
+
  br
  br
  br
@@ -68,3 +64,7 @@ block newProduct
  br
  br
  br
+ br
+ br
+ br
+

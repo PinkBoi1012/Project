@@ -52,7 +52,7 @@ body
         if(session.cart)
           span ( #{session.cart.totalQty} )
         if(!session.cart)
-          span 
+          span ( 0 )
 
     if(session.customer)
       li
@@ -106,3 +106,5 @@ if status
        swal({title: `#{status}`,});  
 block scriptCart
 block scriptCheckout
+
+script(src="/assets/js/circle-effect.js")
