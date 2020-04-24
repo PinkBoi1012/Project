@@ -16,6 +16,7 @@ const ValidateResetPassword = require("../Validate/user/validate.userResetPasswo
 const order = require("../models/Order");
 const moment = require("moment");
 const customer = require("../models/Customer");
+const mailModel = require("../models/SendEmail");
 moment.locale();
 // Render login Page
 userController.renderLogin = function (req, res) {
@@ -61,7 +62,12 @@ userController.renderResetPasswordPage = async function (req, res) {
   });
 };
 // Render Admin page
-userController.renderAdminMainPage = function (req, res) {
+userController.renderAdminMainPage = async function (req, res) {
+  const productfind = await product
+    .find({}, "P_unit_sale _id P_name")
+    .sort({ P_unit_sale: -1 })
+    .limit(5);
+  console.log(productfind);
   return res.render("admin/dashboard");
 };
 
@@ -428,7 +434,18 @@ userController.addProduct = async function (req, res) {
     TP_id: req.body.TP_id,
   });
 
-  newProduct.save(function (err) {
+  newProduct.save(async function (err, data) {
+    // send Mail to user
+    let emailSub = await mailModel.find();
+    let content =
+      "<p>Hi Customer this is new product. Click this link to check our new product:</p><a href=http://localhost:8080/productInfo/" +
+      data._id +
+      ">Link";
+    //send mail
+    await emailSub.forEach(async function (x) {
+      await sendMail(x.email, "New Product", content);
+    });
+
     res.redirect("/user/product");
     return;
   });
@@ -601,5 +618,17 @@ userController.handleChangeStatusOrderDetail = async function (req, res) {
   let link = "/user/order/" + req.body._id;
   res.redirect(link);
   return;
+};
+
+//render Email manager
+userController.renderEmailManager = async function (req, res) {
+  let dataMail = await mailModel.find();
+  let data = await dataMail.map(function (x) {
+    let result = {};
+    result.create_at = moment(x.create_at).format("LLL");
+    result.email = x.email;
+    return result;
+  });
+  res.render("./admin/emailManager", { data });
 };
 module.exports = userController;

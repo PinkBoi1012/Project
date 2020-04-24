@@ -11,6 +11,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const key = require("../config/keys");
 const sendMail = require("../middlewares/nodemailer.userActive");
+const mailModel = require("../models/SendEmail");
 moment.locale();
 // Render Login Customer
 clientController.renderLogin = async function (req, res) {
@@ -46,10 +47,19 @@ clientController.renderHome = async function (req, res) {
       .sort({ P_name: 1 });
     if (req.query.valid) {
       let status = req.query.valid;
-      res.render("./client/homePage", { dataPT, dataAllProduct, status });
+      res.render("./client/homePage", {
+        dataPT,
+        dataAllProduct,
+        status,
+        csrfToken: req.csrfToken(),
+      });
       return;
     }
-    res.render("./client/homePage", { dataPT, dataAllProduct });
+    res.render("./client/homePage", {
+      dataPT,
+      dataAllProduct,
+      csrfToken: req.csrfToken(),
+    });
 
     return;
   } catch (err) {
@@ -668,5 +678,12 @@ clientController.payment = async function (req, res) {
     }
   );
 };
-
+// handle subscribe
+clientController.handleSubscribe = async function (req, res) {
+  console.log(req.body);
+  let newSub = new mailModel({ email: req.body.email });
+  await newSub.save();
+  res.redirect("/");
+  return;
+};
 module.exports = clientController;

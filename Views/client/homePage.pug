@@ -61,8 +61,9 @@ block newProduct
         .newsletter-title.pb75
           h2.deep-black Subscribe On New Product
         .newsletter-form
-          form.input-group(action='#')
-            input.form-control(type='email', placeholder='Enter Your Email')
+          form.input-group(action='/subscribe' method="POST")
+            input(type="hidden" name="_csrf", value = csrfToken readonly)
+            input.form-control(type='email',name="email" placeholder='Enter Your Email')
             span.input-group-addon
               button(type='submit')
                 span.deep-black.ti-arrow-right

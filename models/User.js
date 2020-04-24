@@ -8,7 +8,7 @@ const userSchema = new Schema(
     password: { type: String, require: true },
     phone: { type: Number, require: true },
     active: { type: Boolean, default: false },
-    create_at: { type: Date, default: new Date() },
+    create_at: { type: Date, default: Date.now() },
   },
   { versionKey: false }
 );

@@ -51,7 +51,10 @@ app.use(
   },
   clientRoute
 );
-
+app.get("*", function (req, res) {
+  res.render("./404");
+  return;
+});
 app.listen(key.port, () => {
   console.log(`Server started on port ${key.port}`);
 });

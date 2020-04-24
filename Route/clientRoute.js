@@ -111,4 +111,6 @@ route.get("/deleteItemCart/:_id", clientRoute.deleteItemCart);
 //Payment
 
 route.post("/payment", clientRoute.payment);
+// handle SendMail  Subribe
+route.post("/subscribe", clientRoute.handleSubscribe);
 module.exports = route;

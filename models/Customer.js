@@ -7,7 +7,7 @@ const customerSchema = new Schema(
     email: { type: String, require: true },
     phone: { type: Number, require: true },
     password: { type: String, require: true },
-    create_at: { type: Date, default: new Date(), require: true },
+    create_at: { type: Date, default: Date.now(), require: true },
   },
   {
     versionKey: false,

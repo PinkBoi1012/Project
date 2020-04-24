@@ -4,10 +4,10 @@ const Schema = mongoose.Schema;
 const TypeProductSchema = new Schema(
   {
     TP_name: { type: String, required: true },
-    TP_description: { type: String, required: true }
+    TP_description: { type: String, required: true },
   },
   {
-    versionKey: false
+    versionKey: false,
   }
 );
 

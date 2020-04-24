@@ -295,5 +295,10 @@ route.post(
   userAuth.checkAuthLogin,
   UserController.handleChangeStatusOrderDetail
 );
-
+// render email manager
+route.get(
+  "/emailsend",
+  userAuth.checkAuthLogin,
+  UserController.renderEmailManager
+);
 module.exports = route;

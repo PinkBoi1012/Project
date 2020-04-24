@@ -1,0 +1,26 @@
+extends ../template/adminMain.template.pug
+block content
+    link(rel='stylesheet', type='text/css', href='https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css')
+    script(type='text/javascript', charset='utf8', src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js')
+    
+
+    script.
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+
+    h1.page-head-title.text-capitalize.pb40  Email Subscribe
+
+    br
+    br
+    table#myTable.display
+        thead
+            tr 
+                th Email
+                th Date Subscribe
+        tbody
+            each cus in data
+                tr
+                    td !{cus.email}
+                    td !{cus.create_at}
+
