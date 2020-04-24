@@ -13,6 +13,10 @@ const addProductTypeValidate = require("../Validate/user/validate.addProductType
 const addProductValidate = require("../Validate/user/validate.addProduct");
 const fs = require("fs");
 const ValidateResetPassword = require("../Validate/user/validate.userResetPassword");
+const order = require("../models/Order");
+const moment = require("moment");
+const customer = require("../models/Customer");
+moment.locale();
 // Render login Page
 userController.renderLogin = function (req, res) {
   return res.render("admin/login");
@@ -77,7 +81,7 @@ userController.renderAdminProductTypePage = async function (req, res) {
 userController.renderAdminProductPage = async function (req, res) {
   let productData = await product
     .find()
-    .select("_id P_name P_unit_price P_unit");
+    .select("_id P_name P_unit_price P_unit P_unit_sale ");
   if (req.query.valid) {
     var status = "Delete" + req.query.valid;
     res.render("admin/productManager", { productData, status });
@@ -86,15 +90,52 @@ userController.renderAdminProductPage = async function (req, res) {
   res.render("admin/productManager", { productData });
   return;
 };
+// render order detail page
+userController.renderOrderDetailPage = async function (req, res) {
+  if (!req.params._id) {
+    return res.redirect("/user/dashboard");
+  }
+  let findOrder = await order.findById(req.params._id);
 
+  let findCus = await customer.findById(
+    findOrder.C_id,
+    "full_name email phone"
+  );
+
+  let data = {
+    cart: findOrder.cart,
+    status: findOrder.O_status,
+    description: findOrder.O_description,
+    O_id: findOrder._id,
+    createDateOrder: moment(findOrder.O_create_at).format("LLL"),
+    address: findOrder.address,
+    paymentId: findOrder.paymentId,
+    C_id: findCus._id,
+    C_name: findCus.full_name,
+    C_email: findCus.email,
+    C_phone: findCus.phone,
+  };
+
+  return res.render("./admin/orderDetail", { data });
+};
 //render order manager page
-userController.renderOrderManagerPage = function (req, res) {
-  res.render("admin/orderManager");
+userController.renderOrderManagerPage = async function (req, res) {
+  let findOrder = await order.find({}, "_id O_status O_create_at ");
+  let orderData = await findOrder.map(function (x) {
+    let data = {};
+    data.status = x.O_status;
+    data.create_at = moment(x.O_create_at).format("LLL");
+    data._id = x._id;
+    return data;
+  });
+
+  res.render("admin/orderManager", { orderData });
   return;
 };
 //render customer manager page
-userController.renderCustomerManagerPage = function (req, res) {
-  res.render("admin/customerManager");
+userController.renderCustomerManagerPage = async function (req, res) {
+  let data = await customer.find({}, "create_at full_name email phone");
+  res.render("admin/customerManager", { data });
   return;
 };
 
@@ -545,6 +586,20 @@ userController.updateProduct = async function (req, res) {
 
   // if form not upload picture
 
+  return;
+};
+
+//handle change status order detail
+userController.handleChangeStatusOrderDetail = async function (req, res) {
+  // check err
+  let update = {
+    O_status: req.body.status,
+    O_description: req.body.description,
+  };
+
+  let findOrder = await order.findByIdAndUpdate(req.body._id, update);
+  let link = "/user/order/" + req.body._id;
+  res.redirect(link);
   return;
 };
 module.exports = userController;

@@ -15,6 +15,7 @@ const OrderSchema = new Schema(
     versionKey: false,
   }
 );
+
 OrderSchema.methods.generateArray = function () {
   let arr = [];
   for (let id in this.items) {

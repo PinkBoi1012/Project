@@ -78,7 +78,9 @@ block content
         label(for='P_unit') Amount of storage
         input#P_unit.form-control(type='number',name='P_unit', placeholder='Enter amount of storage of product' value=values? values.P_unit:'' )
         p#P_unitErrorInput
-        label(for='P_picture') Picture
+        label(for='P_unit_sale') Unit Sale
+        input.form-control(type="text" value=values? values.P_unit_sale : '' readonly)
+        label(for='P_picture' ) Picture
         br
         img.center(src=pic, height='420', width='420')
         br

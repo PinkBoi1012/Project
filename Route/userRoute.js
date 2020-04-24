@@ -123,7 +123,8 @@ route.get(
   userAuth.checkAuthLogin,
   UserController.renderOrderManagerPage
 );
-
+// render order detail page
+route.get("/order/:_id", UserController.renderOrderDetailPage);
 //@route  GET
 //@desc   Render Customer  Page
 //@access Private
@@ -159,6 +160,7 @@ route.get(
   userAuth.checkAuthLogin,
   UserController.renderProductTypeUpdate
 );
+
 //@route  POST /user/editProductType
 //@desc   Update Product Type
 //@access Private
@@ -287,4 +289,11 @@ route.get("/signout", function (req, res) {
   res.clearCookie("user");
   return res.redirect("/user/login");
 });
+//handle change status order detail
+route.post(
+  "/order/changestatusorder",
+  userAuth.checkAuthLogin,
+  UserController.handleChangeStatusOrderDetail
+);
+
 module.exports = route;

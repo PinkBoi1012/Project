@@ -1,6 +1,5 @@
 extends ../template/customerHome.template.pug
 block newProduct
-
  br
  br
  section#blog-single.blog-single-content.pt90
@@ -38,9 +37,19 @@ block newProduct
                                             li
                                                 a(style="color:#00AFEF") Payment 
                                             li
-                                                a(style="color:black") Delivery 
+                                                a(style="color:black") Shipping 
                                             li
-                                                a(style="color:black") Delivery Success
+                                                a(style="color:black") Delivery 
+
+                                if(data.O_status == "Shipping")
+                                    .category-item.mt20.ul-li
+                                        ul.category-item-list.ul-li-block
+                                            li
+                                                a(style="color:black") Payment 
+                                            li
+                                                a(style="color:#00AFEF") Shipping 
+                                            li
+                                                a(style="color:black") Delivery 
 
                                 if(data.O_status == "Delivery")
                                     .category-item.mt20.ul-li
@@ -48,19 +57,9 @@ block newProduct
                                             li
                                                 a(style="color:black") Payment 
                                             li
-                                                a(style="color:#00AFEF") Delivery 
+                                                a(style="color:black") Shipping 
                                             li
-                                                a(style="color:black") Delivery Success
-
-                                if(data.O_status == "Delivery Success")
-                                    .category-item.mt20.ul-li
-                                        ul.category-item-list.ul-li-block
-                                            li
-                                                a(style="color:black") Payment 
-                                            li
-                                                a(style="color:black") Delivery 
-                                            li
-                                                a(style="color:#00AFEF") Delivery Success
+                                                a(style="color:#00AFEF") Delivery
                                 if(data.O_status == "Cancel")
                                   P(style="color:red") Cancel
                 //- 1 cai bang gom dia chi nguoi nhan, ten nguoi nhan, so dien thoai, theo doi don hang: payment , dang van chuyen, da giao 

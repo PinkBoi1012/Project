@@ -11,7 +11,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const key = require("../config/keys");
 const sendMail = require("../middlewares/nodemailer.userActive");
-
+moment.locale();
 // Render Login Customer
 clientController.renderLogin = async function (req, res) {
   res.render("./client/login", { csrfToken: req.csrfToken() });
@@ -89,7 +89,7 @@ clientController.renderCusInfo_detailOrderView = async function (req, res) {
   let data = {
     _id: findOrder._id,
     cart: findOrder.cart,
-    O_create_at: moment(findOrder.O_create_at.O_create_at).format("LLL"),
+    O_create_at: moment(findOrder.O_create_at).format("LLL"),
     O_status: findOrder.O_status,
     O_description: findOrder.O_description,
     address: findOrder.address,
@@ -184,7 +184,7 @@ clientController.renderProductInfo = async function (req, res) {
       name: x.P_name,
       picture: x.P_picture,
       id: x._id,
-      date: moment(x.P_create_at.P_create_at).format("MMMM D, YYYY"),
+      date: moment(x.P_create_at).format("LLL"),
       price: x.P_unit_price,
       unit: x.P_unit,
     };
@@ -194,7 +194,7 @@ clientController.renderProductInfo = async function (req, res) {
     id: exitProduct._id,
     name: exitProduct.P_name,
     content: exitProduct.P_content,
-    date: moment(exitProduct.P_create_at).format("MMMM D, YYYY"),
+    date: moment(exitProduct.P_create_at).format("LLL"),
     picture: exitProduct.P_picture.slice(7),
     description: exitProduct.P_description,
     price: exitProduct.P_unit_price,

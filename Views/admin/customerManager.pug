@@ -1,3 +1,30 @@
 extends ../template/adminMain.template.pug
 block content
+    link(rel='stylesheet', type='text/css', href='https://cdn.datatables.net/1.10.20/css/jquery.dataTables.css')
+    script(type='text/javascript', charset='utf8', src='https://cdn.datatables.net/1.10.20/js/jquery.dataTables.js')
+    
+
+    script.
+        $(document).ready( function () {
+            $('#myTable').DataTable();
+        } );
+
     h1.page-head-title.text-capitalize.pb40  Customer
+
+    br
+    br
+    table#myTable.display
+        thead
+            tr 
+                th Customer ID
+                th Customer Name
+                th Customer Email
+                th Customer Phone
+
+        tbody
+            each cus in data
+                tr
+                    td !{cus._id}
+                    td !{cus.full_name}
+                    td !{cus.email}
+                    td !{cus.phone}

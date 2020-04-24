@@ -11,3 +11,21 @@ block content
         } );
 
     h1 Order
+    br
+    br
+    table#myTable.display
+        thead
+            tr
+                th Order Code
+                th Status
+                th Date
+                th Action
+        tbody
+            each order in orderData
+                -let link = "/user/order/"+order._id
+                tr
+                    td  !{order._id}
+                    td  !{order.status} 
+                    td  !{order.create_at} 
+                    td  
+                        a(href=link) View Order
