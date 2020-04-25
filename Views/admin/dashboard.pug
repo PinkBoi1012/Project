@@ -1,4 +1,69 @@
 extends ../template/adminMain.template.pug
 block content
-    h1.page-head-title.text-capitalize.pb40  Dashboard
-        
+    h1.page-head-title.text-capitalize.pb40(style="color:black")  Dashboard
+    
+    -console.log(numberProductForSale);
+    //-     numberProductForSale,
+    //- totalProductSold,
+    //- topProductSale,
+    //- totalOrderValue,
+    //- orderPlaced,
+    table(style="width:100%; " )
+        thead
+            tr(style=" background-color:#F3F3F3;")
+                th(style="width:30%; padding:10px 10px 10px 0px;" ) Orders placed
+                th(style="width:20%; padding:10px; ") Total number of orders placed                     
+            tr
+                td(style="width:30%; padding:10px 10px 10px 0px;" )
+                td(style="width:20%; padding:10px; ")
+                    h4(style="color:red") !{orderPlaced} 
+
+    hr
+
+    table(style="width:100%; " )
+        thead
+            tr(style=" background-color:#F3F3F3;")
+                th(style="width:30%; padding:10px 10px 10px 0px;" ) Order total value
+                th(style="width:20%; padding:10px; ") Total value of orders placed                   
+            tr
+                td(style="width:30%; padding:10px 10px 10px 0px;" )
+                td(style="width:20%; padding:10px; ")
+                    h4(style="color:red") !{totalOrderValue} 
+                        span $
+    hr
+    table(style="width:100%; " )
+        thead
+            tr(style=" background-color:#F3F3F3;")
+                th(style="width:30%; padding:10px 10px 10px 0px;" ) Products for sale
+                th(style="width:20%; padding:10px; ") Number of products for sale                
+            tr
+                td(style="width:30%; padding:10px 10px 10px 0px;" )
+                td(style="width:20%; padding:10px; ")
+                    h4(style="color:red") !{numberProductForSale} 
+    hr
+    table(style="width:100%; " )
+        thead
+            tr(style=" background-color:#F3F3F3;")
+                th(style="width:30%; padding:10px 10px 10px 0px;" ) Total products sold
+                th(style="width:20%; padding:10px; ") Number of products sold                  
+            tr
+                td(style="width:30%; padding:10px 10px 10px 0px;" )
+                td(style="width:20%; padding:10px; ")
+                    h4(style="color:red") !{totalProductSold} 
+    br
+    hr
+    h3(style="color:black") Top products sold
+    br
+    table(style="width:100%; " )  
+        each data in topProductSale           
+            tr
+                -let productPicture = "/"+data.P_picture.slice(7)
+                td(style="width:30%; padding:50px 50px 50px 0px;" )
+                    img(src=productPicture width="250px" height="250px" )
+                td(style="width:20%; padding:10px; ")
+                    h3(style="color:black") !{data.P_name}
+                    br
+                    h3(style="color:black") Sold: 
+                        span(style="color:red") !{data.P_unit_sale}
+
+                

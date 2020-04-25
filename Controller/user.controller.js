@@ -63,12 +63,35 @@ userController.renderResetPasswordPage = async function (req, res) {
 };
 // Render Admin page
 userController.renderAdminMainPage = async function (req, res) {
-  const productfind = await product
-    .find({}, "P_unit_sale _id P_name")
+  let totalOrderValue = 0;
+  let totalProductSold = 0;
+  const topProductSale = await product
+    .find({}, "P_unit_sale _id P_name P_picture")
     .sort({ P_unit_sale: -1 })
     .limit(5);
-  console.log(productfind);
-  return res.render("admin/dashboard");
+  const findOrder = await order.find({}, "cart");
+
+  let totalOrderValue1 = await findOrder.map(function (x) {
+    totalOrderValue = (
+      parseFloat(totalOrderValue) + parseFloat(x.cart.totalPrice)
+    ).toFixed(2);
+  });
+  let ProductForSale = await product.find({}, "_id");
+  let numberProductForSale = Object.keys(ProductForSale).length;
+  let totalPSold = findOrder.map(function (x) {
+    totalProductSold = totalProductSold + x.cart.totalQty;
+    return totalProductSold;
+  });
+
+  let orderPlaced = Object.keys(findOrder).length;
+  console.log(topProductSale);
+  return res.render("admin/dashboard", {
+    numberProductForSale,
+    totalProductSold,
+    topProductSale,
+    totalOrderValue,
+    orderPlaced,
+  });
 };
 
 //Render Admin product type page
